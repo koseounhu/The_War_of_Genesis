@@ -5,6 +5,7 @@ HRESULT WorldMap::init(void)
 {
     _tick = _loopX = _loopY = 0;
     _pointFrame=_bgX= _bgY = 0;
+    _selectFrame = 0;
 
     _point = RectMakeCenter(465, 337, IMAGEMANAGER->findImage("¿ùµå¸Ê°ÅÁ¡")->getFrameWidth(), IMAGEMANAGER->findImage("¿ùµå¸Ê°ÅÁ¡")->getFrameHeight());
     
@@ -22,7 +23,6 @@ HRESULT WorldMap::init(void)
 
 void WorldMap::release(void)
 {
-
 }
 
 void WorldMap::update(void)
@@ -65,7 +65,13 @@ void WorldMap::update(void)
         _loopY--;
         _pointFrame++;
         if (_pointFrame > IMAGEMANAGER->findImage("¿ùµå¸Ê°ÅÁ¡")->getMaxFrameX())_pointFrame = 0;
+        if (_selectFrame > 25)_selectFrame = 0;
     }
+    if (_tick % 5 == 0)
+    {
+        _selectFrame++;
+    }
+
 
 #pragma endregion
 
@@ -89,6 +95,11 @@ void WorldMap::render(void)
     IMAGEMANAGER->findImage("¿ùµå¸ÊÆÄµµ")->loopRender(getMemDC(), &_rc, _loopX, _loopY);
     IMAGEMANAGER->findImage("¿ùµå¸Ê¹è°æ")->render(getMemDC(),_bgX,_bgY);
     IMAGEMANAGER->findImage("¿ùµå¸Ê°ÅÁ¡")->alphaFrameRender(getMemDC(), _point.left, _point.top, 150,_pointFrame, 0);
+    IMAGEMANAGER->findImage("¿ùµå¸Ê°ÅÁ¡¸¶Å©")->alphaRender(getMemDC(), _point.left+30, _point.top+20,150);
+
+    RECT temp;
+    temp = RectMake(_point.left + 535, _point.top + 160, 100, 100);
+    IMAGEMANAGER->findImage("¿ùµå¸ÊÀüÅõ¸¶Å©")->render(getMemDC(), _point.left+535, _point.top+160);
 
     IMAGEMANAGER->findImage("¿ùµå¸ÊÁö¿ª")->render(getMemDC(),0,0);
     FONTMANAGER->drawText(getMemDC(), 40, 35, 20, 255, 255, 255, "±¼¸²Ã¼", true, "½ÃÁö¾Æ");
@@ -102,5 +113,20 @@ void WorldMap::render(void)
     FONTMANAGER->drawText(getMemDC(), _button[0].left+50, _button[0].top+10, 25, 255, 255, 255, "±¼¸²", true, "ÀÌ µ¿");
     FONTMANAGER->drawText(getMemDC(), _button[1].left+50, _button[1].top+10, 25, 255, 255, 255, "±¼¸²", true, "Áø ÀÔ");
     FONTMANAGER->drawText(getMemDC(), _button[3].left+30, _button[3].top+10, 25, 255, 255, 255, "±¼¸²", true, "¸ÞÀÎÈ­¸é");
+
+    if (PtInRect(&temp, _ptMouse))
+    {
+        IMAGEMANAGER->findImage("¿ùµå¸Ê¼±ÅÃ")->alphaFrameRender(getMemDC(), temp.left, temp.top, 140, _selectFrame, 0);
+
+        HPEN hpen;
+        HPEN oldpen;
+
+        hpen = CreatePen(PS_SOLID, 5, RGB(92, 106, 215));
+        oldpen = (HPEN)::SelectObject(getMemDC(), hpen);
+        LineMake(getMemDC(), _point.left + (_point.right-_point.left)/2, _point.top+(_point.top-_point.bottom)/2+150, _point.left + 550, _point.top + 185);
+        SelectObject(getMemDC(), oldpen);
+        DeleteObject(hpen);
+    }
+    
 
 }

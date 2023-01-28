@@ -64,10 +64,13 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addImage("레드타일", OBJ"redTile.bmp", 40, 32);
 
 	// WorldMap
-	IMAGEMANAGER->addImage("월드맵배경", WM"WorldBG.bmp", 1446, 1074, true, RGB(255,0,255));
+	IMAGEMANAGER->addImage("월드맵배경", WM"WorldBG.bmp", 1446, 1074, true, MAZEN);
+	IMAGEMANAGER->addImage("월드맵전투마크", WM"WarMark.bmp", 60, 60, true, MAZEN);
+	IMAGEMANAGER->addImage("월드맵거점마크", WM"TeamDesign.bmp", 50, 50, true, MAZEN);
 	IMAGEMANAGER->addImage("월드맵파도", WM"Wave.bmp", WINSIZE_X*2, WINSIZE_Y*2);
 	IMAGEMANAGER->addImage("월드맵지역", WM"Location.bmp", 240, 101,true,MAZEN);
 	IMAGEMANAGER->addFrameImage("월드맵버튼", WM"Button.bmp", 332, 48,2,1,true,MAZEN);
 	IMAGEMANAGER->addFrameImage("월드맵거점", WM"TeamRect.bmp", 1160, 150,10,1,true,MAZEN);
+	IMAGEMANAGER->addFrameImage("월드맵선택", WM"circle.bmp", 1450, 47,25,1,true,MAZEN);
 
 }

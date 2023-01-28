@@ -15,6 +15,8 @@ private:
 	RECT _button[4];
 	int _buttonNum[4];
 
+	int _selectFrame;
+
 public:
 	HRESULT init(void);
 	void release(void);
