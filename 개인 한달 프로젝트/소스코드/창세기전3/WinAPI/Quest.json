@@ -1,0 +1,15 @@
+{
+  "Quest": [
+    {
+      "_name": "스테이지 1 - 몬스터 퇴치",
+      "_exp": 500,
+      "_description": "몬스터 10명 퇴치",
+      "_item": "보석",
+      "_moster": 3,
+      "_questCheck": "섬멸",
+      "_gold": 1000,
+      "_mosterName": "곰돌이",
+      "_questStage" :  "1 스테이지"
+    }
+  ]
+}

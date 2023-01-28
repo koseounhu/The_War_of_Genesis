@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="API FrameWork">
+      <UniqueIdentifier>{dbafc260-9d98-4b3a-940e-bdc8aa1911bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\Animation">
+      <UniqueIdentifier>{75bded53-6190-40d9-a81a-896670589f7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\DesignPattern">
+      <UniqueIdentifier>{2b41fac0-c372-4048-a165-7c1ad0598ba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\DesignPattern\Singleton">
+      <UniqueIdentifier>{dd439712-d9a6-44c6-9582-efb179f1a41f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\GameCore">
+      <UniqueIdentifier>{d31818a9-8566-4375-9613-e24875b46c7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\Image">
+      <UniqueIdentifier>{3ade2f97-fca1-483c-94c8-5c1db157a66d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\Json">
+      <UniqueIdentifier>{421020af-26e8-4804-b8a0-e92bbfdc1159}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\Manager">
+      <UniqueIdentifier>{ca82977d-5706-4660-9768-dc9ff1ad6554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\Manager\Font">
+      <UniqueIdentifier>{f779aea6-bd31-4244-8a75-765af10c87d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\Manager\Image">
+      <UniqueIdentifier>{51f52d23-7835-406d-9d3c-bd695c03ec34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\Manager\Key">
+      <UniqueIdentifier>{f9c53658-026b-4e3e-866e-9ca71c1ac212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\Manager\Scene">
+      <UniqueIdentifier>{85a2e5f7-3e4b-48ee-8a2e-fed7e91d00ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\PB">
+      <UniqueIdentifier>{f51da24e-ee60-4dee-8b91-515aeb6d7cbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\PCH">
+      <UniqueIdentifier>{89f73a42-c6e4-45ea-b66a-63fdb975756d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\Timer">
+      <UniqueIdentifier>{e3d86ebf-2e1b-428b-a06d-398b7b6e1b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\Utility">
+      <UniqueIdentifier>{a5f0054a-4d5a-48f8-be27-cee4397f9cfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\Utility\Math">
+      <UniqueIdentifier>{8e10622c-49b4-49a2-aefd-74299b84df81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{b135f443-0e91-4542-9e35-6c28903b7592}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Opening">
+      <UniqueIdentifier>{412f3efd-1a21-4c56-b675-1583ab6d5bd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Scenario">
+      <UniqueIdentifier>{c147dbc4-22c1-4b34-8053-559686d2c6b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Battle">
+      <UniqueIdentifier>{0776faaa-c7b9-4e29-aa0c-992192b257a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Scenario\First">
+      <UniqueIdentifier>{6d540e5a-8011-40d4-8de5-6129bcc9e27b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Scenario\Select">
+      <UniqueIdentifier>{1aba911c-a9c6-4270-94dd-5dc4801b5ba2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Unit">
+      <UniqueIdentifier>{ff7dfb65-c5d7-4339-b064-f3c1c70b031f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Unit\Player">
+      <UniqueIdentifier>{4f10a09a-4c0c-4ad5-bd98-5e7235371c02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Unit\Enemy">
+      <UniqueIdentifier>{d9bc88d4-0e00-40c5-a1d3-a1eae7c787fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Battle2">
+      <UniqueIdentifier>{0ea6f6a4-7cfb-4e2c-881b-48a9e620ecf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API FrameWork\Manager\Sound">
+      <UniqueIdentifier>{8f9414fe-fd9e-43e7-b929-25e6cfe9e76a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\WorldMap">
+      <UniqueIdentifier>{3893dda4-902c-465e-8e84-9d2e36c130c5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C3DMatrix.cpp">
+      <Filter>API FrameWork\Utility\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DVector.cpp">
+      <Filter>API FrameWork\Utility\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Stdafx.cpp">
+      <Filter>API FrameWork\PCH</Filter>
+    </ClCompile>
+    <ClCompile Include="GameNode.cpp">
+      <Filter>API FrameWork\GameCore</Filter>
+    </ClCompile>
+    <ClCompile Include="IWindowMessage.cpp">
+      <Filter>API FrameWork\GameCore</Filter>
+    </ClCompile>
+    <ClCompile Include="GImage.cpp">
+      <Filter>API FrameWork\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="FontManager.cpp">
+      <Filter>API FrameWork\Manager\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageManager.cpp">
+      <Filter>API FrameWork\Manager\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>API FrameWork\Manager\Key</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>API FrameWork\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>API FrameWork\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>API FrameWork\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>API FrameWork\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>API FrameWork\Manager\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="JsonSaveLoader.cpp">
+      <Filter>API FrameWork\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonDataScene.cpp">
+      <Filter>API FrameWork\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Quest.cpp">
+      <Filter>API FrameWork\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestSample.cpp">
+      <Filter>API FrameWork\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressBar.cpp">
+      <Filter>API FrameWork\PB</Filter>
+    </ClCompile>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>API FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Openning.cpp">
+      <Filter>Scene\Opening</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageInit.cpp" />
+    <ClCompile Include="Battle.cpp">
+      <Filter>Scene\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="firstCutScene.cpp">
+      <Filter>Scene\Scenario\First</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenario.cpp">
+      <Filter>Scene\Scenario\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Unit\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Battle2.cpp">
+      <Filter>Scene\Battle2</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>API FrameWork\Manager\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldMap.cpp">
+      <Filter>Scene\WorldMap</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C3DMatrix.h">
+      <Filter>API FrameWork\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DVector.h">
+      <Filter>API FrameWork\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Stdafx.h">
+      <Filter>API FrameWork\PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="SingletonBase.h">
+      <Filter>API FrameWork\DesignPattern\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomFunction.h">
+      <Filter>API FrameWork\DesignPattern\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="GameNode.h">
+      <Filter>API FrameWork\GameCore</Filter>
+    </ClInclude>
+    <ClInclude Include="IWindowMessage.h">
+      <Filter>API FrameWork\GameCore</Filter>
+    </ClInclude>
+    <ClInclude Include="GImage.h">
+      <Filter>API FrameWork\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="FontManager.h">
+      <Filter>API FrameWork\Manager\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageManager.h">
+      <Filter>API FrameWork\Manager\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>API FrameWork\Manager\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>API FrameWork\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>API FrameWork\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>API FrameWork\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonMacroFunction.h">
+      <Filter>API FrameWork\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>API FrameWork\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>API FrameWork\Manager\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame.h" />
+    <ClInclude Include="JsonSaveLoader.h">
+      <Filter>API FrameWork\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonDataScene.h">
+      <Filter>API FrameWork\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Quest.h">
+      <Filter>API FrameWork\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestSample.h">
+      <Filter>API FrameWork\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressBar.h">
+      <Filter>API FrameWork\PB</Filter>
+    </ClInclude>
+    <ClInclude Include="Openning.h">
+      <Filter>Scene\Opening</Filter>
+    </ClInclude>
+    <ClInclude Include="Battle.h">
+      <Filter>Scene\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="firstCutScene.h">
+      <Filter>Scene\Scenario\First</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenario.h">
+      <Filter>Scene\Scenario\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Unit\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Battle2.h">
+      <Filter>Scene\Battle2</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>API FrameWork\Manager\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMap.h">
+      <Filter>Scene\WorldMap</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Item.json">
+      <Filter>API FrameWork\Json</Filter>
+    </None>
+    <None Include="Character.json">
+      <Filter>API FrameWork\Json</Filter>
+    </None>
+    <None Include="Quest.json">
+      <Filter>API FrameWork\Json</Filter>
+    </None>
+  </ItemGroup>
+</Project>

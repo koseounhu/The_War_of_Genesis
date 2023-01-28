@@ -1,0 +1,12 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(39,5): warning MSB4211: "IntermediateOutputPath" 속성에 처음으로 값이 설정되고 있지만 이미 "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(38,5)"에서 사용되었습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.BuildSteps.Targets(30,5): warning MSB4211: "DebugType" 속성에 처음으로 값이 설정되고 있지만 이미 "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.BuildSteps.Targets(29,5)"에서 사용되었습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets(373,5): warning MSB4211: "CleanFile" 속성에 처음으로 값이 설정되고 있지만 이미 "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(38,5)"에서 사용되었습니다.
+cl : 명령줄 warning D9035: 'Gm' 옵션은 더 이상 사용되지 않으므로 이후 릴리스에서 제거될 예정입니다.
+cl : 명령줄 warning D9035: 'Zc:forScope-' 옵션은 더 이상 사용되지 않으므로 이후 릴리스에서 제거될 예정입니다.
+  json_writer.cpp
+  json_value.cpp
+  json_reader.cpp
+  코드를 생성하고 있습니다...
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1545,5): warning MSB8012: TargetPath(C:\Users\DELL\Downloads\jsoncpp-src-0.5.0\build\vs71\debug\lib_json\lib_json.lib)이(가) Library의 OutputFile 속성 값(C:\Users\DELL\Downloads\jsoncpp-src-0.5.0\build\vs71\debug\lib_json\json_vc71_libmtd.lib)과 일치하지 않습니다. 이로 인해 프로젝트가 잘못 빌드될 수 있습니다. 이를 수정하려면 $(OutDir), $(TargetName) 및 $(TargetExt) 속성 값이 %(Lib.OutputFile)에 지정된 값과 일치해야 합니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1547,5): warning MSB8012: TargetName(lib_json)이(가) Library의 OutputFile 속성 값(json_vc71_libmtd)과 일치하지 않습니다. 이로 인해 프로젝트가 잘못 빌드될 수 있습니다. 이를 수정하려면 $(OutDir), $(TargetName) 및 $(TargetExt) 속성 값이 %(Lib.OutputFile)에 지정된 값과 일치해야 합니다.
+  lib_json.vcxproj -> C:\Users\DELL\Downloads\jsoncpp-src-0.5.0\build\vs71\debug\lib_json\lib_json.lib
