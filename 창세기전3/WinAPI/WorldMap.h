@@ -9,6 +9,8 @@ private:
 	int _loopX, _loopY;
 	int _pointFrame;
 	int _bgX, _bgY;
+	int _profileFrame;
+	int _alpha;
 
 	RECT _point;
 
@@ -17,6 +19,8 @@ private:
 
 	int _selectFrame;
 
+	bool _ui;
+	bool _move;
 public:
 	HRESULT init(void);
 	void release(void);

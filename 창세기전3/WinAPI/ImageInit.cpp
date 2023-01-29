@@ -17,8 +17,11 @@
 void MainGame::ImageInit(void)
 {
 	// 임시 1.5배씩 더해줌
-	IMAGEMANAGER->addImage("임시1", SCE"임시1.bmp", 176, 111,true,RGB(168,208,168));
-	IMAGEMANAGER->addImage("임시2", SCE"임시2.bmp", 98, 108, true, RGB(168, 208, 168));
+	IMAGEMANAGER->addFrameImage("셰라죽음", SCE"셰라죽음.bmp", 5520, 150,23,1,true,MAZEN);
+	IMAGEMANAGER->addImage("임시2", SCE"임시2.bmp", 250, 250, true,MAZEN);
+	IMAGEMANAGER->addImage("버몬트", SCE"버몬트.bmp", 390, 640, true,MAZEN);
+	IMAGEMANAGER->addImage("살라딘", SCE"살라딘.bmp", 600, 680, true,MAZEN);
+	IMAGEMANAGER->addImage("셰라", SCE"셰라.bmp", 625, 622, true,MAZEN);
 
 	// 통합
 	IMAGEMANAGER->addImage("검정알파", BG"blackness.bmp", WINSIZE_X, WINSIZE_Y);
@@ -65,12 +68,13 @@ void MainGame::ImageInit(void)
 
 	// WorldMap
 	IMAGEMANAGER->addImage("월드맵배경", WM"WorldBG.bmp", 1446, 1074, true, MAZEN);
-	IMAGEMANAGER->addImage("월드맵전투마크", WM"WarMark.bmp", 60, 60, true, MAZEN);
+	IMAGEMANAGER->addImage("월드맵전투마크", WM"WarMark.bmp", 70, 70, true, MAZEN);
 	IMAGEMANAGER->addImage("월드맵거점마크", WM"TeamDesign.bmp", 50, 50, true, MAZEN);
 	IMAGEMANAGER->addImage("월드맵파도", WM"Wave.bmp", WINSIZE_X*2, WINSIZE_Y*2);
 	IMAGEMANAGER->addImage("월드맵지역", WM"Location.bmp", 240, 101,true,MAZEN);
 	IMAGEMANAGER->addFrameImage("월드맵버튼", WM"Button.bmp", 332, 48,2,1,true,MAZEN);
 	IMAGEMANAGER->addFrameImage("월드맵거점", WM"TeamRect.bmp", 1160, 150,10,1,true,MAZEN);
 	IMAGEMANAGER->addFrameImage("월드맵선택", WM"circle.bmp", 1450, 47,25,1,true,MAZEN);
+	IMAGEMANAGER->addFrameImage("월드맵프로필", WM"Profile.bmp", 800, 148,5,1,true,MAZEN);
 
 }

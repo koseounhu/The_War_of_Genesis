@@ -4,6 +4,8 @@ class firstCutScene : public GameNode
 {
 private:
 	int _BgAlpha;
+	int _frame;
+	int _tick;
 
 public:
 	HRESULT init(void);
