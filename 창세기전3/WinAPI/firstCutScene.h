@@ -1,8 +1,12 @@
 #pragma once
 #include "GameNode.h"
+#include "Dialogue.h"
+
 class firstCutScene : public GameNode
 {
 private:
+	Dialogue* _da;
+
 	int _BgAlpha;
 	int _frame;
 	int _tick;

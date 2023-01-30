@@ -45,13 +45,9 @@ void Scenario::render(void)
           _fireAlpha++;
           if (_fireAlpha > IMAGEMANAGER->findImage("오프닝넥스트")->getMaxFrameX())_fireAlpha = 0;
       }
-      if (_alpha > 250)SCENEMANAGER->changScene("시나리오컷씬");
+      if (_alpha > 250)SCENEMANAGER->changScene("월드맵");
       
       IMAGEMANAGER->alphaFrameRender("오프닝넥스트", getMemDC(), WINSIZE_X / 2 - 150, WINSIZE_Y / 2 - 150, 150, _fireAlpha, 0);
 
   }
 }
-
-// 오프닝 넥스트 불꽃 만들면됨
-// 이미지 추가해놧고
-// 알파변수 만들어서 렌더 해보면될듯

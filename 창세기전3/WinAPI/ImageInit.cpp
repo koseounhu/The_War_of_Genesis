@@ -25,6 +25,14 @@ void MainGame::ImageInit(void)
 
 	// 통합
 	IMAGEMANAGER->addImage("검정알파", BG"blackness.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("다이얼로그창", SCE"Dialogue.bmp", 818, 178);
+	IMAGEMANAGER->addImage("어빌리티창", OBJ"SkillBox.bmp", 208, 91);
+	IMAGEMANAGER->addImage("블루타일", OBJ"blueTile.bmp", 40, 32);
+	IMAGEMANAGER->addImage("레드타일", OBJ"redTile.bmp", 40, 32);
+	IMAGEMANAGER->addFrameImage("스킬UI", OBJ"PersonalBox.bmp", 416, 60,4,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("마우스타일", OBJ"MoveCursor.bmp", 240, 32,6,1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("어빌리티버튼", OBJ"abilityButton.bmp", 34, 17,2,1, true, RGB(255, 0, 255));
+
 
 	//플레이어
 	IMAGEMANAGER->addFrameImage("살라딘_걷기", PL"살라딘_walk.bmp", 720, 360, 6, 4, true,MAZEN );
@@ -63,8 +71,7 @@ void MainGame::ImageInit(void)
 	// UI
 	IMAGEMANAGER->addFrameImage("마우스", OBJ"mouse.bmp", 228, 24, 12, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("그림자", OBJ"Shadow.bmp", 50, 25, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("블루타일", OBJ"blueTile.bmp", 40, 32);
-	IMAGEMANAGER->addImage("레드타일", OBJ"redTile.bmp", 40, 32);
+
 
 	// WorldMap
 	IMAGEMANAGER->addImage("월드맵배경", WM"WorldBG.bmp", 1446, 1074, true, MAZEN);

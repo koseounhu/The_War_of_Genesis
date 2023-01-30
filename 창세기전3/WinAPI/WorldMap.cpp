@@ -163,7 +163,7 @@ void WorldMap::render(void)
     if (_move)
     {
         IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), _alpha);
-        if (_alpha > 250)SCENEMANAGER->changScene("전투2");
+        if (_alpha > 250)SCENEMANAGER->changScene("시나리오컷씬");
     }
 
 }

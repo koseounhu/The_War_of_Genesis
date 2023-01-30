@@ -88,6 +88,9 @@
     <Filter Include="Scene\WorldMap">
       <UniqueIdentifier>{3893dda4-902c-465e-8e84-9d2e36c130c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dialogue">
+      <UniqueIdentifier>{d1003cbf-ea66-4129-8394-2a326ce24273}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C3DMatrix.cpp">
@@ -175,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="WorldMap.cpp">
       <Filter>Scene\WorldMap</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogue.cpp">
+      <Filter>Dialogue</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="WorldMap.h">
       <Filter>Scene\WorldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogue.h">
+      <Filter>Dialogue</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

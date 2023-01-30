@@ -50,6 +50,15 @@ struct TILE2
 class Battle2 : public GameNode
 {
 private:
+
+	// 움직일 타일 설정
+	bool _groundTile;
+
+	// ui
+	bool _ui;
+	bool _ability;
+	bool _skillOn;
+
 	// 시작시 카메라 무빙
 	bool _gameStart;
 
