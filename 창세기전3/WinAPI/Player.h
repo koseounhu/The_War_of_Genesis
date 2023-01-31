@@ -14,6 +14,7 @@ struct PL
 
 	bool _astar;
 
+	int skill;
 };
 class Player : public GameNode
 {
@@ -40,6 +41,7 @@ public:
 	void setPAstar(bool astar) { _pl._astar = astar; }
 	void setPcount(int numX, int numY) {_pl._xCount = numX;
 										_pl._yCount = numY;}
+	void setPSkill(int skillframe) { _pl.skill = skillframe; }
 
 	Player() {}
 	~Player() {}

@@ -1,7 +1,7 @@
 #pragma once
 #include "GameNode.h"
 #include "Player.h"
-
+#include "Skill.h"
 
 
 #pragma region 맵, A*
@@ -35,6 +35,13 @@ struct CloseList2
 	int idxY;
 	float fromStartCost;
 };
+
+struct moveTile
+{
+	int idxX;
+	int idxY;
+	int moveCost;
+};
 // 타일 그리기
 struct TILE2
 {
@@ -45,6 +52,7 @@ struct TILE2
 	bool mapColli;
 	bool aStarColli;
 	int unit;
+	bool moveTileColli;
 };
 #pragma endregion
 class Battle2 : public GameNode
@@ -57,7 +65,10 @@ private:
 	// ui
 	bool _ui;
 	bool _ability;
+	bool _tileOn;
 	bool _skillOn;
+	int _skillTick;
+	int _skillFrame;
 
 	// 시작시 카메라 무빙
 	bool _gameStart;
@@ -71,16 +82,20 @@ private:
 	// 닫힌 목록
 	vector<CloseList2> _closeList;
 
+	// 움직일 타일
+	vector<moveTile> _canMoveList;
+	vector<moveTile> _cantMoveList;
+
 	// AStar 종료 체크
 	bool _aStarBreak;
 
 	// AStar 함수
 	void Astar(int startIdxX, int startIdxY, int endIdxX, int endIdxY);
 
-	// 임시 플레이어
+	// 플레이어
 	Player* _pl;
 
-
+	Skill* _sk;
 
 	// 화면끝에서 충돌시 배경 움직이기 위한 렉트
 	RECT _rc[4];
@@ -96,7 +111,8 @@ public:
 	void update(void);
 	void render(void);
 
-
+	void moveTileStar(int startIdxX, int startIdxY);
+	TILE2 getTile(void) { return _tile[H_NUM][V_NUM]; }
 
 	Battle2() {}
 	~Battle2() {}

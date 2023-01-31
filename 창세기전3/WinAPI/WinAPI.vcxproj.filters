@@ -91,6 +91,9 @@
     <Filter Include="Dialogue">
       <UniqueIdentifier>{d1003cbf-ea66-4129-8394-2a326ce24273}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit\Skill">
+      <UniqueIdentifier>{14d1a28c-a561-4ade-aaef-4721192b0f1f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C3DMatrix.cpp">
@@ -181,6 +184,12 @@
     </ClCompile>
     <ClCompile Include="Dialogue.cpp">
       <Filter>Dialogue</Filter>
+    </ClCompile>
+    <ClCompile Include="Move.cpp">
+      <Filter>Scene\Battle2</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill.cpp">
+      <Filter>Unit\Skill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="Dialogue.h">
       <Filter>Dialogue</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill.h">
+      <Filter>Unit\Skill</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

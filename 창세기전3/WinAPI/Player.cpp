@@ -6,6 +6,7 @@ HRESULT Player::init(void)
     _pl._x = 0;
     _pl._y = 0;
     _frame = 0;
+    _pl.skill = 0;
 
     return S_OK;
 }
@@ -51,9 +52,9 @@ void Player::render(void)
         IMAGEMANAGER->findImage("살라딘_공격")->frameRender(getMemDC(), _pl._x - 50, _pl._y-75, _frame, _pl._view);
         break;
 
-        // 피격
-    case 3:
-
+        // 스킬
+    case 3:        
+        IMAGEMANAGER->findImage("살라딘_스킬")->frameRender(getMemDC(), _pl._x-30, _pl._y - 50, _pl.skill, _pl._view);
         break;
     default:
         break;

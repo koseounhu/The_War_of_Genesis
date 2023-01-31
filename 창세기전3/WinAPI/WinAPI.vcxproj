@@ -144,6 +144,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Battle2.cpp" />
+    <ClCompile Include="Move.cpp" />
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="firstCutScene.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="Quest.cpp" />
     <ClCompile Include="QuestSample.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Skill.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -216,6 +218,7 @@
     <ClInclude Include="RandomFunction.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SingletonBase.h" />
+    <ClInclude Include="Skill.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="TimeManager.h" />
