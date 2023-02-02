@@ -333,8 +333,8 @@ void Skill::SkillRender(Player* _pl,Enemy* _em[10])
 			{
 				for (int j = 0; j < 10; j++)
 				{
-					_particle.push_back({ RND->getFromFloatTo(_em[i]->getEnemyX() - 100,_em[i]->getEnemyX() + 40),
-										RND->getFromFloatTo(_em[i]->getEnemyY() - 60,_em[i]->getEnemyY()),
+					_particle.push_back({ RND->getFromFloatTo(_em[i]->getEnemyX() - 100,_em[i]->getEnemyX() + 100),
+										RND->getFromFloatTo(_em[i]->getEnemyY()-60,_em[i]->getEnemyY()+100),
 										0,0,255,false });
 				}
 
@@ -351,19 +351,17 @@ void Skill::SkillRender(Player* _pl,Enemy* _em[10])
 			_frame[0]++;
 
 			_frame[1]++;
-			if (_frame[1] > 4)_frame[1] = 0;
+			if (_frame[1] > 4 && _frame[0])_frame[1] = 0;
 
 			_frame[2]++;
 			if (_frame[2] > 15)_frame[2] = 0;
 		}
 
-
+		if (_frame[0] == 0)IMAGEMANAGER->findImage("빨강알파")->render(getMemDC());
 		if (_frame[0] < IMAGEMANAGER->findImage("스킬이펙트1")->getMaxFrameX())
 		{
-			IMAGEMANAGER->findImage("스킬이펙트1")->alphaFrameRender(getMemDC(), _em[0]->getEnemyX()-70, _em[0]->getEnemyY()-130, 255, _frame[0], 0);
-			IMAGEMANAGER->findImage("스킬이펙트1")->alphaFrameRender(getMemDC(), _em[1]->getEnemyX()-70, _em[1]->getEnemyY()-130, 255, _frame[0], 0);
-			IMAGEMANAGER->findImage("스킬이펙트1")->alphaFrameRender(getMemDC(), _em[2]->getEnemyX()-70, _em[2]->getEnemyY()-130, 255, _frame[0], 0);
-			IMAGEMANAGER->findImage("스킬이펙트1")->alphaFrameRender(getMemDC(), _em[3]->getEnemyX()-70, _em[3]->getEnemyY()-130, 255, _frame[0], 0);
+			for (int i = 0; i < 4; i++)
+				IMAGEMANAGER->findImage("스킬이펙트1")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX()-70, _em[i]->getEnemyY()-130, 255, _frame[0], 0);
 		}
 
 
@@ -374,24 +372,34 @@ void Skill::SkillRender(Player* _pl,Enemy* _em[10])
 		{
 			IMAGEMANAGER->findImage("스킬파티클3")->alphaFrameRender(getMemDC(), _particle[i].x, _particle[i].y, _particle[i].alpha, _frame[2], 0);
 			_particle[i].y += _particle[i].speed;
-			_particle[i].speed -= 0.1f;
+			_particle[i].speed -= 0.05f;
 			_particle[i].alpha-=2;
 			if (_particle[i].alpha <= 0) _particle[i].alpha = 0;
 		}
 
 
 
-		if (_frame[2] > IMAGEMANAGER->findImage("스킬불기둥3")->getMaxFrameX())
+		if (_frame[2] > IMAGEMANAGER->findImage("스킬파티클3")->getMaxFrameX())
 		{
 			_skill.reset();
-			_skill.set(5, 1);
 			_skillFrame = 0;
 			_tick = 0;
 			_frame.clear();
+			_particle.clear();
 		}
 
 
 	}
 
+}
+
+void Skill::skillUp(Player* _pl, Enemy* _em[10])
+{
+
+
+}
+
+void Skill::skillDown(Player* _pl, Enemy* _em[10])
+{
 }
 
