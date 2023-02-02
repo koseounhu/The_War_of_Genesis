@@ -68,8 +68,12 @@ private:
 	bool _ability;
 	bool _tileOn;
 	bool _skillOn;
+
+	// 스킬
 	int _skillTick;
 	int _skillFrame;
+	bool _skillBool;
+
 
 	// 시작시 카메라 무빙
 	bool _gameStart;
@@ -97,7 +101,8 @@ private:
 	Player* _pl;
 	Enemy* _em[10];
 	Skill* _sk;
-
+	bool _emRender;
+	
 	// 화면끝에서 충돌시 배경 움직이기 위한 렉트
 	RECT _rc[4];
 

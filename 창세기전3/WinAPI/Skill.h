@@ -43,8 +43,7 @@ public:
 	void render(void);
 
 	bitset<20> getBitset() { return _skill; }
-	void setBitset(int num, bool bitset) { _skill.set(num, bitset); }
-	void SkillRender(Player* _pl, Enemy* _em[10]);
+	void setBitset(bitset<20>bit) { _skill = bit; }
 	void skillUp(Player* _pl, Enemy* _em[10]);
 	void skillDown(Player* _pl, Enemy* _em[10]);
 

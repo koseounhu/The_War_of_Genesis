@@ -34,7 +34,6 @@ void Player::render(void)
 
     // state = 상태
    // view = 바라볼 곳
-
     switch (_pl._state)
     {
         // 대기 상태

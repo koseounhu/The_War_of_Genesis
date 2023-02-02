@@ -228,9 +228,6 @@ void Battle2::update(void)
 		_em[i]->update();
 	}
 	
-
-
-
 	if (KEYMANAGER->isOnceKeyDown(VK_F12))SCENEMANAGER->changScene("월드맵");
 
 
@@ -391,7 +388,6 @@ void Battle2::render(void)
 		}
 	}
 	#pragma endregion
-
 	#pragma region 타일온
 
 	if (_tileOn)
@@ -417,14 +413,16 @@ void Battle2::render(void)
 		{
 			_tileOn = false;
 			_skillOn = true;
-			_sk->setBitset(0, 1);
+			bitset<20> bit;
+			bit.set(0, 1);
+			_sk->setBitset(bit);
 		}
 	}
 	#pragma endregion
 	#pragma region 스킬온
 	if (_skillOn)
 	{
-		_sk->SkillRender(_pl,_em);
+		IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), 150);
 		if (_sk->getBitset()[0] == 1)
 		{
 			_pl->setPState(3);
@@ -444,23 +442,111 @@ void Battle2::render(void)
 		{
 			_pl->setPState(0);
 		}
+		if (_sk->getBitset()[6] == 1)
+		{
+			_skillOn = false;
+			_ui = false;
+			_ability = false;
+			_sk->getBitset().reset();
+		}
+
+
+		// 카메라 쉐이킹
+		_skillTick++;
+		if (_sk->getBitset()[3] == 1 || _sk->getBitset()[5]==1)
+		{
+			if (_skillTick % 3 == 0)
+			{
+				if (_skillBool == false) _skillBool = true;
+				else if (_skillBool == true) _skillBool = false;
+			}
+			if (_skillBool)
+			{
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x -= 10;
+					}
+				}
+
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y -= 10;
+					}
+				}
+				_x -= 10;
+				_y -= 10;
+			}
+			else
+			{
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x += 10;
+					}
+				}
+
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y += 10;
+					}
+				}
+				_x += 10;
+				_y += 10;
+			}
+		}
+		else
+		{
+			_pl->setPX(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x);
+			_pl->setPY(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y);
+		}
 	}
 	#pragma endregion
-#pragma endregion
 
-	_em[0]->render(_tile[19][23].x-20, _tile[19][23].y-50, 0);
-	_em[1]->render(_tile[19][34].x-20, _tile[19][34].y-50, 1);
-	_em[2]->render(_tile[13][28].x-20, _tile[13][28].y-50, 0);
-	_em[3]->render(_tile[25][28].x-20, _tile[25][28].y-50, 0);
+	_sk->skillDown(_pl, _em);
+	#pragma region 적 렌더
+	if (!_emRender)
+	{
+		_em[0]->render(_tile[19][23].x - 20, _tile[19][23].y - 50, 0);
+		_em[1]->render(_tile[19][34].x - 20, _tile[19][34].y - 50, 1);
+		_em[2]->render(_tile[13][28].x - 20, _tile[13][28].y - 50, 0);
+		_em[3]->render(_tile[25][28].x - 20, _tile[25][28].y - 50, 0);
+		_tile[19][23].unit == 2;
+		_tile[19][34].unit == 2;
+		_tile[13][28].unit == 2;
+		_tile[25][28].unit == 2;
+		if (_sk->getBitset()[6] == 1)
+		{
+			_skillTick = 0;
+			_emRender = true;
+		}
+	}
 
-	_tile[19][23].unit == 2;
-	_tile[19][34].unit == 2;
-	_tile[13][28].unit == 2;
-	_tile[25][28].unit == 2;
-
-
+	#pragma endregion
 	_sk->render();
 	_pl->render();
+	_sk->skillUp(_pl, _em);
+
+#pragma endregion
+
+	// 시나리오 클리어
+	if (_emRender)
+	{
+		_skillTick++;
+		IMAGEMANAGER->findImage("시나리오클리어")->alphaRender(getMemDC(), 0, 300, 50);
+		IMAGEMANAGER->findImage("클리어광원")->alphaRender(getMemDC(), 0, 300, 150);
+		IMAGEMANAGER->findImage("클리어텍스트")->alphaRender(getMemDC(), 305, 325, 100);
+		IMAGEMANAGER->findImage("클리어텍스트광원")->alphaRender(getMemDC(), 300, 320, 255);
+		if (_skillTick > 200)
+			SCENEMANAGER->changScene("월드맵");
+	}
+
 }
 
 
