@@ -117,6 +117,7 @@ void MainGame::ImageInit(void)
 	// 전투맵
 	IMAGEMANAGER->addImage("전투맵", BAT"BattleMap.bmp", 1600, 1800);
 	IMAGEMANAGER->addImage("전투맵2", BAT"BattleMap2.bmp", 1800, 1696);
+	IMAGEMANAGER->addImage("픽충배경", BAT"픽충배경.bmp", 1800, 1696);
 
 
 

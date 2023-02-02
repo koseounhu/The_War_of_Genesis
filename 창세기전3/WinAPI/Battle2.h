@@ -73,7 +73,7 @@ private:
 	int _skillTick;
 	int _skillFrame;
 	bool _skillBool;
-
+	int _skillAlpha;
 
 	// 시작시 카메라 무빙
 	bool _gameStart;
@@ -117,6 +117,7 @@ public:
 	void update(void);
 	void render(void);
 
+	bool getClear(void) { return _emRender; }
 	void moveTileStar(int startIdxX, int startIdxY);
 	TILE2 getTile(void) { return _tile[H_NUM][V_NUM]; }
 

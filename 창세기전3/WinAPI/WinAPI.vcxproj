@@ -148,6 +148,7 @@
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="firstCutScene.cpp" />
+    <ClCompile Include="moveTile.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scenario.cpp" />
     <ClCompile Include="C3DMatrix.cpp">

@@ -40,7 +40,7 @@ HRESULT Battle2::init(void)
 	}
 
 	_skillFrame= _skillTick = 0;
-
+	_skillAlpha = 150;
     return S_OK;
 }
 
@@ -227,11 +227,7 @@ void Battle2::update(void)
 	{
 		_em[i]->update();
 	}
-	
-	if (KEYMANAGER->isOnceKeyDown(VK_F12))SCENEMANAGER->changScene("월드맵");
-
-
-	
+		
 }
 
 void Battle2::render(void)
@@ -306,7 +302,6 @@ void Battle2::render(void)
 				}
 			}
 		}
-		
 	}
 
 #pragma region skillUI
@@ -422,7 +417,7 @@ void Battle2::render(void)
 	#pragma region 스킬온
 	if (_skillOn)
 	{
-		IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), 150);
+		IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), _skillAlpha);
 		if (_sk->getBitset()[0] == 1)
 		{
 			_pl->setPState(3);
@@ -442,7 +437,7 @@ void Battle2::render(void)
 		{
 			_pl->setPState(0);
 		}
-		if (_sk->getBitset()[6] == 1)
+		if (_emRender)
 		{
 			_skillOn = false;
 			_ui = false;
@@ -511,7 +506,7 @@ void Battle2::render(void)
 
 	_sk->skillDown(_pl, _em);
 	#pragma region 적 렌더
-	if (!_emRender)
+	if (_sk->getBitset()[6] == 0)
 	{
 		_em[0]->render(_tile[19][23].x - 20, _tile[19][23].y - 50, 0);
 		_em[1]->render(_tile[19][34].x - 20, _tile[19][34].y - 50, 1);
@@ -521,12 +516,19 @@ void Battle2::render(void)
 		_tile[19][34].unit == 2;
 		_tile[13][28].unit == 2;
 		_tile[25][28].unit == 2;
-		if (_sk->getBitset()[6] == 1)
-		{
-			_skillTick = 0;
-			_emRender = true;
-		}
+		
 	}
+	else if (_sk->getBitset()[6] == 1)
+	{
+		_skillAlpha--;
+		if (_skillAlpha < 0)_skillAlpha = 0;
+	}
+	if (_skillAlpha == 1)
+	{
+		_skillTick = 0;
+		_emRender = true;
+	}
+	
 
 	#pragma endregion
 	_sk->render();

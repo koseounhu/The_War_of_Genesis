@@ -3,6 +3,7 @@
 
 HRESULT WorldMap::init(void)
 {
+
     _tick = _loopX = _loopY = 0;
     _pointFrame=_bgX= _bgY = 0;
     _selectFrame = 0;
@@ -77,7 +78,7 @@ void WorldMap::update(void)
       
         _selectFrame++;
     }
-    if(_move) _alpha++;
+    if(_move||_move2) _alpha++;
 #pragma endregion
     for (int i = 0; i < 4; i++)
     {
@@ -115,17 +116,52 @@ void WorldMap::render(void)
     if (_ui && PtInRect(&_warPoint, _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
     {
         _move = true;
+        _selectPoint = 1;
     }
 
-
-    //else 
-    IMAGEMANAGER->findImage("ø˘µÂ∏ «¡∑Œ« ")->frameRender(getMemDC(),_Profile.left,_Profile.top, _profileFrame,0);
-    FONTMANAGER->drawText(getMemDC(), _Profile.left + 110, _Profile.top+30, 15, 255, 255, 255, "±º∏≤",true, "1 ∆¿");
-
-
+    if (_alpha > 250)
+    {
+        _selectPoint = 2;
+    }
     RECT temp;
     temp = RectMake(_point.left + 535, _point.top + 160, 100, 100);
-    IMAGEMANAGER->findImage("ø˘µÂ∏ ¿¸≈ı∏∂≈©")->render(getMemDC(), _point.left+535, _point.top+160);
+
+    RECT tempA;
+    tempA = RectMake(_point.left + 230, _point.top + 500, 100, 100);
+    if (_ui && PtInRect(&tempA, _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+    {
+        _move2 = true;
+        _selectPoint = 3;
+    }
+    if (_selectPoint == 0)
+    {
+        IMAGEMANAGER->findImage("ø˘µÂ∏ «¡∑Œ« ")->frameRender(getMemDC(), _Profile.left, _Profile.top, _profileFrame, 0);
+        FONTMANAGER->drawText(getMemDC(), _Profile.left + 110, _Profile.top + 30, 15, 255, 255, 255, "±º∏≤", true, "1 ∆¿");
+
+        IMAGEMANAGER->findImage("ø˘µÂ∏ ¿¸≈ı∏∂≈©")->render(getMemDC(), temp.left, temp.top);
+    }
+    else if (_selectPoint == 1)
+    {
+        IMAGEMANAGER->findImage("ø˘µÂ∏ «¡∑Œ« ")->frameRender(getMemDC(), temp.left+50, temp.top-150, _profileFrame, 0);
+        FONTMANAGER->drawText(getMemDC(), temp.left + 160, temp.top -120, 15, 255, 255, 255, "±º∏≤", true, "1 ∆¿");
+        IMAGEMANAGER->findImage("ø˘µÂ∏ ¿¸≈ı∏∂≈©")->render(getMemDC(), temp.left, temp.top);
+
+    }
+    else if (_selectPoint == 2)
+    {
+        IMAGEMANAGER->findImage("ø˘µÂ∏ «¡∑Œ« ")->frameRender(getMemDC(), temp.left + 50, temp.top - 150, _profileFrame, 0);
+        FONTMANAGER->drawText(getMemDC(), temp.left + 160, temp.top - 120, 15, 255, 255, 255, "±º∏≤", true, "1 ∆¿");
+
+        IMAGEMANAGER->findImage("ø˘µÂ∏ ¿¸≈ı∏∂≈©")->render(getMemDC(), tempA.left, tempA.top);
+    }
+    else if (_selectPoint == 3)
+    {
+        IMAGEMANAGER->findImage("ø˘µÂ∏ «¡∑Œ« ")->frameRender(getMemDC(), tempA.left + 50, tempA.top - 150, _profileFrame, 0);
+        FONTMANAGER->drawText(getMemDC(), tempA.left + 160, tempA.top - 120, 15, 255, 255, 255, "±º∏≤", true, "1 ∆¿");
+
+        IMAGEMANAGER->findImage("ø˘µÂ∏ ¿¸≈ı∏∂≈©")->render(getMemDC(), tempA.left, tempA.top);
+    }
+
 
     IMAGEMANAGER->findImage("ø˘µÂ∏ ¡ˆø™")->render(getMemDC(),0,0);
     FONTMANAGER->drawText(getMemDC(), 40, 35, 20, 255, 255, 255, "±º∏≤√º", true, "Ω√¡ˆæ∆");
@@ -143,11 +179,9 @@ void WorldMap::render(void)
         FONTMANAGER->drawText(getMemDC(), _button[3].left + 30, _button[3].top + 10, 25, 255, 255, 255, "±º∏≤", true, "∏ﬁ¿Œ»≠∏È");
     }
 
-
     if (PtInRect(&temp, _ptMouse))
     {
         IMAGEMANAGER->findImage("ø˘µÂ∏ º±≈√")->alphaFrameRender(getMemDC(), temp.left, temp.top, 140, _selectFrame, 0);
-
         HPEN hpen;
         HPEN oldpen;
 
@@ -157,13 +191,40 @@ void WorldMap::render(void)
         SelectObject(getMemDC(), oldpen);
         DeleteObject(hpen);
     }
+    else if (PtInRect(&tempA, _ptMouse))
+    {
+        IMAGEMANAGER->findImage("ø˘µÂ∏ º±≈√")->alphaFrameRender(getMemDC(), tempA.left+20,tempA.top+20, 140, _selectFrame, 0);
+        HPEN hpen;
+        HPEN oldpen;
+
+        hpen = CreatePen(PS_SOLID, 5, RGB(92, 106, 215));
+        oldpen = (HPEN)::SelectObject(getMemDC(), hpen);
+        LineMake(getMemDC(), temp.left+30, temp.bottom-50, _point.left + 290, _point.top + 500);
+        SelectObject(getMemDC(), oldpen);
+        DeleteObject(hpen);
+    }
 
 
     //æ¿¿¸»Ø
     if (_move)
     {
         IMAGEMANAGER->findImage("∞À¡§æÀ∆ƒ")->alphaRender(getMemDC(), _alpha);
-        if (_alpha > 250)SCENEMANAGER->changScene("Ω√≥™∏Æø¿ƒ∆æ¿");
+        if (_alpha > 250)
+        {
+            _ui = false;
+            _move = false;
+            SCENEMANAGER->changScene("Ω√≥™∏Æø¿ƒ∆æ¿");
+        }
+    }
+    else if (_move2)
+    {
+        IMAGEMANAGER->findImage("∞À¡§æÀ∆ƒ")->alphaRender(getMemDC(), _alpha);
+        if (_alpha > 250)
+        {
+            _ui = false;
+            _move2 = false;
+            SCENEMANAGER->changScene("¿¸≈ı");
+        }
     }
 
 }

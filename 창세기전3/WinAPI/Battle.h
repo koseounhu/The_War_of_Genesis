@@ -1,13 +1,14 @@
 #pragma once
 #include "GameNode.h"
-
+#include "Player.h"
+#include "Skill.h"
+#include "Enemy.h"
 
 #pragma region 맵, A*
-
 // 가로 칸 개수
-#define H_NUM 40
+#define H_NUM 50
 // 세로 칸 개수
-#define V_NUM 50
+#define V_NUM 60
 // 한 칸의 가로 길이
 #define WIDTH 40
 // 한 칸의 세로 길이
@@ -33,6 +34,13 @@ struct CloseList
 	int idxY;
 	float fromStartCost;
 };
+
+struct moveTile2
+{
+	int idxX;
+	int idxY;
+	int moveCost;
+};
 // 타일 그리기
 struct TILE
 {
@@ -43,6 +51,7 @@ struct TILE
 	bool mapColli;
 	bool aStarColli;
 	int unit;
+	bool moveTileColli;
 };
 #pragma endregion
 
@@ -50,10 +59,18 @@ struct TILE
 class Battle : public GameNode
 {
 private:
-	// 임시 프레임
-	int _count;
-	int _frame;
-	
+
+	// UI
+	bool _ui;
+	bool _ability;
+	bool _tileOn;
+
+	// 스킬
+	int _skillTick;
+	int _skillFrame;
+	bool _skillBool;
+	bool _skillOn;
+
 	// 시작시 카메라 무빙
 	bool _gameStart;
 
@@ -66,17 +83,24 @@ private:
 	// 닫힌 목록
 	vector<CloseList> _closeList;
 
+	// 움직일 타일
+	vector<moveTile2> _canMoveList;
+	vector<moveTile2> _cantMoveList;
+
 	// AStar 종료 체크
 	bool _aStarBreak;
 
 	// AStar 함수
 	void Astar(int startIdxX, int startIdxY, int endIdxX, int endIdxY);
 
+	// 바닥타일
+	void moveTileStar(int startIdxX, int startIdxY);
 
-
-
-	// 화면끝에서 충돌시 배경 움직이기 위한 렉트
-	RECT _rc[4];
+	// 플레이어
+	Player* _pl;
+	Enemy* _em[10];
+	Skill* _sk;
+	bool _emRender;
 	
 	// 배경 움직이기위한 위치값
 	int _x, _y;

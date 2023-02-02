@@ -1,15 +1,14 @@
 #include "Stdafx.h"
 #include "Battle.h"
 
+
 HRESULT Battle::init(void)
 {
-#pragma region 화면 충돌렉트
-    _rc[0] = RectMake(0, 0, WINSIZE_X, 50);
-    _rc[1] = RectMake(0, 0, 50, WINSIZE_Y);
-    _rc[2] = RectMake(0,WINSIZE_Y-50, WINSIZE_X,50);
-    _rc[3] = RectMake(WINSIZE_X-50,0, 50,WINSIZE_Y);
-    _x = _y = 0;
+#pragma region 
+   
 #pragma endregion
+
+	_x = _y = 0;
 
 #pragma region 맵, A*
 	// 타일 배열 초기화
@@ -20,11 +19,35 @@ HRESULT Battle::init(void)
 			_tile[i][j] = { i * WIDTH, j * HEIGHT, i, j, false, false, 0 };
 		}
 	}
+
+	// 배경 픽셀 이미지에 따라 타일 맵 충돌 여부 초기화
+	for (int j = 0; j < V_NUM; j++)
+	{
+		for (int i = 0; i < H_NUM; i++)
+		{
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage("픽충배경")->getMemDC(),
+				_tile[i][j].x+100, _tile[i][j].y-40);
+
+			int r = GetRValue(color);
+			int g = GetGValue(color);
+			int b = GetBValue(color);
+
+			if (r == 255 && g == 0 && b == 255) _tile[i][j].mapColli = true;
+
+		}
+	}
 #pragma endregion
 
-	// 임시
-	_frame = 0;
-	_count = 0;
+	// 플레이어
+	_pl = new Player;
+	_pl->init();
+	_pl->setPX(_tile[23][25].x);
+	_pl->setPY(_tile[23][25].y);
+	_pl->setPcount(0, 0);
+
+	_sk = new Skill;
+	_sk->init();
+
 
 
     return S_OK;
@@ -32,6 +55,8 @@ HRESULT Battle::init(void)
 
 void Battle::release(void)
 {
+	SAFE_DELETE(_sk);
+	SAFE_DELETE(_pl);
 }
 
 void Battle::update(void)
@@ -42,6 +67,7 @@ void Battle::update(void)
 		if (_x > -250)
 		{
 			_x -= 3;
+			_pl->setPX(_pl->getPL()._x - 3);
 
 			for (int j = 0; j < V_NUM; j++)
 			{
@@ -51,9 +77,10 @@ void Battle::update(void)
 				}
 			}
 		}
-		else if (_x < -250 && _y > -1030)
+		else if (_x < -250 && _y > -500)
 		{
 			_y -= 3;
+			_pl->setPY(_pl->getPL()._y - 3);
 			for (int j = 0; j < V_NUM; j++)
 			{
 				for (int i = 0; i < H_NUM; i++)
@@ -68,12 +95,12 @@ void Battle::update(void)
 #pragma endregion
 #pragma region 화면 움직임 제어
 
-    if (PtInRect(&_rc[3], _ptMouse))
+    if (_ptMouse.x >WINSIZE_X-50)
     {
         if (_x > -570)
         {
             _x -= 2;
-
+			_pl->setPX(_pl->getPL()._x - 2);
 			for (int j = 0; j < V_NUM; j++)
 			{
 				for (int i = 0; i < H_NUM; i++)
@@ -84,11 +111,13 @@ void Battle::update(void)
         }
         
     }
-    else if (PtInRect(&_rc[0], _ptMouse))
+    else if (_ptMouse.y<50)
     {
         if (_y < 0)
         {
             _y += 2;
+			_pl->setPY(_pl->getPL()._y + 2);
+
 			for (int j = 0; j < V_NUM; j++)
 			{
 				for (int i = 0; i < H_NUM; i++)
@@ -98,11 +127,13 @@ void Battle::update(void)
 			}
         }
     }
-    else if (PtInRect(&_rc[1], _ptMouse))
+    else if (_ptMouse.x<50)
     {
         if (_x < 0)
         {
             _x += 2;
+			_pl->setPX(_pl->getPL()._x + 2);
+
 			for (int j = 0; j < V_NUM; j++)
 			{
 				for (int i = 0; i < H_NUM; i++)
@@ -112,11 +143,13 @@ void Battle::update(void)
 			}
         }
     }
-    else if(PtInRect(&_rc[2],_ptMouse))
+    else if(_ptMouse.y>WINSIZE_Y-50)
     {
         if (_y > -1030)
         {
             _y -= 2;
+			_pl->setPY(_pl->getPL()._y - 2);
+
 			for (int j = 0; j < V_NUM; j++)
 			{
 				for (int i = 0; i < H_NUM; i++)
@@ -128,23 +161,107 @@ void Battle::update(void)
     }
 
 #pragma endregion
-
-	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+#pragma region 플레이어
+	// 에이스타에 따른 플레이어 움직임
+	if (_pl->getPL()._astar && _closeList.size() != 0)
 	{
-		for (int j = 0; j < V_NUM; j++)
+		if (_pl->getPL()._indexX < _closeList[_pl->getPL()._xCount].idxX)
 		{
-			for (int i = 0; i < H_NUM; i++)
+			_pl->setPState(1);
+			_pl->setPView(1);
+			_pl->setPX(_pl->getPL()._x + 1);
+		}
+		else if (_pl->getPL()._indexX > _closeList[_pl->getPL()._xCount].idxX)
+		{
+			_pl->setPState(1);
+			_pl->setPView(0);
+			_pl->setPX(_pl->getPL()._x - 1);
+		}
+		else if (_pl->getPL()._indexY < _closeList[_pl->getPL()._yCount].idxY)
+		{
+			_pl->setPState(1);
+			_pl->setPView(2);
+			_pl->setPY(_pl->getPL()._y + 1);
+		}
+		else if (_pl->getPL()._indexY > _closeList[_pl->getPL()._yCount].idxY)
+		{
+			_pl->setPState(1);
+			_pl->setPView(3);
+			_pl->setPY(_pl->getPL()._y - 1);
+		}
+
+		if (_pl->getPL()._indexX == _closeList[_pl->getPL()._xCount].idxX &&
+			_pl->getPL()._indexY == _closeList[_pl->getPL()._yCount].idxY)
+		{
+			_pl->setPcount(_pl->getPL()._xCount + 1, _pl->getPL()._yCount + 1);
+		}
+
+		if (_pl->getPL()._indexX == _closeList.back().idxX &&
+			_pl->getPL()._indexY == _closeList.back().idxY)
+		{
+			for (int i = 0; i < _closeList.size(); i++)
 			{
-				// 클릭에 따른 A* 활성화
-				if (_ptMouse.x > _tile[i][j].x && _ptMouse.x < _tile[i + 1][j].x &&
-					_ptMouse.y > _tile[i][j].y && _ptMouse.y < _tile[i][j + 1].y)
-				{
-					Astar(10, 10, i, j);
-				}
+				_tile[_closeList[i].idxX][_closeList[i].idxY].unit = 0;
+			}
+			_pl->setPAstar(false);
+			_pl->setPIndex(_closeList.back().idxX, _closeList.back().idxY);
+			_pl->setPcount(0, 0);
+			_pl->setPState(0);
+		}
+	}
+
+	// 플레이어 인덱스변화
+	for (int j = 0; j < V_NUM; j++)
+	{
+		for (int i = 0; i < H_NUM; i++)
+		{
+			if (_pl->getPL()._x == _tile[i][j].x &&
+				_pl->getPL()._y == _tile[i][j].y)
+			{
+				_pl->setPIndex(i, j);
+				_tile[i][j].unit = 1;
+				break;
 			}
 		}
 	}
 
+	_pl->update();
+	_sk->update();
+
+#pragma endregion
+
+
+	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+	{
+		// 플레이어 렉트
+		RECT _temp;
+		_temp = RectMake(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x,
+			_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y,
+			WIDTH, HEIGHT);
+		if (PtInRect(&_temp, _ptMouse)) _ui = true;
+
+
+		if (!_ui && !_ability && !_tileOn)
+		{
+			for (int j = 0; j < V_NUM; j++)
+			{
+				for (int i = 0; i < H_NUM; i++)
+				{
+					// 클릭에 따른 A* 활성화
+					if (_ptMouse.x > _tile[i][j].x && _ptMouse.x < _tile[i + 1][j].x &&
+						_ptMouse.y > _tile[i][j].y && _ptMouse.y < _tile[i][j + 1].y)
+					{
+						if (!_tile[i][j].mapColli)
+						{
+							Astar(_pl->getPL()._indexX, _pl->getPL()._indexY, i, j);
+							_pl->setPAstar(true);
+						}
+					}
+				}
+			}
+		}
+
+	}
 
 
 }
@@ -154,36 +271,277 @@ void Battle::render(void)
     // 배경
    IMAGEMANAGER->findImage("전투맵")->render(getMemDC(),_x,_y);
    
-   // 각 구획마다 선 그리기
-   for (int j = 0; j < V_NUM; j++)
+   // 마우스타일
+   for (int j = 0; j < H_NUM; j++)
    {
-	   for (int i = 0; i < H_NUM; i++)
+	   for (int i = 0; i < V_NUM; i++)
 	   {
-		   // 좌상 -> 우상
-		   LineMake(getMemDC(), _tile[i][j].x, _tile[i][j].y,
-			   _tile[i][j].x + WIDTH, _tile[i][j].y);
-		   // 좌상 -> 좌하
-		   LineMake(getMemDC(), _tile[i][j].x, _tile[i][j].y,
-			   _tile[i][j].x, _tile[i][j].y + HEIGHT);
-		   // 우하 -> 우상
-		   LineMake(getMemDC(), _tile[i][j].x + WIDTH, _tile[i][j].y + HEIGHT,
-			   _tile[i][j].x + WIDTH, _tile[i][j].y);
-		   // 우하 -> 좌하
-		   LineMake(getMemDC(), _tile[i][j].x + WIDTH, _tile[i][j].y + HEIGHT,
-			   _tile[i][j].x, _tile[i][j].y + HEIGHT);
+		   if (_tile[j][i].x < _ptMouse.x && _tile[j][i].y < _ptMouse.y &&
+			   _tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y)
+		   {
+			   IMAGEMANAGER->findImage("마우스타일")->alphaFrameRender(getMemDC(),
+				   _tile[j][i].x, _tile[j][i].y, 150, 0, 0);
+		   }
+
 	   }
    }
 
-
-   // A* 닫힌 목록 렉트로 그리기
-   if (_closeList.size() != 0)
-	   for (int i = 0; i < _closeList.size(); i++)
+   // 각 구획마다 선 그리기
+   if (KEYMANAGER->isToggleKey(VK_F10))
+   {
+	   for (int j = 0; j < V_NUM; j++)
 	   {
-		   DrawRectMake(getMemDC(),
-			   RectMake(_tile[_closeList[i].idxX][_closeList[i].idxY].x,
-				   _tile[_closeList[i].idxX][_closeList[i].idxY].y,
-				   WIDTH, HEIGHT));
+		   for (int i = 0; i < H_NUM; i++)
+		   {
+			   // 좌상 -> 우상
+			   LineMake(getMemDC(), _tile[i][j].x, _tile[i][j].y,
+				   _tile[i][j].x + WIDTH, _tile[i][j].y);
+			   // 좌상 -> 좌하
+			   LineMake(getMemDC(), _tile[i][j].x, _tile[i][j].y,
+				   _tile[i][j].x, _tile[i][j].y + HEIGHT);
+			   // 우하 -> 우상
+			   LineMake(getMemDC(), _tile[i][j].x + WIDTH, _tile[i][j].y + HEIGHT,
+				   _tile[i][j].x + WIDTH, _tile[i][j].y);
+			   // 우하 -> 좌하
+			   LineMake(getMemDC(), _tile[i][j].x + WIDTH, _tile[i][j].y + HEIGHT,
+				   _tile[i][j].x, _tile[i][j].y + HEIGHT);
+
+				  
+
+		   }
 	   }
+   }
+
+#pragma region skillUI
+
+#pragma region UI
+   // 스킬 UI 창
+   if (_ui && !_skillOn)
+   {
+	   RECT _skillUI[4];
+	   _skillUI[0] = RectMakeCenter(_pl->getPL()._x - 80, _pl->getPL()._y - 40, IMAGEMANAGER->findImage("스킬UI")->getFrameWidth(), IMAGEMANAGER->findImage("스킬UI")->getFrameHeight());
+	   _skillUI[1] = RectMakeCenter(_pl->getPL()._x + 130, _pl->getPL()._y - 40, IMAGEMANAGER->findImage("스킬UI")->getFrameWidth(), IMAGEMANAGER->findImage("스킬UI")->getFrameHeight());
+	   _skillUI[2] = RectMakeCenter(_pl->getPL()._x - 80, _pl->getPL()._y, IMAGEMANAGER->findImage("스킬UI")->getFrameWidth(), IMAGEMANAGER->findImage("스킬UI")->getFrameHeight());
+	   _skillUI[3] = RectMakeCenter(_pl->getPL()._x + 130, _pl->getPL()._y, IMAGEMANAGER->findImage("스킬UI")->getFrameWidth(), IMAGEMANAGER->findImage("스킬UI")->getFrameHeight());
+
+
+
+	   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[0].left, _skillUI[0].top, 0, 0);
+	   FONTMANAGER->drawText(getMemDC(), _skillUI[0].left + 32, _skillUI[0].top + 7, 12, 255, 255, 255, "굴림", true, "어빌리티");
+
+	   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[1].left, _skillUI[1].top, 1, 0);
+	   FONTMANAGER->drawText(getMemDC(), _skillUI[1].left + 32, _skillUI[1].top + 7, 12, 255, 255, 255, "굴림", true, "완전방어");
+	   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[2].left, _skillUI[2].top, 2, 0);
+	   FONTMANAGER->drawText(getMemDC(), _skillUI[2].left + 32, _skillUI[2].top + 7, 12, 255, 255, 255, "굴림", true, "아이템");
+	   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[3].left, _skillUI[3].top, 3, 0);
+	   FONTMANAGER->drawText(getMemDC(), _skillUI[3].left + 32, _skillUI[3].top + 7, 12, 255, 255, 255, "굴림", true, "상태");
+
+	   if (PtInRect(&_skillUI[0], _ptMouse))
+	   {
+		   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[0].left, _skillUI[0].top, 0, 1);
+		   FONTMANAGER->drawText(getMemDC(), _skillUI[0].left + 32, _skillUI[0].top + 7, 13, 255, 255, 255, "굴림", true, "어빌리티");
+
+	   }
+
+	   if (PtInRect(&_skillUI[1], _ptMouse))
+	   {
+		   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[1].left, _skillUI[1].top, 1, 1);
+		   FONTMANAGER->drawText(getMemDC(), _skillUI[1].left + 32, _skillUI[1].top + 7, 13, 255, 255, 255, "굴림", true, "완전방어");
+	   }
+	   if (PtInRect(&_skillUI[2], _ptMouse))
+	   {
+		   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[2].left, _skillUI[2].top, 2, 1);
+		   FONTMANAGER->drawText(getMemDC(), _skillUI[2].left + 32, _skillUI[2].top + 7, 13, 255, 255, 255, "굴림", true, "아이템");
+	   }
+	   if (PtInRect(&_skillUI[3], _ptMouse))
+	   {
+		   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[3].left, _skillUI[3].top, 3, 1);
+		   FONTMANAGER->drawText(getMemDC(), _skillUI[3].left + 32, _skillUI[3].top + 7, 13, 255, 255, 255, "굴림", true, "상태");
+	   }
+
+	   if (PtInRect(&_skillUI[0], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	   {
+		   _ui = false;
+		   _ability = true;
+	   }
+   }
+#pragma endregion
+#pragma region 어빌리티
+   if (_ability)
+   {
+	   RECT _abilityA;
+	   _abilityA = RectMakeCenter(_pl->getPL()._x + 50, _pl->getPL()._y - 60, IMAGEMANAGER->findImage("어빌리티창")->getFrameWidth(), IMAGEMANAGER->findImage("어빌리티창")->getFrameHeight());
+
+	   IMAGEMANAGER->findImage("어빌리티창")->alphaRender(getMemDC(), _abilityA.left, _abilityA.top, 150);
+	   IMAGEMANAGER->findImage("어빌리티버튼")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 10, 1, 0);
+	   IMAGEMANAGER->findImage("어빌리티버튼")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 35, 0, 0);
+	   IMAGEMANAGER->findImage("어빌리티버튼")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 60, 0, 0);
+
+
+	   FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 10, 15, 255, 255, 255, "굴림", true, "천지파열무");
+	   FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 35, 15, 255, 255, 255, "굴림", true, "연");
+	   FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 60, 15, 255, 255, 255, "굴림", true, "파");
+
+	   RECT _abilityB;
+	   _abilityB = RectMake(_abilityA.left + 5, _abilityA.top + 10, 150, 20);
+	   if (PtInRect(&_abilityB, _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	   {
+		   _ui = _ability = false;
+		   _tileOn = true;
+	   }
+   }
+#pragma endregion
+#pragma region 타일온
+
+   if (_tileOn)
+   {
+	   moveTileStar(_pl->getPL()._indexX, _pl->getPL()._indexY);
+	   for (int i = 0; i < V_NUM; i++)
+	   {
+		   for (int j = 0; j < H_NUM; j++)
+		   {
+			   if (_tile[j][i].moveTileColli)
+			   {
+				   IMAGEMANAGER->findImage("블루타일")->alphaRender(getMemDC(), _tile[j][i].x, _tile[j][i].y, 100);
+			   }
+		   }
+	   }
+	   for (int i = 0; i < _cantMoveList.size(); i++)
+	   {
+		   IMAGEMANAGER->findImage("노랑타일")->alphaRender(getMemDC(), _tile[_cantMoveList[i].idxX][_cantMoveList[i].idxY].x,
+			   _tile[_cantMoveList[i].idxX][_cantMoveList[i].idxY].y, 100);
+	   }
+
+	   if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	   {
+		   _tileOn = false;
+		   _skillOn = true;
+		   bitset<20> bit;
+		   bit.set(0, 1);
+		   _sk->setBitset(bit);
+	   }
+   }
+#pragma endregion
+#pragma region 스킬온
+   if (_skillOn)
+   {
+	   IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), 150);
+	   if (_sk->getBitset()[0] == 1)
+	   {
+		   _pl->setPState(3);
+		   _pl->setPSkill(0);
+	   }
+	   if (_sk->getBitset()[1] == 1)
+	   {
+		   _skillTick++;
+		   if (_skillTick % 5 == 0)
+		   {
+			   _skillFrame++;
+			   _pl->setPSkill(_skillFrame);
+		   }
+
+	   }
+	   if (_sk->getBitset()[5] == 1)
+	   {
+		   _pl->setPState(0);
+	   }
+	   if (_sk->getBitset()[6] == 1)
+	   {
+		   _skillOn = false;
+		   _ui = false;
+		   _ability = false;
+		   _sk->getBitset().reset();
+	   }
+
+
+	   // 카메라 쉐이킹
+	   _skillTick++;
+	   if (_sk->getBitset()[3] == 1 || _sk->getBitset()[5] == 1)
+	   {
+		   if (_skillTick % 3 == 0)
+		   {
+			   if (_skillBool == false) _skillBool = true;
+			   else if (_skillBool == true) _skillBool = false;
+		   }
+		   if (_skillBool)
+		   {
+			   for (int j = 0; j < V_NUM; j++)
+			   {
+				   for (int i = 0; i < H_NUM; i++)
+				   {
+					   _tile[i][j].x -= 10;
+				   }
+			   }
+
+			   for (int j = 0; j < V_NUM; j++)
+			   {
+				   for (int i = 0; i < H_NUM; i++)
+				   {
+					   _tile[i][j].y -= 10;
+				   }
+			   }
+			   _x -= 10;
+			   _y -= 10;
+		   }
+		   else
+		   {
+			   for (int j = 0; j < V_NUM; j++)
+			   {
+				   for (int i = 0; i < H_NUM; i++)
+				   {
+					   _tile[i][j].x += 10;
+				   }
+			   }
+
+			   for (int j = 0; j < V_NUM; j++)
+			   {
+				   for (int i = 0; i < H_NUM; i++)
+				   {
+					   _tile[i][j].y += 10;
+				   }
+			   }
+			   _x += 10;
+			   _y += 10;
+		   }
+	   }
+	   else
+	   {
+		   _pl->setPX(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x);
+		   _pl->setPY(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y);
+	   }
+   }
+#pragma endregion
+
+   _sk->skillDown(_pl, _em);
+#pragma region 적 렌더
+   if (!_emRender)
+   {
+	   if (_sk->getBitset()[6] == 1)
+	   {
+		   _skillTick = 0;
+		   _emRender = true;
+	   }
+   }
+
+#pragma endregion
+   _sk->render();
+   _pl->render();
+   _sk->skillUp(_pl, _em);
+
+#pragma endregion
+
+
+   // 시나리오 클리어
+   //if (_emRender)
+   //{
+	  // _skillTick++;
+	  // IMAGEMANAGER->findImage("시나리오클리어")->alphaRender(getMemDC(), 0, 300, 50);
+	  // IMAGEMANAGER->findImage("클리어광원")->alphaRender(getMemDC(), 0, 300, 150);
+	  // IMAGEMANAGER->findImage("클리어텍스트")->alphaRender(getMemDC(), 305, 325, 100);
+	  // IMAGEMANAGER->findImage("클리어텍스트광원")->alphaRender(getMemDC(), 300, 320, 255);
+	  // if (_skillTick > 200)
+		 //  SCENEMANAGER->changScene("월드맵");
+   //}
 
 
 
@@ -204,6 +562,10 @@ void Battle::Astar(int startIdxX, int startIdxY, int endIdxX, int endIdxY)
 		for (int i = 0; i < H_NUM; i++)
 		{
 			_tile[i][j].aStarColli = false;
+			if (_tile[i][j].unit != 0)
+			{
+				_tile[i][j].aStarColli = true;
+			}
 			_tile[i][j].aStarColli = _tile[i][j].mapColli;
 		}
 	}
@@ -221,6 +583,7 @@ void Battle::Astar(int startIdxX, int startIdxY, int endIdxX, int endIdxY)
 	// 알고리즘 반복
 	while (!_aStarBreak)
 	{
+
 		// 닫힌 목록에 시작 자리 추가 및 닫기
 		_closeList.push_back({ _tile[_startIdxX][_startIdxY].idxX,
 			_tile[_startIdxX][_startIdxY].idxY, 0.0f });
@@ -232,6 +595,7 @@ void Battle::Astar(int startIdxX, int startIdxY, int endIdxX, int endIdxY)
 		// 열린 목록에 좌측 추가
 		if (_startIdxX > 0)
 		{
+
 			if (!_tile[_startIdxX - 1][_startIdxY].aStarColli &&
 				_tile[_startIdxX - 1][_startIdxY].unit == 0)
 			{
@@ -307,6 +671,7 @@ void Battle::Astar(int startIdxX, int startIdxY, int endIdxX, int endIdxY)
 				}
 			}
 		}
+
 
 		// 총 비용이 가장 작은 인덱스 값 계산
 		int minCostIdx = 0;

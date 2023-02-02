@@ -194,6 +194,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Unit\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="moveTile.cpp">
+      <Filter>Scene\Battle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C3DMatrix.h">

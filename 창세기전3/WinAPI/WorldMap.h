@@ -5,6 +5,7 @@
 class WorldMap : public GameNode
 {
 private:
+
 	int _tick;
 	int _loopX, _loopY;
 	int _pointFrame;
@@ -19,8 +20,11 @@ private:
 
 	int _selectFrame;
 
+	int _selectPoint;
+
 	bool _ui;
 	bool _move;
+	bool _move2;
 public:
 	HRESULT init(void);
 	void release(void);
