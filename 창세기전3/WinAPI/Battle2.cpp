@@ -33,6 +33,12 @@ HRESULT Battle2::init(void)
 	_sk = new Skill;
 	_sk->init();
 
+	for (int i = 0; i < 10; i++)
+	{
+		_em[i] = new Enemy;
+		_em[i]->init();
+	}
+
 	_skillFrame= _skillTick = 0;
 
     return S_OK;
@@ -42,6 +48,9 @@ void Battle2::release(void)
 {
 	SAFE_DELETE(_sk);
 	SAFE_DELETE(_pl);
+	
+	for(int i =0; i < 10; i++)
+	SAFE_DELETE_ARRAY(_em[i]);
 }
 
 void Battle2::update(void)
@@ -214,7 +223,10 @@ void Battle2::update(void)
 	
 	_pl->update();
 	_sk->update();
-
+	for (int i = 0; i < 10; i++)
+	{
+		_em[i]->update();
+	}
 	
 
 
@@ -231,7 +243,7 @@ void Battle2::render(void)
 	IMAGEMANAGER->findImage("전투맵2")->render(getMemDC(), _x, _y);
 
 	// 마우스 타일
-	if(!_ui && !_ability)
+	if(!_ui && !_ability&& !_skillOn)
 	for (int j = 0; j < H_NUM; j++)
 	{
 		for (int i = 0; i < V_NUM; i++)
@@ -281,7 +293,7 @@ void Battle2::render(void)
 		if (PtInRect(&_temp, _ptMouse)) _ui = true;
 
 
-		if (!_ui && !_ability && !_tileOn)
+		if (!_ui && !_ability&& !_tileOn)
 		{
 			for (int j = 0; j < V_NUM; j++)
 			{
@@ -304,7 +316,7 @@ void Battle2::render(void)
 
 	#pragma region UI
 	// 스킬 UI 창
-	if (_ui)
+	if (_ui&& !_skillOn )
 	{
 		RECT _skillUI[4];
 		_skillUI[0]= RectMakeCenter(_pl->getPL()._x-80, _pl->getPL()._y-40, IMAGEMANAGER->findImage("스킬UI")->getFrameWidth(), IMAGEMANAGER->findImage("스킬UI")->getFrameHeight());
@@ -412,7 +424,7 @@ void Battle2::render(void)
 	#pragma region 스킬온
 	if (_skillOn)
 	{
-		_sk->SkillRender(_pl->getPL()._x, _pl->getPL()._y);
+		_sk->SkillRender(_pl,_em);
 		if (_sk->getBitset()[0] == 1)
 		{
 			_pl->setPState(3);
@@ -428,9 +440,23 @@ void Battle2::render(void)
 			}
 			
 		}
+		if (_sk->getBitset()[5] == 1)
+		{
+			_pl->setPState(0);
+		}
 	}
 	#pragma endregion
 #pragma endregion
+
+	_em[0]->render(_tile[19][23].x-20, _tile[19][23].y-50, 0);
+	_em[1]->render(_tile[19][34].x-20, _tile[19][34].y-50, 1);
+	_em[2]->render(_tile[13][28].x-20, _tile[13][28].y-50, 0);
+	_em[3]->render(_tile[25][28].x-20, _tile[25][28].y-50, 0);
+
+	_tile[19][23].unit == 2;
+	_tile[19][34].unit == 2;
+	_tile[13][28].unit == 2;
+	_tile[25][28].unit == 2;
 
 
 	_sk->render();

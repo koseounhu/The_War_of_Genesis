@@ -26,6 +26,7 @@ void MainGame::ImageInit(void)
 
 	// 통합
 	IMAGEMANAGER->addImage("검정알파", BG"blackness.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("빨강알파", BG"redness.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("다이얼로그창", SCE"Dialogue.bmp", 818, 178);
 	IMAGEMANAGER->addImage("어빌리티창", OBJ"SkillBox.bmp", 208, 91);
 	IMAGEMANAGER->addImage("블루타일", OBJ"blueTile.bmp", 40, 32);
@@ -34,6 +35,8 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("스킬UI", OBJ"PersonalBox.bmp", 416, 60,4,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("마우스타일", OBJ"MoveCursor.bmp", 240, 32,6,1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("어빌리티버튼", OBJ"abilityButton.bmp", 34, 17,2,1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("마우스", OBJ"mouse.bmp", 228, 24, 12, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("그림자", OBJ"Shadow.bmp", 50, 25, true, RGB(255, 0, 255));
 
 
 	//플레이어
@@ -45,6 +48,10 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("버몬트_걷기", PL"버몬트_WALK.bmp", 900, 360, 6, 4, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("버몬트_대기", PL"버몬트_IDLE.bmp", 270, 360, 3, 4, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("버몬트_공격", PL"버몬트_ATK.bmp", 900, 480, 6, 4, true, MAZEN);
+
+	// 적
+	IMAGEMANAGER->addFrameImage("적1", PL"적1.bmp", 240, 160, 3, 2, true, MAZEN);
+
 
 	// 스킬
 	IMAGEMANAGER->addFrameImage("스킬구", PL"스킬구.bmp", 6325, 192, 25, 1, true, MAZEN);
@@ -59,6 +66,13 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("스킬이펙트3", PL"이펙트3.bmp", 1150, 150, 23, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("스킬이펙트3_1", PL"이펙트3_1.bmp", 1150, 150, 23, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("스킬이펙트4", PL"이펙트4.bmp", 3600, 150, 24, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("스킬이펙트5", PL"이펙트5.bmp", 1200, 150, 8, 1, true, MAZEN);
+
+	IMAGEMANAGER->addFrameImage("스킬파티클1", PL"파티클1.bmp", 300, 20, 15, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("스킬파티클2", PL"파티클2.bmp", 450, 30, 15, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("스킬파티클3", PL"파티클3.bmp", 750, 50, 15, 1, true, MAZEN);
+
+	IMAGEMANAGER->addFrameImage("스킬바닥불", PL"바닥불.bmp", 1800, 150, 12, 1, true, MAZEN);
 
 	
 	
@@ -86,9 +100,6 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addImage("전투맵2", BAT"BattleMap2.bmp", 1800, 1696);
 
 
-	// UI
-	IMAGEMANAGER->addFrameImage("마우스", OBJ"mouse.bmp", 228, 24, 12, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("그림자", OBJ"Shadow.bmp", 50, 25, true, RGB(255, 0, 255));
 
 
 	// WorldMap

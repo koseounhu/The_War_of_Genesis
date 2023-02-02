@@ -2,6 +2,7 @@
 #include "GameNode.h"
 #include "Player.h"
 #include "Skill.h"
+#include "Enemy.h"
 
 
 #pragma region 맵, A*
@@ -94,7 +95,7 @@ private:
 
 	// 플레이어
 	Player* _pl;
-
+	Enemy* _em[10];
 	Skill* _sk;
 
 	// 화면끝에서 충돌시 배경 움직이기 위한 렉트

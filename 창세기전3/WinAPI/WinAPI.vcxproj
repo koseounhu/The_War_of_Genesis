@@ -144,6 +144,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Battle2.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="firstCutScene.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Battle.h" />
     <ClInclude Include="Battle2.h" />
     <ClInclude Include="Dialogue.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="firstCutScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scenario.h" />

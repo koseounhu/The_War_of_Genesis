@@ -191,6 +191,9 @@
     <ClCompile Include="Skill.cpp">
       <Filter>Unit\Skill</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Unit\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C3DMatrix.h">
@@ -289,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="Skill.h">
       <Filter>Unit\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Unit\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
