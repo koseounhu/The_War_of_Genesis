@@ -13,7 +13,6 @@
 #pragma endregion
 
 
-
 HRESULT MainGame::init(void)
 {
 	GameNode::init(TRUE);
@@ -27,7 +26,7 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("시나리오컷씬", new firstCutScene);
 
 
-	SCENEMANAGER->changScene("전투");
+	SCENEMANAGER->changScene("전투2");
 
 
 	return S_OK;

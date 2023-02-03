@@ -74,6 +74,7 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("Ω∫≈≥¿Ã∆Â∆Æ2", PL"¿Ã∆Â∆Æ1.bmp", 6400, 160, 32, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("Ω∫≈≥¿Ã∆Â∆Æ3", PL"¿Ã∆Â∆Æ3.bmp", 1150, 150, 23, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("Ω∫≈≥¿Ã∆Â∆Æ3_1", PL"¿Ã∆Â∆Æ3_1.bmp", 1150, 150, 23, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("Ω∫≈≥¿Ã∆Â∆Æ3_1", PL"¿Ã∆Â∆Æ3_1.bmp", 1150, 150, 23, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("Ω∫≈≥¿Ã∆Â∆Æ4", PL"¿Ã∆Â∆Æ4.bmp", 3600, 150, 24, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("Ω∫≈≥¿Ã∆Â∆Æ5", PL"¿Ã∆Â∆Æ5.bmp", 1200, 150, 8, 1, true, MAZEN);
 

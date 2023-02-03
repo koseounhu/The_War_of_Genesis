@@ -1,0 +1,5 @@
+﻿  Skill.cpp
+json_vc71_libmtd.lib(json_reader.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_reader.obj)' 또는 'C:\Users\DELL\Desktop\개인 한달 프로젝트\소스코드\창세기전3\x64\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+json_vc71_libmtd.lib(json_value.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_value.obj)' 또는 'C:\Users\DELL\Desktop\개인 한달 프로젝트\소스코드\창세기전3\x64\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+json_vc71_libmtd.lib(json_writer.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_writer.obj)' 또는 'C:\Users\DELL\Desktop\개인 한달 프로젝트\소스코드\창세기전3\x64\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+  WinAPI.vcxproj -> C:\Users\DELL\Desktop\개인 한달 프로젝트\소스코드\창세기전3\x64\Debug\WinAPI.exe

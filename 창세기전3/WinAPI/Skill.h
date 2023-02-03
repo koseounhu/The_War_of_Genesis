@@ -8,10 +8,8 @@ struct TEMP
 {
 	int x;
 	int y;
-
-	bool start;
-
 	int frame;
+	bool start;
 };
 struct particle
 {
@@ -28,12 +26,11 @@ class Skill : public GameNode
 private:
 	// ½ºÅ³
 	bitset<20>_skill;
-	int _skillFrame;
-	int _effect;
 	int _tick;
 
 	vector<TEMP> _temp;
-	vector<int>_frame;
+	vector<TEMP>_fire;
+	vector<TEMP>_fireball;
 	vector<particle> _particle;
 
 public:
@@ -41,6 +38,8 @@ public:
 	void release(void);
 	void update(void);
 	void render(void);
+
+	void skillRender(Player* _pl, Enemy* _em[10]);
 
 	bitset<20> getBitset() { return _skill; }
 	void setBitset(bitset<20>bit) { _skill = bit; }

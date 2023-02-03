@@ -172,6 +172,7 @@ void WorldMap::render(void)
     {
         for (int i = 0; i < 4; i++)
         {
+            if (i == 2)continue;
             IMAGEMANAGER->findImage("ø˘µÂ∏ πˆ∆∞")->frameRender(getMemDC(), _button[i].left, _button[i].top, _buttonNum[i], 0);
         }
         FONTMANAGER->drawText(getMemDC(), _button[0].left + 50, _button[0].top + 10, 25, 255, 255, 255, "±º∏≤", true, "¿Ã µø");

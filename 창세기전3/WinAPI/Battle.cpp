@@ -377,7 +377,6 @@ void Battle::render(void)
 			   _skillFrame++;
 			   _pl->setPSkill(_skillFrame);
 		   }
-
 	   }
 	   if (_sk->getBitset()[5] == 1)
 	   {
@@ -450,7 +449,6 @@ void Battle::render(void)
    }
 #pragma endregion
 
-   _sk->skillDown(_pl, _em);
 
 #pragma region Àû ·»´õ
    if (!_emRender)
@@ -466,7 +464,6 @@ void Battle::render(void)
    _sk->render();
    _pl->render();
    _ui->render(_pl);
-   _sk->skillUp(_pl, _em);
 
 #pragma endregion
 

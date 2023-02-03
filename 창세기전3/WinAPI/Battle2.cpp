@@ -419,7 +419,7 @@ void Battle2::render(void)
 	#pragma region 스킬온
 	if (_skillOn)
 	{
-		IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), _skillAlpha);
+		IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), 255);
 		if (_sk->getBitset()[0] == 1)
 		{
 			_pl->setPState(3);
@@ -464,16 +464,10 @@ void Battle2::render(void)
 					for (int i = 0; i < H_NUM; i++)
 					{
 						_tile[i][j].x -= 10;
-					}
-				}
-
-				for (int j = 0; j < V_NUM; j++)
-				{
-					for (int i = 0; i < H_NUM; i++)
-					{
 						_tile[i][j].y -= 10;
 					}
 				}
+
 				_x -= 10;
 				_y -= 10;
 			}
@@ -484,16 +478,10 @@ void Battle2::render(void)
 					for (int i = 0; i < H_NUM; i++)
 					{
 						_tile[i][j].x += 10;
-					}
-				}
-
-				for (int j = 0; j < V_NUM; j++)
-				{
-					for (int i = 0; i < H_NUM; i++)
-					{
 						_tile[i][j].y += 10;
 					}
 				}
+				
 				_x += 10;
 				_y += 10;
 			}
@@ -506,7 +494,6 @@ void Battle2::render(void)
 	}
 	#pragma endregion
 
-	_sk->skillDown(_pl, _em);
 	#pragma region 적 렌더
 	if (_sk->getBitset()[6] == 0)
 	{
@@ -535,8 +522,7 @@ void Battle2::render(void)
 	#pragma endregion
 	_sk->render();
 	_pl->render();
-	_sk->skillUp(_pl, _em);
-
+	_sk->skillRender(_pl, _em);
 #pragma endregion
 
 	// 시나리오 클리어
@@ -550,6 +536,8 @@ void Battle2::render(void)
 		if (_skillTick > 200)
 			SCENEMANAGER->changScene("월드맵");
 	}
+
+
 
 }
 
