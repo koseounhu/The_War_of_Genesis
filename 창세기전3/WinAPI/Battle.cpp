@@ -32,8 +32,7 @@ HRESULT Battle::init(void)
 			int g = GetGValue(color);
 			int b = GetBValue(color);
 
-			if (r == 255 && g == 0 && b == 255) _tile[i][j].mapColli = true;
-
+			if (r == 255 && g == 0 && b == 255) _tile[i][j].unit = 2;
 		}
 	}
 #pragma endregion
@@ -48,6 +47,8 @@ HRESULT Battle::init(void)
 	_sk = new Skill;
 	_sk->init();
 
+	_ui = new UI;
+	_ui->init();
 
 
     return S_OK;
@@ -57,6 +58,7 @@ void Battle::release(void)
 {
 	SAFE_DELETE(_sk);
 	SAFE_DELETE(_pl);
+	SAFE_DELETE(_ui);
 }
 
 void Battle::update(void)
@@ -95,7 +97,7 @@ void Battle::update(void)
 #pragma endregion
 #pragma region 화면 움직임 제어
 
-	if (!_skillOn)
+	if (!_ui->getUIState())
 	{
 
 		if (_ptMouse.x > WINSIZE_X - 50)
@@ -234,40 +236,25 @@ void Battle::update(void)
 
 #pragma endregion
 
-
-	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 	{
-		// 플레이어 렉트
-		RECT _temp;
-		_temp = RectMake(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x,
-			_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y,
-			WIDTH, HEIGHT);
-		if (PtInRect(&_temp, _ptMouse)) _ui = true;
-
-
-		if (!_ui && !_ability && !_tileOn)
+		if (!_ui->getTotalUI())
 		{
-			for (int j = 0; j < V_NUM; j++)
+			// 플레이어 렉트
+			RECT _temp;
+			_temp = RectMake(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x,
+				_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y,
+				WIDTH, HEIGHT);
+			if (PtInRect(&_temp, _ptMouse))
 			{
-				for (int i = 0; i < H_NUM; i++)
-				{
-					// 클릭에 따른 A* 활성화
-					if (_ptMouse.x > _tile[i][j].x && _ptMouse.x < _tile[i + 1][j].x &&
-						_ptMouse.y > _tile[i][j].y && _ptMouse.y < _tile[i][j + 1].y)
-					{
-						if (!_tile[i][j].mapColli)
-						{
-							Astar(_pl->getPL()._indexX, _pl->getPL()._indexY, i, j);
-							_pl->setPAstar(true);
-						}
-					}
-				}
+				_ui->setUIState(true);
 			}
 		}
-
 	}
 
 
+
+	_ui->update();
 }
 
 void Battle::render(void)
@@ -275,8 +262,9 @@ void Battle::render(void)
     // 배경
    IMAGEMANAGER->findImage("전투맵")->render(getMemDC(),_x,_y);
    
+#pragma region 마우스타일, 맵타일그리기
    // 마우스타일
-   if (!_skillOn)
+   if (!_ui->getSkillState())
    {
 	   for (int j = 0; j < H_NUM; j++)
 	   {
@@ -317,89 +305,13 @@ void Battle::render(void)
 		   }
 	   }
    }
+#pragma endregion
 
 #pragma region skillUI
 
-#pragma region UI
-   // 스킬 UI 창
-   if (_ui && !_skillOn)
-   {
-	   RECT _skillUI[4];
-	   _skillUI[0] = RectMakeCenter(_pl->getPL()._x - 80, _pl->getPL()._y - 40, IMAGEMANAGER->findImage("스킬UI")->getFrameWidth(), IMAGEMANAGER->findImage("스킬UI")->getFrameHeight());
-	   _skillUI[1] = RectMakeCenter(_pl->getPL()._x + 130, _pl->getPL()._y - 40, IMAGEMANAGER->findImage("스킬UI")->getFrameWidth(), IMAGEMANAGER->findImage("스킬UI")->getFrameHeight());
-	   _skillUI[2] = RectMakeCenter(_pl->getPL()._x - 80, _pl->getPL()._y, IMAGEMANAGER->findImage("스킬UI")->getFrameWidth(), IMAGEMANAGER->findImage("스킬UI")->getFrameHeight());
-	   _skillUI[3] = RectMakeCenter(_pl->getPL()._x + 130, _pl->getPL()._y, IMAGEMANAGER->findImage("스킬UI")->getFrameWidth(), IMAGEMANAGER->findImage("스킬UI")->getFrameHeight());
-
-
-
-	   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[0].left, _skillUI[0].top, 0, 0);
-	   FONTMANAGER->drawText(getMemDC(), _skillUI[0].left + 32, _skillUI[0].top + 7, 12, 255, 255, 255, "굴림", true, "어빌리티");
-
-	   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[1].left, _skillUI[1].top, 1, 0);
-	   FONTMANAGER->drawText(getMemDC(), _skillUI[1].left + 32, _skillUI[1].top + 7, 12, 255, 255, 255, "굴림", true, "턴종료");
-	   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[2].left, _skillUI[2].top, 2, 0);
-	   FONTMANAGER->drawText(getMemDC(), _skillUI[2].left + 32, _skillUI[2].top + 7, 12, 255, 255, 255, "굴림", true, "아이템");
-	   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[3].left, _skillUI[3].top, 3, 0);
-	   FONTMANAGER->drawText(getMemDC(), _skillUI[3].left + 32, _skillUI[3].top + 7, 12, 255, 255, 255, "굴림", true, "상태");
-
-	   if (PtInRect(&_skillUI[0], _ptMouse))
-	   {
-		   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[0].left, _skillUI[0].top, 0, 1);
-		   FONTMANAGER->drawText(getMemDC(), _skillUI[0].left + 32, _skillUI[0].top + 7, 13, 255, 255, 255, "굴림", true, "어빌리티");
-
-	   }
-
-	   if (PtInRect(&_skillUI[1], _ptMouse))
-	   {
-		   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[1].left, _skillUI[1].top, 1, 1);
-		   FONTMANAGER->drawText(getMemDC(), _skillUI[1].left + 32, _skillUI[1].top + 7, 13, 255, 255, 255, "굴림", true, "턴종료");
-	   }
-	   if (PtInRect(&_skillUI[2], _ptMouse))
-	   {
-		   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[2].left, _skillUI[2].top, 2, 1);
-		   FONTMANAGER->drawText(getMemDC(), _skillUI[2].left + 32, _skillUI[2].top + 7, 13, 255, 255, 255, "굴림", true, "아이템");
-	   }
-	   if (PtInRect(&_skillUI[3], _ptMouse))
-	   {
-		   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[3].left, _skillUI[3].top, 3, 1);
-		   FONTMANAGER->drawText(getMemDC(), _skillUI[3].left + 32, _skillUI[3].top + 7, 13, 255, 255, 255, "굴림", true, "상태");
-	   }
-
-	   if (PtInRect(&_skillUI[0], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	   {
-		   _ui = false;
-		   _ability = true;
-	   }
-   }
-#pragma endregion
-#pragma region 어빌리티
-   if (_ability)
-   {
-	   RECT _abilityA;
-	   _abilityA = RectMakeCenter(_pl->getPL()._x + 50, _pl->getPL()._y - 60, IMAGEMANAGER->findImage("어빌리티창")->getFrameWidth(), IMAGEMANAGER->findImage("어빌리티창")->getFrameHeight());
-
-	   IMAGEMANAGER->findImage("어빌리티창")->alphaRender(getMemDC(), _abilityA.left, _abilityA.top, 150);
-	   IMAGEMANAGER->findImage("어빌리티버튼")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 10, 1, 0);
-	   IMAGEMANAGER->findImage("어빌리티버튼")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 35, 0, 0);
-	   IMAGEMANAGER->findImage("어빌리티버튼")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 60, 0, 0);
-
-
-	   FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 10, 15, 255, 255, 255, "굴림", true, "천지파열무");
-	   FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 35, 15, 255, 255, 255, "굴림", true, "연");
-	   FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 60, 15, 255, 255, 255, "굴림", true, "파");
-
-	   RECT _abilityB;
-	   _abilityB = RectMake(_abilityA.left + 5, _abilityA.top + 10, 150, 20);
-	   if (PtInRect(&_abilityB, _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	   {
-		   _ui = _ability = false;
-		   _tileOn = true;
-	   }
-   }
-#pragma endregion
 #pragma region 타일온
 
-   if (_tileOn)
+   if (_ui->getTileState())
    {
 	   moveTileStar(_pl->getPL()._indexX, _pl->getPL()._indexY);
 	   for (int i = 0; i < V_NUM; i++)
@@ -420,17 +332,37 @@ void Battle::render(void)
 
 	   if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	   {
-		   _tileOn = false;
-		   _skillOn = true;
-		   bitset<20> bit;
-		   bit.set(0, 1);
-		   _sk->setBitset(bit);
+		   // 플레이어이동
+		   if (_ui->getTileState())
+		   {
+			   for (int j = 0; j < V_NUM; j++)
+			   {
+				   for (int i = 0; i < H_NUM; i++)
+				   {
+					   // 클릭에 따른 A* 활성화
+					   if (_ptMouse.x > _tile[i][j].x && _ptMouse.x < _tile[i + 1][j].x &&
+						   _ptMouse.y > _tile[i][j].y && _ptMouse.y < _tile[i][j + 1].y)
+					   {
+						   if (!_tile[i][j].mapColli)
+						   {
+							   Astar(_pl->getPL()._indexX, _pl->getPL()._indexY, i, j);
+							   _pl->setPAstar(true);
+						   }
+					   }
+				   }
+			   }
+		   }
+		   _ui->setTileState(false);
 	   }
    }
 #pragma endregion
 #pragma region 스킬온
-   if (_skillOn)
+   if (_ui->getSkillState())
    {
+	   bitset<20> bit;
+	   bit.set(0, 1);
+	   _sk->setBitset(bit);
+
 	   IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), 150);
 	   if (_sk->getBitset()[0] == 1)
 	   {
@@ -453,9 +385,9 @@ void Battle::render(void)
 	   }
 	   if (_sk->getBitset()[6] == 1)
 	   {
-		   _skillOn = false;
-		   _ui = false;
-		   _ability = false;
+		   _ui->setSkillState(false);
+		   _ui->setUIState(false);
+		   _ui->setAbilityState(false);
 		   _sk->getBitset().reset();
 	   }
 
@@ -519,6 +451,7 @@ void Battle::render(void)
 #pragma endregion
 
    _sk->skillDown(_pl, _em);
+
 #pragma region 적 렌더
    if (!_emRender)
    {
@@ -532,6 +465,7 @@ void Battle::render(void)
 #pragma endregion
    _sk->render();
    _pl->render();
+   _ui->render(_pl);
    _sk->skillUp(_pl, _em);
 
 #pragma endregion

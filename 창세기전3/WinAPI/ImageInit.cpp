@@ -8,6 +8,7 @@
 #define BAT "Resources/Images/Battle/"
 #define PL "Resources/Images/Player/"
 #define WM "Resources/Images/WorldMap/"
+#define UI "Resources/Images/UI/"
 #define MAZEN RGB(255, 0, 255)
 #define RGBRED RGB(255, 0, 0)
 #define RGBBL RGB(4, 0, 4)
@@ -41,6 +42,10 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("어빌리티버튼", OBJ"abilityButton.bmp", 34, 17,2,1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("마우스", OBJ"mouse.bmp", 228, 24, 12, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("그림자", OBJ"Shadow.bmp", 50, 25, true, RGB(255, 0, 255));
+
+	// UI
+	IMAGEMANAGER->addImage("UI스테이터창", UI"state.bmp", 218, 384);
+
 
 
 	//플레이어

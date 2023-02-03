@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Skill.h"
 #include "Enemy.h"
+#include "UI.h"
 
 #pragma region 맵, A*
 // 가로 칸 개수
@@ -41,6 +42,7 @@ struct moveTile2
 	int idxY;
 	int moveCost;
 };
+
 // 타일 그리기
 struct TILE
 {
@@ -60,16 +62,11 @@ class Battle : public GameNode
 {
 private:
 
-	// UI
-	bool _ui;
-	bool _ability;
-	bool _tileOn;
 
 	// 스킬
 	int _skillTick;
 	int _skillFrame;
 	bool _skillBool;
-	bool _skillOn;
 
 	// 시작시 카메라 무빙
 	bool _gameStart;
@@ -101,6 +98,8 @@ private:
 	Enemy* _em[10];
 	Skill* _sk;
 	bool _emRender;
+	UI* _ui;
+	
 	
 	// 배경 움직이기위한 위치값
 	int _x, _y;
