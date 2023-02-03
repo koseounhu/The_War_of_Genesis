@@ -94,6 +94,9 @@
     <Filter Include="Unit\Skill">
       <UniqueIdentifier>{14d1a28c-a561-4ade-aaef-4721192b0f1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{c55dacbc-040f-4a03-96c9-511d0c7c9fa4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C3DMatrix.cpp">
@@ -197,6 +200,9 @@
     <ClCompile Include="moveTile.cpp">
       <Filter>Scene\Battle</Filter>
     </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C3DMatrix.h">
@@ -298,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Unit\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

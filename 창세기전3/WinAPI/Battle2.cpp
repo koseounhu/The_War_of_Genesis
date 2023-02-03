@@ -88,73 +88,75 @@ void Battle2::update(void)
 
 #pragma endregion
 #pragma region 화면 움직임 제어
-
-	if (PtInRect(&_rc[3], _ptMouse))
+	if (!_skillOn)
 	{
-		if (_x > -800)
-		{
-			_x -= 2;
-			_pl->setPX(_pl->getPL()._x - 2);
 
-			for (int j = 0; j < V_NUM; j++)
+		if (PtInRect(&_rc[3], _ptMouse))
+		{
+			if (_x > -800)
 			{
-				for (int i = 0; i < H_NUM; i++)
+				_x -= 2;
+				_pl->setPX(_pl->getPL()._x - 2);
+
+				for (int j = 0; j < V_NUM; j++)
 				{
-					_tile[i][j].x -= 2;
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x -= 2;
+					}
+				}
+			}
+
+		}
+		else if (PtInRect(&_rc[0], _ptMouse))
+		{
+			if (_y < 0)
+			{
+				_y += 2;
+				_pl->setPY(_pl->getPL()._y + 2);
+
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y += 2;
+					}
 				}
 			}
 		}
-
-	}
-	else if (PtInRect(&_rc[0], _ptMouse))
-	{
-		if (_y < 0)
+		else if (PtInRect(&_rc[1], _ptMouse))
 		{
-			_y += 2;
-			_pl->setPY(_pl->getPL()._y +2);
-
-			for (int j = 0; j < V_NUM; j++)
+			if (_x < 0)
 			{
-				for (int i = 0; i < H_NUM; i++)
+				_x += 2;
+				_pl->setPX(_pl->getPL()._x + 2);
+
+				for (int j = 0; j < V_NUM; j++)
 				{
-					_tile[i][j].y += 2;
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x += 2;
+					}
+				}
+			}
+		}
+		else if (PtInRect(&_rc[2], _ptMouse))
+		{
+			if (_y > -900)
+			{
+				_y -= 2;
+				_pl->setPY(_pl->getPL()._y - 2);
+
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y -= 2;
+					}
 				}
 			}
 		}
 	}
-	else if (PtInRect(&_rc[1], _ptMouse))
-	{
-		if (_x < 0)
-		{
-			_x += 2;
-			_pl->setPX(_pl->getPL()._x +2);
-
-			for (int j = 0; j < V_NUM; j++)
-			{
-				for (int i = 0; i < H_NUM; i++)
-				{
-					_tile[i][j].x += 2;
-				}
-			}
-		}
-	}
-	else if (PtInRect(&_rc[2], _ptMouse))
-	{
-		if (_y > -900)
-		{
-			_y -= 2;
-			_pl->setPY(_pl->getPL()._y - 2);
-
-			for (int j = 0; j < V_NUM; j++)
-			{
-				for (int i = 0; i < H_NUM; i++)
-				{
-					_tile[i][j].y -= 2;
-				}
-			}
-		}
-	}
-
 #pragma endregion
 #pragma region 플레이어
 	// 에이스타에 따른 플레이어 움직임

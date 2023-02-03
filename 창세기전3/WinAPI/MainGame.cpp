@@ -27,7 +27,7 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("½Ã³ª¸®¿ÀÄÆ¾À", new firstCutScene);
 
 
-	SCENEMANAGER->changScene("¿ÀÇÁ´×");
+	SCENEMANAGER->changScene("ÀüÅõ");
 
 
 	return S_OK;

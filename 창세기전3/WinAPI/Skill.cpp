@@ -46,7 +46,6 @@ void Skill::skillUp(Player* _pl, Enemy* _em[10])
 			_skill.set(1, 1);
 			_skillFrame = 0;
 			_tick = 0;
-
 		}
 	}
 	else if (_skill[3] == 1)
@@ -133,48 +132,48 @@ void Skill::skillUp(Player* _pl, Enemy* _em[10])
 		}
 	}
 
-	for (int i = 0; i < _particle.size(); i++)
-	{
-		if (_particle[i].start)
+		for (int i = 0; i < _particle.size(); i++)
 		{
-			IMAGEMANAGER->findImage("½ºÅ³ÆÄÆ¼Å¬1")->alphaFrameRender(getMemDC(), _particle[i].x, _particle[i].y, _particle[i].alpha, _particle[i].frame, 0);
-			if (_particle[i].alpha > 0)_particle[i].alpha -= 2;
-			if (_particle[i].alpha <= 0)_particle[i].alpha = 0;
-			_particle[i].y -= _particle[i].speed;
-			_particle[i].speed -= 0.3f;
+			if (_particle[i].start)
+			{
+				IMAGEMANAGER->findImage("½ºÅ³ÆÄÆ¼Å¬1")->alphaFrameRender(getMemDC(), _particle[i].x, _particle[i].y, _particle[i].alpha, _particle[i].frame, 0);
+				if (_particle[i].alpha > 0)_particle[i].alpha -= 2;
+				if (_particle[i].alpha <= 0)_particle[i].alpha = 0;
+				_particle[i].y -= _particle[i].speed;
+				_particle[i].speed -= 0.3f;
+			}
 		}
-	}
 
 
-	// ÃÊ±âÈ­ ÅÏ³Ñ±è
-	if (_frame[30] >= IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->getMaxFrameX())
-	{
-		_skill.reset();
-		_skill.set(4, 1);
-		_skillFrame = 0;
-		_tick = 0;
-		for (int i = 0; i < _frame.size(); i++)
-			_frame[i] = 0;
-
-		for (int i = 0; i < _temp.size(); i++)
+		// ÃÊ±âÈ­ ÅÏ³Ñ±è
+		if (_frame[30] >= IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->getMaxFrameX())
 		{
-			_temp[i].start = false;
-			_temp[i].frame = 0;
+			_skill.reset();
+			_skill.set(4, 1);
+			_skillFrame = 0;
+			_tick = 0;
+			for (int i = 0; i < _frame.size(); i++)
+				_frame[i] = 0;
+
+			for (int i = 0; i < _temp.size(); i++)
+			{
+				_temp[i].start = false;
+				_temp[i].frame = 0;
+			}
+			_particle.clear();
 		}
-		_particle.clear();
-	}
 	}
 	else if (_skill[4] == 1)
 	{
 		if (_frame[1] > IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1")->getMaxFrameX()&&_frame[2] < IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2")->getMaxFrameX())
 		{
-		for (int i = 0; i < 4; i++)
-		{
-			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 220, 100, _frame[2], 0);
-			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2±¤¿ø")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 220, 255, _frame[2], 0);
-			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2_1")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 220, 100, _frame[2], 0);
-			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2_1±¤¿ø")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 220, 255, _frame[2], 0);
-		}
+			for (int i = 0; i < 4; i++)
+			{
+				IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 220, 100, _frame[2], 0);
+				IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2±¤¿ø")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 220, 255, _frame[2], 0);
+				IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2_1")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 220, 100, _frame[2], 0);
+				IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2_1±¤¿ø")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 220, 255, _frame[2], 0);
+			}
 		}
 
 	}

@@ -95,70 +95,74 @@ void Battle::update(void)
 #pragma endregion
 #pragma region 화면 움직임 제어
 
-    if (_ptMouse.x >WINSIZE_X-50)
-    {
-        if (_x > -570)
-        {
-            _x -= 2;
-			_pl->setPX(_pl->getPL()._x - 2);
-			for (int j = 0; j < V_NUM; j++)
-			{
-				for (int i = 0; i < H_NUM; i++)
-				{
-					_tile[i][j].x -= 2;
-				}
-			}
-        }
-        
-    }
-    else if (_ptMouse.y<50)
-    {
-        if (_y < 0)
-        {
-            _y += 2;
-			_pl->setPY(_pl->getPL()._y + 2);
+	if (!_skillOn)
+	{
 
-			for (int j = 0; j < V_NUM; j++)
+		if (_ptMouse.x > WINSIZE_X - 50)
+		{
+			if (_x > -570)
 			{
-				for (int i = 0; i < H_NUM; i++)
+				_x -= 2;
+				_pl->setPX(_pl->getPL()._x - 2);
+				for (int j = 0; j < V_NUM; j++)
 				{
-					_tile[i][j].y += 2;
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x -= 2;
+					}
 				}
 			}
-        }
-    }
-    else if (_ptMouse.x<50)
-    {
-        if (_x < 0)
-        {
-            _x += 2;
-			_pl->setPX(_pl->getPL()._x + 2);
 
-			for (int j = 0; j < V_NUM; j++)
+		}
+		else if (_ptMouse.y < 50)
+		{
+			if (_y < 0)
 			{
-				for (int i = 0; i < H_NUM; i++)
-				{
-					_tile[i][j].x += 2;
-				}
-			}
-        }
-    }
-    else if(_ptMouse.y>WINSIZE_Y-50)
-    {
-        if (_y > -1030)
-        {
-            _y -= 2;
-			_pl->setPY(_pl->getPL()._y - 2);
+				_y += 2;
+				_pl->setPY(_pl->getPL()._y + 2);
 
-			for (int j = 0; j < V_NUM; j++)
-			{
-				for (int i = 0; i < H_NUM; i++)
+				for (int j = 0; j < V_NUM; j++)
 				{
-					_tile[i][j].y -= 2;
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y += 2;
+					}
 				}
 			}
-        }
-    }
+		}
+		else if (_ptMouse.x < 50)
+		{
+			if (_x < 0)
+			{
+				_x += 2;
+				_pl->setPX(_pl->getPL()._x + 2);
+
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x += 2;
+					}
+				}
+			}
+		}
+		else if (_ptMouse.y > WINSIZE_Y - 50)
+		{
+			if (_y > -1030)
+			{
+				_y -= 2;
+				_pl->setPY(_pl->getPL()._y - 2);
+
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y -= 2;
+					}
+				}
+			}
+		}
+	}
 
 #pragma endregion
 #pragma region 플레이어
@@ -272,20 +276,22 @@ void Battle::render(void)
    IMAGEMANAGER->findImage("전투맵")->render(getMemDC(),_x,_y);
    
    // 마우스타일
-   for (int j = 0; j < H_NUM; j++)
+   if (!_skillOn)
    {
-	   for (int i = 0; i < V_NUM; i++)
+	   for (int j = 0; j < H_NUM; j++)
 	   {
-		   if (_tile[j][i].x < _ptMouse.x && _tile[j][i].y < _ptMouse.y &&
-			   _tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y)
+		   for (int i = 0; i < V_NUM; i++)
 		   {
-			   IMAGEMANAGER->findImage("마우스타일")->alphaFrameRender(getMemDC(),
-				   _tile[j][i].x, _tile[j][i].y, 150, 0, 0);
-		   }
+			   if (_tile[j][i].x < _ptMouse.x && _tile[j][i].y < _ptMouse.y &&
+				   _tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y)
+			   {
+				   IMAGEMANAGER->findImage("마우스타일")->alphaFrameRender(getMemDC(),
+					   _tile[j][i].x, _tile[j][i].y, 150, 0, 0);
+			   }
 
+		   }
 	   }
    }
-
    // 각 구획마다 선 그리기
    if (KEYMANAGER->isToggleKey(VK_F10))
    {
@@ -330,7 +336,7 @@ void Battle::render(void)
 	   FONTMANAGER->drawText(getMemDC(), _skillUI[0].left + 32, _skillUI[0].top + 7, 12, 255, 255, 255, "굴림", true, "어빌리티");
 
 	   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[1].left, _skillUI[1].top, 1, 0);
-	   FONTMANAGER->drawText(getMemDC(), _skillUI[1].left + 32, _skillUI[1].top + 7, 12, 255, 255, 255, "굴림", true, "완전방어");
+	   FONTMANAGER->drawText(getMemDC(), _skillUI[1].left + 32, _skillUI[1].top + 7, 12, 255, 255, 255, "굴림", true, "턴종료");
 	   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[2].left, _skillUI[2].top, 2, 0);
 	   FONTMANAGER->drawText(getMemDC(), _skillUI[2].left + 32, _skillUI[2].top + 7, 12, 255, 255, 255, "굴림", true, "아이템");
 	   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[3].left, _skillUI[3].top, 3, 0);
@@ -346,7 +352,7 @@ void Battle::render(void)
 	   if (PtInRect(&_skillUI[1], _ptMouse))
 	   {
 		   IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[1].left, _skillUI[1].top, 1, 1);
-		   FONTMANAGER->drawText(getMemDC(), _skillUI[1].left + 32, _skillUI[1].top + 7, 13, 255, 255, 255, "굴림", true, "완전방어");
+		   FONTMANAGER->drawText(getMemDC(), _skillUI[1].left + 32, _skillUI[1].top + 7, 13, 255, 255, 255, "굴림", true, "턴종료");
 	   }
 	   if (PtInRect(&_skillUI[2], _ptMouse))
 	   {
