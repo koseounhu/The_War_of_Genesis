@@ -40,7 +40,6 @@ HRESULT Battle2::init(void)
 	}
 
 	_skillFrame= _skillTick = 0;
-	_skillAlpha = 150;
     return S_OK;
 }
 
@@ -439,17 +438,11 @@ void Battle2::render(void)
 		{
 			_pl->setPState(0);
 		}
-		if (_emRender)
-		{
-			_skillOn = false;
-			_ui = false;
-			_ability = false;
-			_sk->getBitset().reset();
-		}
+	
 
 
 		// 카메라 쉐이킹
-		_skillTick++;
+	/*	_skillTick++;
 		if (_sk->getBitset()[3] == 1 || _sk->getBitset()[5]==1)
 		{
 			if (_skillTick % 3 == 0)
@@ -490,7 +483,17 @@ void Battle2::render(void)
 		{
 			_pl->setPX(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x);
 			_pl->setPY(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y);
+		}*/
+
+		if (_sk->getSkillXY().size() < 8)
+		{
+			_sk->setSkillXY(_tile[19][23].x - 5, _tile[19][23].y - 120, 12, true);
+			_sk->setSkillXY(_tile[19][34].x - 5, _tile[19][34].y - 120, 12, true);
+			_sk->setSkillXY(_tile[13][28].x - 5, _tile[13][28].y - 120, 12, true);
+			_sk->setSkillXY(_tile[25][28].x - 5, _tile[25][28].y - 120, 12, true);
 		}
+		_sk->skillRender(_pl);
+
 	}
 	#pragma endregion
 
@@ -505,24 +508,23 @@ void Battle2::render(void)
 		_tile[19][34].unit == 2;
 		_tile[13][28].unit == 2;
 		_tile[25][28].unit == 2;
-		
 	}
 	else if (_sk->getBitset()[6] == 1)
 	{
-		_skillAlpha--;
-		if (_skillAlpha < 0)_skillAlpha = 0;
-	}
-	if (_skillAlpha == 1)
-	{
 		_skillTick = 0;
+
 		_emRender = true;
+
+		_skillOn = false;
+		_ui = false;
+		_ability = false;
 	}
-	
 
 	#pragma endregion
+
+
 	_sk->render();
 	_pl->render();
-	_sk->skillRender(_pl, _em);
 #pragma endregion
 
 	// 시나리오 클리어

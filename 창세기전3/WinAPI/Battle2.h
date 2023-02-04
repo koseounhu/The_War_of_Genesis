@@ -55,6 +55,8 @@ struct TILE2
 	int unit;
 	bool moveTileColli;
 };
+
+
 #pragma endregion
 class Battle2 : public GameNode
 {
@@ -62,6 +64,8 @@ private:
 
 	// 움직일 타일 설정
 	bool _groundTile;
+	
+
 
 	// ui
 	bool _ui;
@@ -90,6 +94,8 @@ private:
 	// 움직일 타일
 	vector<moveTile> _canMoveList;
 	vector<moveTile> _cantMoveList;
+
+
 
 	// AStar 종료 체크
 	bool _aStarBreak;

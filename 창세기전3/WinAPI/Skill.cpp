@@ -1,12 +1,11 @@
 #include "Stdafx.h"
 #include "Skill.h"
-#include "Enemy.h"
 #include "Player.h"
 
 HRESULT Skill::init(void)
 {
 	_skill.reset();
-	_tick = 0;
+	_circleFrame= _tick = 0;
 
 	_temp.push_back({ 0,0,0,0 });
 
@@ -26,9 +25,12 @@ void Skill::render(void)
 
 }
 
-void Skill::skillRender(Player* _pl, Enemy* _em[10])
+void Skill::skillRender(Player* _pl)
 {
+	// ÀüÃ¼ Æ½
 	_tick++;
+
+	// ½ºÅ³±¸
 	if (_skill[0] == 1)
 	{
 		if (_tick % 5 == 0)
@@ -36,7 +38,7 @@ void Skill::skillRender(Player* _pl, Enemy* _em[10])
 			_temp[0].frame++;
 			
 		}
-		IMAGEMANAGER->findImage("½ºÅ³±¸")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 110, _pl->getPL()._y - 100, 150, _temp[0].frame, 0);
+		IMAGEMANAGER->findImage("½ºÅ³±¸")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 110, _pl->getPL()._y - 100, 100, _temp[0].frame, 0);
 		// IMAGEMANAGER->findImage("½ºÅ³±¸±¤¿ø")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 110, _pl->getPL()._y - 100, 255, _skillFrame, 0);
 		if (IMAGEMANAGER->findImage("½ºÅ³±¸")->getFrameX() >= IMAGEMANAGER->findImage("½ºÅ³±¸")->getMaxFrameX())
 		{
@@ -83,6 +85,8 @@ void Skill::skillRender(Player* _pl, Enemy* _em[10])
 			_temp[40].start = true;
 			_temp[60].start = true;
 			_fireball = _temp;
+			
+			// ÆÄÆ¼Å¬ ³Ö¾î³õ±â
 			for (int i = 0; i < _temp.size(); i++)
 			{
 				for (int j = 0; j < 5; j++)
@@ -93,61 +97,102 @@ void Skill::skillRender(Player* _pl, Enemy* _em[10])
 		}
 	}
 
-	// ¹Ù´Ú¿¡ ºÒ¹Ù´Ù ±ò¾Æ³ð
+	// ¹Ù´ÚºÒ + Æø¹ß
 	else if (_skill[1] == 1)
 	{
 		if (IMAGEMANAGER->findImage("»ì¶óµò_½ºÅ³")->getFrameX() == IMAGEMANAGER->findImage("»ì¶óµò_½ºÅ³")->getMaxFrameX())
 		{
 
-			if (_tick % 2 == 0)
+			if (_tick % 2 == 0&& _enemyXY[0].frame < IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getMaxFrameX())
 			{
 				for (int i = 0; i < _temp.size(); i++)
 				{
-					if (_temp[i].start && _temp[i].frame < 6)	_temp[i].frame++;
-					if (_temp[i].frame > 5)_temp[i].frame = 1;
+					if (_temp[i].start)	_temp[i].frame++;
+					if (_temp[i].frame > 6)_temp[i].frame = 1;
 				}
 			}
-			if (_tick % 5 == 0)
+
+
+			if (_enemyXY[0].frame > IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getMaxFrameX())
+			{
+				if (_tick % 5 == 0)
+				{
+					for (int i = 0; i < _temp.size(); i++)
+					{
+						_temp[i].frame++;
+
+						if (_temp[i].frame > 12 && i + 1 < _temp.size())
+
+						if (_temp.back().frame > IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->getMaxFrameX()) _temp.back().start = false;
+						
+					}
+				}
+			}
+
+			if (_tick % 10 == 0 )
 			{
 				for (int i = 0; i < _fireball.size(); i++)
 				{
 					if (_temp[i].start) _fireball[i].frame++;
 				}
 			}
-			
+			if (_tick % 5 == 0)
+			{
+				_circleFrame++;
+			}
 
+			// ÇÃ·¹ÀÌ¾î ¹Ù´Ú ¿¬±â
+			if (IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®2")->getFrameX() < IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®2")->getMaxFrameX())
+			{
+				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®2")->alphaFrameRender(getMemDC(), _pl->getPL()._x-78, _pl->getPL()._y-50, 110, _circleFrame, 0);
+				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®2±¤¿ø")->alphaFrameRender(getMemDC(), _pl->getPL()._x-78, _pl->getPL()._y-50, 255, _circleFrame, 0);
+			}
+
+			// ÇÃ·¹ÀÌ¾î Æø¹ß ÀÌÆåÆ®
+			if (IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getFrameX() < IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getMaxFrameX())
+			{
+				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 85, _pl->getPL()._y - 170, 110, _circleFrame, 0);
+				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1±¤¿ø")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 85, _pl->getPL()._y - 170, 255, _circleFrame, 0);
+			}
+
+			
 			for (int i = 0; i < _temp.size(); i++)
 			{
-				if (_temp[i].start)
+				
+				if (_temp[i].start && _temp.back().frame < IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->getMaxFrameX())
 				{
-					if (_temp[i].frame > 3 && i + 1 < _temp.size())
+					if (_temp[i].frame > 3 && i + 1 < _temp.size()&& !_temp.back().start)
 					{
 						_temp[i + 1].start = true;
 						_fireball[i + 1].start = true;
 					}
 				}
-				if (_fireball[i].start)
+
+				if (_fireball[i].start )
 				{
-					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®5")->alphaFrameRender(getMemDC(), _fireball[i].x-50, _fireball[i].y-20, 80, _fireball[i].frame, 0);
-					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®5±¤¿ø")->alphaFrameRender(getMemDC(), _fireball[i].x-50, _fireball[i].y-20, 255, _fireball[i].frame, 0);
+					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®5")->alphaFrameRender(getMemDC(), _fireball[i].x - 50, _fireball[i].y - 20, 80, _fireball[i].frame, 0);
+					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®5±¤¿ø")->alphaFrameRender(getMemDC(), _fireball[i].x - 50, _fireball[i].y - 20, 255, _fireball[i].frame, 0);
 				}
 
-				if (_temp[i].start && i>39)
+				if (_temp[i].start && i > 39)
 				{
-					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y, 80, _temp[i].frame, 0);
+					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y, 100, _temp[i].frame, 0);
 					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y, 255, _temp[i].frame, 0);
 				}
 				else if (_temp[i].start && i < 40)
 				{
-					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y, 80, _temp[i].frame, 0);
+					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y, 100, _temp[i].frame, 0);
 					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y, 255, _temp[i].frame, 0);
 				}
 			}
+			
 		}
 
-		if (_temp.back().start)
+		if (_temp.back().start && !_num2)
 		{
 			_skill.set(2, 1);
+			_num2 = true;
+			// ºÒ±âµÕ ±¸Á¶Ã¼
 			for (int i = 0; i < _temp.size(); i++)
 			{
 				_fire.push_back({ _temp[i].x,_temp[i].y-185,0,false });
@@ -155,10 +200,10 @@ void Skill::skillRender(Player* _pl, Enemy* _em[10])
 		}
 	}
 	
-	// ºÒ±âµÕ
+	// ³ë¶õ ºÒ±âµÕ
 	if (_skill[2] == 1)
 	{
-		if (_tick % 5 == 0)
+		if (_tick % 3 == 0)
 		{
 			for (int i = 0; i < _fire.size(); i++)
 			{
@@ -169,12 +214,10 @@ void Skill::skillRender(Player* _pl, Enemy* _em[10])
 		{
 			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1_1")->alphaFrameRender(getMemDC(), _fire[i].x, _fire[i].y, 80, _fire[i].frame, 0);
 			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1_1±¤¿ø")->alphaFrameRender(getMemDC(), _fire[i].x, _fire[i].y, 255, _fire[i].frame, 0);
-
-
 		}
 		for (int i =20; i < 40; i++)
 		{
-			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1_1")->alphaFrameRender(getMemDC(), _fire[i].x, _fire[i].y, 80, _fire[i].frame, 0);
+			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1")->alphaFrameRender(getMemDC(), _fire[i].x, _fire[i].y, 80, _fire[i].frame, 0);
 			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1±¤¿ø")->alphaFrameRender(getMemDC(), _fire[i].x, _fire[i].y, 255, _fire[i].frame, 0);
 		}
 		for (int i =40; i < 60; i++)
@@ -187,413 +230,119 @@ void Skill::skillRender(Player* _pl, Enemy* _em[10])
 			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1")->alphaFrameRender(getMemDC(), _fire[i].x, _fire[i].y, 80, _fire[i].frame, 0);
 			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1±¤¿ø")->alphaFrameRender(getMemDC(), _fire[i].x, _fire[i].y, 255, _fire[i].frame, 0);
 		}
+
+		if (IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1")->getFrameX() == IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1")->getMaxFrameX())
+		{
+			_skill.set(3, 1);
+			_skill.set(2, 0);
+			_fire.clear();
+			
+		}
+	}
+	else if (_skill[3] == 1)
+	{
+		if (_tick % 6 == 0)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				_enemyXY[i].frame++;
+				if (_enemyXY[i].frame == IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->getMaxFrameX())_enemyXY[i].frame = 13;
+			}
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			if (_enemyXY[i].start)
+			{
+				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->alphaFrameRender(getMemDC(), _enemyXY[i].x, _enemyXY[i].y + 20, 150, _enemyXY[i].frame, 0);
+				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3±¤¿ø")->alphaFrameRender(getMemDC(), _enemyXY[i].x, _enemyXY[i].y + 20, 255, _enemyXY[i].frame, 0);
+				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1±¤¿ø")->alphaFrameRender(getMemDC(), _enemyXY[i].x, _enemyXY[i].y + 20, 150, _enemyXY[i].frame, 0);
+				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1±¤¿ø")->alphaFrameRender(getMemDC(), _enemyXY[i].x, _enemyXY[i].y + 20, 255, _enemyXY[i].frame, 0);
+			}
+		}
+
+		// ³¡³ª°í ÃÊ±âÈ­
+		if (_enemyXY[0].frame == 21)
+		{
+			_skill.set(4, 1);
+		}
+	}
+	if (_skill[4] == 1)
+	{
+		if (_tick % 5 == 0)
+		{
+			for (int i = 4; i < 8; i++)
+			{
+				_enemyXY[i].frame++;
+			}
+		}
+
+		for (int i = 4; i < 8; i++)
+		{
+			if (_enemyXY[i].start)
+			{
+				IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ3")->alphaFrameRender(getMemDC(), _enemyXY[i].x + 8, _enemyXY[i].y - 165, 80, _enemyXY[i].frame, 0);
+				IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ3±¤¿ø")->alphaFrameRender(getMemDC(), _enemyXY[i].x + 8, _enemyXY[i].y - 165, 255, _enemyXY[i].frame, 0);
+				IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ3_1")->alphaFrameRender(getMemDC(), _enemyXY[i].x + 8, _enemyXY[i].y - 165, 80, _enemyXY[i].frame, 0);
+				IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ3_1±¤¿ø")->alphaFrameRender(getMemDC(), _enemyXY[i].x + 8, _enemyXY[i].y - 165, 255, _enemyXY[i].frame, 0);
+			}
+		}
+		if (_enemyXY[5].frame > 31)
+		{
+			_skill.set(3, 0);
+			_skill.set(4, 0);
+			_skill.set(5, 1);
+			for (int i = 0; i < 8; i++)
+			{
+				_enemyXY[i].frame = 0;
+			}
+		}
+	}
+	else if (_skill[5] == 1)
+	{
+		if (_enemyXY[0].frame == 0)	IMAGEMANAGER->findImage("»¡°­¾ËÆÄ")->render(getMemDC());
+
+		if (_tick % 5 == 0)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				_enemyXY[i].frame++;
+			}
+		}
+		if (_tick % 15 == 0)
+		{
+			for (int i = 4; i < 8; i++)
+			{
+				_enemyXY[i].frame++;
+			}
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			if (_enemyXY[i].start && _enemyXY[i].frame<IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getMaxFrameX())
+			{
+				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->alphaFrameRender(getMemDC(), _enemyXY[i].x-80, _enemyXY[i].y-100, 80, _enemyXY[i].frame, 0);
+				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1±¤¿ø")->alphaFrameRender(getMemDC(), _enemyXY[i].x-80, _enemyXY[i].y-100, 255, _enemyXY[i].frame, 0);
+			}
+		}
+		for (int i = 4; i < 8; i++)
+		{
+			if (_enemyXY[i].start && _enemyXY[i].frame < IMAGEMANAGER->findImage("½ºÅ³¹Ù´ÚºÒ")->getMaxFrameX())
+			{
+				IMAGEMANAGER->findImage("½ºÅ³¹Ù´ÚºÒ")->alphaFrameRender(getMemDC(), _enemyXY[i].x -50, _enemyXY[i].y+55 , 80, _enemyXY[i].frame, 0);
+				IMAGEMANAGER->findImage("½ºÅ³¹Ù´ÚºÒ±¤¿ø")->alphaFrameRender(getMemDC(), _enemyXY[i].x-50 , _enemyXY[i].y+55 , 255, _enemyXY[i].frame, 0);
+			}
+		}
+		if (_temp.back().start==false)
+		{
+			_skill.set(6, 1);
+			_skill.set(5, 0);
+
+			for (int i = 0; i < 8; i++) _enemyXY[i].frame = 0;
+		}
+
+		if (_enemyXY[0].frame > IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getMaxFrameX())
+		{
+			
+		}
 	}
 }
-
-
-
-//void Skill::skillUp(Player* _pl, Enemy* _em[10])
-//{
-//	_tick++;
-//	if (_skill[0] == 1)
-//	{
-//		if (_tick % 5 == 0)
-//		{
-//			_skillFrame++;
-//		}
-//		IMAGEMANAGER->findImage("½ºÅ³±¸")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 110, _pl->getPL()._y - 100, 150, _skillFrame, 0);
-//		 IMAGEMANAGER->findImage("½ºÅ³±¸±¤¿ø")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 110, _pl->getPL()._y - 100, 255, _skillFrame, 0);
-//		if (IMAGEMANAGER->findImage("½ºÅ³±¸")->getFrameX() >= IMAGEMANAGER->findImage("½ºÅ³±¸")->getMaxFrameX())
-//		{
-//			_skill.reset();
-//			_skill.set(1, 1);
-//			_skillFrame = 0;
-//			_tick = 0;
-//		}
-//	}
-//	else if (_skill[3] == 1)
-//	{
-//	 ÆÄÆ¼Å¬ ³Ö¾î³õ±â
-//	if (_particle.size() < _temp.size())
-//	{
-//		for (int i = 0; i < _temp.size(); i++)
-//		{
-//			for (int j = 0; j < 5; j++)
-//			{
-//				_particle.push_back({ RND->getFromFloatTo(_temp[i].x - 16,_temp[i].x + 16),RND->getFromFloatTo(_temp[i].y - 20,_temp[i].y + 20),0,RND->getFromFloatTo(3,7),255 });
-//			}
-//		}
-//	}
-//
-//	if (_tick % 3 == 0)
-//	{
-//		for (int i = 0; i < _temp.size(); i++)
-//		{
-//			if (_temp[i].start)_temp[i].frame++;
-//		}
-//	}
-//
-//	if (_tick % 1 == 0)
-//	{
-//		 ÆÄÆ¼Å¬
-//		for (int i = 0; i < _particle.size(); i++)
-//		{
-//			if (_particle[i].start)
-//			{
-//				_particle[i].frame++;
-//				if (_particle[i].frame > 15)_particle[i].frame = 0;
-//			}
-//		}
-//	}
-//	if (_tick % 15 == 0 && _frame.size() != 0)
-//	{
-//		for (int i = 0; i < _temp.size(); i++)
-//		{
-//			if (_temp[i].start)_frame[i]++;
-//		}
-//	}
-//
-//
-//
-//	 ½ºÅ³
-//	for (int i = 0; i < _temp.size(); i++)
-//	{
-//		if (_temp[i].start)
-//		{
-//
-//			if (i < 20)
-//			{
-//				if (_frame[i] < 12)
-//				{
-//					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 80, 120, _frame[i], 0);
-//					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 80, 255, _frame[i], 0);
-//				}
-//			}
-//			else if (i < 40)
-//			{
-//				if (_frame[i] < 12)
-//				{
-//					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 80, 120, _frame[i], 0);
-//					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 80, 255, _frame[i], 0);
-//				}
-//			}
-//
-//
-//			if (_temp[i].frame < IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®5")->getMaxFrameX())
-//			{
-//				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®5")->alphaFrameRender(getMemDC(), _temp[i].x - 50, _temp[i].y - 100, 120, _temp[i].frame, 0);
-//				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®5±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x - 50, _temp[i].y - 100, 255, _temp[i].frame, 0);
-//			}
-//
-//
-//			if (_temp[i].frame > 5 && i + 1 < _temp.size()) _temp[i + 1].start = true;
-//
-//			for (int j = 0; j < i * 5; j++)
-//			{
-//				if (!_particle[j].start)	_particle[j].start = true;
-//			}
-//		}
-//	}
-//
-//		for (int i = 0; i < _particle.size(); i++)
-//		{
-//			if (_particle[i].start)
-//			{
-//				IMAGEMANAGER->findImage("½ºÅ³ÆÄÆ¼Å¬1")->alphaFrameRender(getMemDC(), _particle[i].x, _particle[i].y, _particle[i].alpha, _particle[i].frame, 0);
-//				if (_particle[i].alpha > 0)_particle[i].alpha -= 2;
-//				if (_particle[i].alpha <= 0)_particle[i].alpha = 0;
-//				_particle[i].y -= _particle[i].speed;
-//				_particle[i].speed -= 0.3f;
-//			}
-//		}
-//
-//
-//		 ÃÊ±âÈ­ ÅÏ³Ñ±è
-//		if (_frame[30] >= IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->getMaxFrameX())
-//		{
-//			_skill.reset();
-//			_skill.set(4, 1);
-//			_skillFrame = 0;
-//			_tick = 0;
-//			for (int i = 0; i < _frame.size(); i++)
-//				_frame[i] = 0;
-//
-//			for (int i = 0; i < _temp.size(); i++)
-//			{
-//				_temp[i].start = false;
-//				_temp[i].frame = 0;
-//			}
-//			_particle.clear();
-//		}
-//	}
-//	else if (_skill[4] == 1)
-//	{
-//		if (_frame[1] > IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1")->getMaxFrameX()&&_frame[2] < IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2")->getMaxFrameX())
-//		{
-//			for (int i = 0; i < 4; i++)
-//			{
-//				IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 220, 100, _frame[2], 0);
-//				IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2±¤¿ø")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 220, 255, _frame[2], 0);
-//				IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2_1")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 220, 100, _frame[2], 0);
-//				IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2_1±¤¿ø")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 220, 255, _frame[2], 0);
-//			}
-//		}
-//
-//	}
-//	if(_skill[5]==1 && _frame[0]==0)IMAGEMANAGER->findImage("»¡°­¾ËÆÄ")->render(getMemDC());
-//}
-//
-//void Skill::skillDown(Player* _pl, Enemy* _em[10])
-//{
-//	if (_skill[1] == 1)
-//	{
-//#pragma region ºÒ±âµÕ1
-//	if (IMAGEMANAGER->findImage("»ì¶óµò_½ºÅ³")->getFrameX() == IMAGEMANAGER->findImage("»ì¶óµò_½ºÅ³")->getMaxFrameX())
-//	{
-//		if (_tick % 5 == 0)
-//		{
-//			_skillFrame++;
-//		}
-//
-//		if (_temp.size() == 0)
-//		{
-//			 ºÒ±âµÕ1
-//		 ¿ìÇÏ
-//			int _tempX = 0;
-//			int _tempY = 0;
-//			for (int i = 0; i < 10; i++)
-//			{
-//				_tempX += 40;
-//				_tempY += 32;
-//				_temp.push_back({ _pl->getPL()._x + _tempX,_pl->getPL()._y + _tempY,false,0 });
-//			}
-//
-//			ÁÂ»ó
-//			_tempX = 0;
-//			_tempY = 0;
-//			for (int i = 10; i < 20; i++)
-//			{
-//				_tempX -= 40;
-//				_tempY -= 32;
-//				_temp.push_back({ _pl->getPL()._x + _tempX,_pl->getPL()._y + _tempY,false,0 });
-//			}
-//
-//			 ÁÂÇÏ
-//			_tempX = 0;
-//			_tempY = 0;
-//			for (int i = 20; i < 30; i++)
-//			{
-//				_tempX -= 40;
-//				_tempY += 32;
-//				_temp.push_back({ _pl->getPL()._x + _tempX,_pl->getPL()._y + _tempY,false,0 });
-//			}
-//
-//			 ¿ì»ó
-//			_tempX = 0;
-//			_tempY = 0;
-//			for (int i = 30; i < 40; i++)
-//			{
-//				_tempX += 40;
-//				_tempY -= 32;
-//				_temp.push_back({ _pl->getPL()._x + _tempX,_pl->getPL()._y + _tempY,false,0 });
-//			}
-//		}
-//
-//
-//
-//		for (int i = 0; i < 10; i++)
-//		{
-//			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1_1")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 250, 150, _skillFrame, 0);
-//			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 250, 255, _skillFrame, 0);
-//		}
-//		for (int i = 10; i < 20; i++)
-//		{
-//			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1_1")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 250, 150, _skillFrame, 0);
-//			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1_1±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 250, 255, _skillFrame, 0);
-//		}
-//
-//		for (int i = 20; i < 30; i++)
-//		{
-//			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1_1")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 250, 150, _skillFrame, 0);
-//			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1_1±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 250, 255, _skillFrame, 0);
-//		}
-//		for (int i = 30; i < 40; i++)
-//		{
-//			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 250, 150, _skillFrame, 0);
-//			IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ1±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 250, 255, _skillFrame, 0);
-//		}
-//
-//		 ÅÍÁö´Â ÀÌÆåÆ®
-//		IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 80, _pl->getPL()._y - 150, 150, _skillFrame, 0);
-//		IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1±¤¿ø")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 80, _pl->getPL()._y - 150, 255, _skillFrame, 0);
-//
-//		IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®2")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 80, _pl->getPL()._y - 50, 150, _skillFrame, 0);
-//		IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®2±¤¿ø")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 80, _pl->getPL()._y - 50, 255, _skillFrame, 0);
-//
-//		if (IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getFrameX() >= IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getMaxFrameX())
-//		{
-//			_skill.reset();
-//			_skill.set(2, 1);
-//			_skillFrame = 0;
-//			_tick = 0;
-//		}
-//	}
-//#pragma endregion
-//	}
-//	else if (_skill[2] == 1)
-//{
-//#pragma region ºÒ±âµÕ2
-//if (_tick % 8 == 0)
-//{
-//	_skillFrame++;
-//}
-//
-//for (int i = 0; i < 10; i++)
-//{
-//	IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 100, 150, _skillFrame, 0);
-//	IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 100, 255, _skillFrame, 0);
-//}
-//for (int i = 10; i < 20; i++)
-//{
-//	IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 100, 150, _skillFrame, 0);
-//	IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 100, 255, _skillFrame, 0);
-//}
-//
-//for (int i = 20; i < 30; i++)
-//{
-//	IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 100, 150, _skillFrame, 0);
-//	IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 100, 255, _skillFrame, 0);
-//}
-//for (int i = 30; i < 40; i++)
-//{
-//	IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 100, 150, _skillFrame, 0);
-//	IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y - 100, 255, _skillFrame, 0);
-//}
-//
-//if (IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->getFrameX() >= 11)
-//{
-//	_skill.reset();
-//	_skill.set(3, 1);
-//	_skillFrame = 0;
-//	_tick = 0;
-//	_temp[0].start = true;
-//	for (int i = 0; i < _temp.size(); i++)
-//	{
-//		_frame.push_back(0);
-//	}
-//}
-//#pragma endregion
-//}
-//	else if (_skill[4] == 1)
-//	{
-//	if (_tick % 5 == 0)
-//	{
-//		_skillFrame++;
-//		_frame[0]++;
-//		_frame[1]++;
-//		if (_frame[1] > IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1")->getMaxFrameX()) _frame[2]++;
-//	}
-//
-//	if (_frame[0] < IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->getMaxFrameX())
-//	{
-//		for (int i = 0; i < 4; i++)
-//		{
-//			IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 40, 100, _frame[0], 0);
-//			IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3±¤¿ø")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 40, 255, _frame[0], 0);
-//		}
-//	}
-//
-//	if (_frame[1] < IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1")->getMaxFrameX())
-//	{
-//		for (int i = 0; i < 4; i++)
-//		{
-//			IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 40, 100, _frame[1], 0);
-//			IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3_1±¤¿ø")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() + 20, _em[i]->getEnemyY() - 40, 255, _frame[1], 0);
-//		}
-//	}
-//
-//
-//	 ÃÊ±âÈ­
-//	if (_frame[2] > IMAGEMANAGER->findImage("½ºÅ³ºÒ±âµÕ2")->getMaxFrameX())
-//	{
-//		_skill.reset();
-//		_skill.set(5, 1);
-//		_skillFrame = 0;
-//		_tick = 0;
-//		_particle.clear();
-//		_frame.clear();
-//		for (int i = 0; i < _temp.size(); i++)
-//		{
-//			_frame.push_back(0);
-//		}
-//
-//		 ÆÄÆ¼Å¬ »õ·Î Ãß°¡
-//		for (int i = 0; i < 4; i++)
-//		{
-//			for (int j = 0; j < 10; j++)
-//			{
-//				_particle.push_back({ RND->getFromFloatTo(_em[i]->getEnemyX() - 100,_em[i]->getEnemyX() + 100),
-//									RND->getFromFloatTo(_em[i]->getEnemyY() - 60,_em[i]->getEnemyY() + 100),
-//									0,0,255,false });
-//			}
-//
-//		}
-//
-//	}
-//
-//	}
-//	else if (_skill[5] == 1)
-//	{
-//		if (_tick % 5 == 0)
-//		{
-//			_skillFrame++;
-//			_frame[0]++;
-//			_frame[1]++;
-//			_frame[2]++;
-//
-//			if (_frame[1] > 4 && _particle[0].alpha != 0)_frame[1] = 0;
-//			if (_frame[2] > 15)_frame[2] = 0;
-//		}
-//
-//		if (_frame[0] < IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getMaxFrameX())
-//		{
-//			for (int i = 0; i < 4; i++)
-//			{
-//				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() - 70,
-//																				_em[i]->getEnemyY() - 130, 100, _frame[0], 0);
-//				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1±¤¿ø")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() - 70, 
-//																				_em[i]->getEnemyY() - 130, 255, _frame[0], 0);
-//			}
-//		}
-//
-//
-//		for (int i = 0; i < 4; i++)
-//		{
-//			IMAGEMANAGER->findImage("½ºÅ³¹Ù´ÚºÒ")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() - 30, _em[i]->getEnemyY(), 100, _frame[1], 0);
-//			IMAGEMANAGER->findImage("½ºÅ³¹Ù´ÚºÒ±¤¿ø")->alphaFrameRender(getMemDC(), _em[i]->getEnemyX() - 30, _em[i]->getEnemyY(), 255, _frame[1], 0);
-//		}
-//
-//		for (int i = 0; i < _particle.size(); i++)
-//		{
-//			IMAGEMANAGER->findImage("½ºÅ³ÆÄÆ¼Å¬3")->alphaFrameRender(getMemDC(), _particle[i].x, _particle[i].y, _particle[i].alpha, _frame[2], 0);
-//			_particle[i].y += _particle[i].speed;
-//			_particle[i].speed -= 0.05f;
-//			_particle[i].alpha -= 2;
-//			if (_particle[i].alpha <= 0) _particle[i].alpha = 0;
-//		}
-//
-//		if (_frame[0] > IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getMaxFrameX())
-//		{
-//			_skill.reset();
-//			_skill.set(6, 1);
-//			_skillFrame = 0;
-//			_tick = 0;
-//			_frame.clear();
-//			_particle.clear();
-//		}
-//		
-//
-//	}
-//
-//}
 

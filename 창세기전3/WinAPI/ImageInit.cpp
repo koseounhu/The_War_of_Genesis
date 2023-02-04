@@ -90,6 +90,8 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ1_1±¤¿ø", PL"ºÒ±âµÕ1_1±¤¿ø.bmp", 1600, 300, 32, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ2±¤¿ø", PL"ºÒ±âµÕ2±¤¿ø.bmp", 1600, 300, 32, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ2_1±¤¿ø", PL"ºÒ±âµÕ2_1±¤¿ø.bmp", 1600, 300, 32, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ3±¤¿ø", PL"ºÒ±âµÕ3±¤¿ø.bmp", 1600, 300, 32, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ3_1±¤¿ø", PL"ºÒ±âµÕ3_1±¤¿ø.bmp", 1600, 300, 32, 1, true, MAZEN);
 
 	IMAGEMANAGER->addFrameImage("½ºÅ³¹Ù´ÚºÒ±¤¿ø", PL"¹Ù´ÚºÒ±¤¿ø.bmp", 1800, 150, 12, 1, true, MAZEN);
 

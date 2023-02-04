@@ -55,6 +55,7 @@ struct TILE
 	int unit;
 	bool moveTileColli;
 };
+
 #pragma endregion
 
 
@@ -68,11 +69,13 @@ private:
 	int _skillFrame;
 	bool _skillBool;
 
+
 	// 시작시 카메라 무빙
 	bool _gameStart;
 
 	// 타일을 만들기위한 구조체
 	TILE _tile[H_NUM][V_NUM];
+	
 
 	// 열린 목록
 	vector<OpenList> _openList;

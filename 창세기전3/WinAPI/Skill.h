@@ -1,7 +1,6 @@
 #pragma once
 #include "GameNode.h" 
 
-class Enemy;
 class Player;
 
 struct TEMP
@@ -20,6 +19,13 @@ struct particle
 	int alpha;
 	bool start;
 };
+struct SKILLXY
+{
+	float x;
+	float y;
+	int frame;
+	bool start;
+};
 
 class Skill : public GameNode
 {
@@ -27,11 +33,14 @@ private:
 	// ½ºÅ³
 	bitset<20>_skill;
 	int _tick;
+	int _circleFrame;
+	bool _num2;
 
 	vector<TEMP> _temp;
 	vector<TEMP>_fire;
 	vector<TEMP>_fireball;
 	vector<particle> _particle;
+	vector<SKILLXY> _enemyXY;
 
 public:
 	HRESULT init(void);
@@ -39,12 +48,13 @@ public:
 	void update(void);
 	void render(void);
 
-	void skillRender(Player* _pl, Enemy* _em[10]);
+	void skillRender(Player* _pl);
 
 	bitset<20> getBitset() { return _skill; }
 	void setBitset(bitset<20>bit) { _skill = bit; }
-	void skillUp(Player* _pl, Enemy* _em[10]);
-	void skillDown(Player* _pl, Enemy* _em[10]);
+	vector<SKILLXY> getSkillXY(void) { return _enemyXY; }
+	void setSkillXY(float x, float y, int frame, bool start) { _enemyXY.push_back({ x,y,frame,start }); }
+	void clearSkillXY(void) { _enemyXY.clear(); }
 
 	Skill() {}
 	~Skill() {}
