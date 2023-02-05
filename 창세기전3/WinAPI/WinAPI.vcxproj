@@ -185,6 +185,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Vermouth.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
@@ -229,6 +230,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="Vermouth.h" />
     <ClInclude Include="WorldMap.h" />
   </ItemGroup>
   <ItemGroup>

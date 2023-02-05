@@ -50,6 +50,10 @@ HRESULT Battle::init(void)
 	_ui = new UI;
 	_ui->init();
 
+	_ve = new Vermouth;
+	_ve->init();
+	_ve->setVEX(_tile[20][25].x);
+	_ve->setVEY(_tile[20][25].y);
 
     return S_OK;
 }
@@ -59,6 +63,7 @@ void Battle::release(void)
 	SAFE_DELETE(_sk);
 	SAFE_DELETE(_pl);
 	SAFE_DELETE(_ui);
+	SAFE_DELETE(_ve);
 }
 
 void Battle::update(void)
@@ -252,9 +257,12 @@ void Battle::update(void)
 		}
 	}
 
+	_ve->setVEX(_tile[20][25].x);
+	_ve->setVEY(_tile[20][25].y);
 
 
 	_ui->update();
+	_ve->update();
 }
 
 void Battle::render(void)
@@ -264,7 +272,7 @@ void Battle::render(void)
    
 #pragma region 마우스타일, 맵타일그리기
    // 마우스타일
-   if (!_ui->getSkillState())
+   if (!_ui->getSkillState()&& _ui->getTileState())
    {
 	   for (int j = 0; j < H_NUM; j++)
 	   {
@@ -309,161 +317,152 @@ void Battle::render(void)
 
 #pragma region skillUI
 
-#pragma region 타일온
+	#pragma region 타일온
 
-   if (_ui->getTileState())
-   {
-	   moveTileStar(_pl->getPL()._indexX, _pl->getPL()._indexY);
-	   for (int i = 0; i < V_NUM; i++)
+	   if (_ui->getTileState())
 	   {
-		   for (int j = 0; j < H_NUM; j++)
+		   moveTileStar(_pl->getPL()._indexX, _pl->getPL()._indexY);
+		   for (int i = 0; i < V_NUM; i++)
 		   {
-			   if (_tile[j][i].moveTileColli)
+			   for (int j = 0; j < H_NUM; j++)
 			   {
-				   IMAGEMANAGER->findImage("블루타일")->alphaRender(getMemDC(), _tile[j][i].x, _tile[j][i].y, 100);
+				   if (_tile[j][i].moveTileColli)
+				   {
+					   IMAGEMANAGER->findImage("블루타일")->alphaRender(getMemDC(), _tile[j][i].x, _tile[j][i].y, 100);
+				   }
 			   }
 		   }
-	   }
-	   for (int i = 0; i < _cantMoveList.size(); i++)
-	   {
-		   IMAGEMANAGER->findImage("노랑타일")->alphaRender(getMemDC(), _tile[_cantMoveList[i].idxX][_cantMoveList[i].idxY].x,
-			   _tile[_cantMoveList[i].idxX][_cantMoveList[i].idxY].y, 100);
-	   }
-
-	   if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	   {
-		   // 플레이어이동
-		   if (_ui->getTileState())
+		   for (int i = 0; i < _cantMoveList.size(); i++)
 		   {
-			   for (int j = 0; j < V_NUM; j++)
+			   IMAGEMANAGER->findImage("노랑타일")->alphaRender(getMemDC(), _tile[_cantMoveList[i].idxX][_cantMoveList[i].idxY].x,
+				   _tile[_cantMoveList[i].idxX][_cantMoveList[i].idxY].y, 100);
+		   }
+
+		   if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+		   {
+			   // 플레이어이동
+			   if (_ui->getTileState())
 			   {
-				   for (int i = 0; i < H_NUM; i++)
+				   for (int j = 0; j < V_NUM; j++)
 				   {
-					   // 클릭에 따른 A* 활성화
-					   if (_ptMouse.x > _tile[i][j].x && _ptMouse.x < _tile[i + 1][j].x &&
-						   _ptMouse.y > _tile[i][j].y && _ptMouse.y < _tile[i][j + 1].y)
+					   for (int i = 0; i < H_NUM; i++)
 					   {
-						   if (!_tile[i][j].mapColli)
+						   // 클릭에 따른 A* 활성화
+						   if (_ptMouse.x > _tile[i][j].x && _ptMouse.x < _tile[i + 1][j].x &&
+							   _ptMouse.y > _tile[i][j].y && _ptMouse.y < _tile[i][j + 1].y)
 						   {
-							   Astar(_pl->getPL()._indexX, _pl->getPL()._indexY, i, j);
-							   _pl->setPAstar(true);
+							   if (!_tile[i][j].mapColli)
+							   {
+								   Astar(_pl->getPL()._indexX, _pl->getPL()._indexY, i, j);
+								   _pl->setPAstar(true);
+							   }
 						   }
 					   }
 				   }
 			   }
+			   _ui->setTileState(false);
 		   }
-		   _ui->setTileState(false);
 	   }
-   }
-#pragma endregion
-#pragma region 스킬온
-   if (_ui->getSkillState())
-   {
-	   bitset<20> bit;
-	   bit.set(0, 1);
-	   _sk->setBitset(bit);
+	#pragma endregion
+	#pragma region 스킬온
+	   if (_sk->getSkillXY().size() < 8)
+	   {
+		   _sk->setSkillXY(_ve->getVE()._x, _ve->getVE()._y, 12, true);
+	   }
 
-	   IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), 150);
-	   if (_sk->getBitset()[0] == 1)
+	   if (_ui->getSkillState())
 	   {
-		   _pl->setPState(3);
-		   _pl->setPSkill(0);
-	   }
-	   if (_sk->getBitset()[1] == 1)
-	   {
-		   _skillTick++;
-		   if (_skillTick % 5 == 0)
+		   if (_sk->getBitset().any() == 0)
 		   {
-			   _skillFrame++;
-			   _pl->setPSkill(_skillFrame);
+			_sk->setBitset(0, 1);
 		   }
-	   }
-	   if (_sk->getBitset()[5] == 1)
-	   {
-		   _pl->setPState(0);
-	   }
-	   if (_sk->getBitset()[6] == 1)
-	   {
-		   _ui->setSkillState(false);
-		   _ui->setUIState(false);
-		   _ui->setAbilityState(false);
-		   _sk->getBitset().reset();
-	   }
+		   IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), 255);
+		   if (_sk->getBitset()[0] == 1)
+		   {
+			   _pl->setPState(3);
+			   _pl->setPSkill(0);
+		   }
+		   if (_sk->getBitset()[1] == 1)
+		   {
+			   _skillTick++;
+			   if (_skillTick % 5 == 0)
+			   {
+				   _skillFrame++;
+				   _pl->setPSkill(_skillFrame);
+			   }
+		   }
+		   if (_sk->getBitset()[5] == 1)
+		   {
+			   _pl->setPState(0);
+		   }
+		   if (_sk->getBitset()[6] == 1)
+		   {
+			   _ui->setSkillState(false);
+			   _ui->setUIState(false);
+			   _ui->setAbilityState(false);
+			   _sk->getBitset().reset();
+		   }
 
 
-	   // 카메라 쉐이킹
-	   _skillTick++;
-	   if (_sk->getBitset()[3] == 1 || _sk->getBitset()[5] == 1)
-	   {
-		   if (_skillTick % 3 == 0)
+		   // 카메라 쉐이킹
+		   if (_sk->getBitset()[3] == 1 && _skillTick % 4 == 0)
 		   {
 			   if (_skillBool == false) _skillBool = true;
 			   else if (_skillBool == true) _skillBool = false;
-		   }
-		   if (_skillBool)
-		   {
-			   for (int j = 0; j < V_NUM; j++)
+			   if (_skillBool)
 			   {
-				   for (int i = 0; i < H_NUM; i++)
+				   for (int j = 0; j < V_NUM; j++)
 				   {
-					   _tile[i][j].x -= 10;
+					   for (int i = 0; i < H_NUM; i++)
+					   {
+						   _tile[i][j].x -= 3;
+						   _tile[i][j].y -= 3;
+					   }
 				   }
-			   }
 
-			   for (int j = 0; j < V_NUM; j++)
-			   {
-				   for (int i = 0; i < H_NUM; i++)
-				   {
-					   _tile[i][j].y -= 10;
-				   }
+				   _x -= 3;
+				   _y -= 3;
 			   }
-			   _x -= 10;
-			   _y -= 10;
+			   else
+			   {
+				   for (int j = 0; j < V_NUM; j++)
+				   {
+					   for (int i = 0; i < H_NUM; i++)
+					   {
+						   _tile[i][j].x += 3;
+						   _tile[i][j].y += 3;
+					   }
+				   }
+
+				   _x += 3;
+				   _y += 3;
+			   }
 		   }
 		   else
 		   {
-			   for (int j = 0; j < V_NUM; j++)
-			   {
-				   for (int i = 0; i < H_NUM; i++)
-				   {
-					   _tile[i][j].x += 10;
-				   }
-			   }
-
-			   for (int j = 0; j < V_NUM; j++)
-			   {
-				   for (int i = 0; i < H_NUM; i++)
-				   {
-					   _tile[i][j].y += 10;
-				   }
-			   }
-			   _x += 10;
-			   _y += 10;
+			   _pl->setPX(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x);
+			   _pl->setPY(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y);
 		   }
 	   }
-	   else
+	#pragma endregion
+
+
+	#pragma region 적 렌더
+	   if (!_emRender)
 	   {
-		   _pl->setPX(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x);
-		   _pl->setPY(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y);
+		   if (_sk->getBitset()[6] == 1)
+		   {
+			   _skillTick = 0;
+			   _emRender = true;
+		   }
 	   }
-   }
-#pragma endregion
 
-
-#pragma region 적 렌더
-   if (!_emRender)
-   {
-	   if (_sk->getBitset()[6] == 1)
-	   {
-		   _skillTick = 0;
-		   _emRender = true;
-	   }
-   }
-
-#pragma endregion
-   _sk->render();
+	#pragma endregion
+	if (_ui->getSkillState())	_sk->DownSkill(_pl);
    _pl->render();
    _ui->render(_pl);
+   _ve->render();
+	if(_ui->getSkillState()) _sk->UpSkill(_pl);
 
 #pragma endregion
 

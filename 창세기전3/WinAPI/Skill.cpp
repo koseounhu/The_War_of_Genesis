@@ -237,6 +237,7 @@ void Skill::UpSkill(Player* _pl)
 	// 노란 불기둥
 	if (_skill[2] == 1)
 	{
+
 		if (_tick % 3 == 0)
 		{
 			for (int i = 0; i < _fire.size(); i++)
@@ -306,7 +307,8 @@ void Skill::UpSkill(Player* _pl)
 			_skill.set(7, 1);
 			for (int i = 0; i < 8; i++)
 			{
-				_enemyXY[i].frame = 0;
+				
+					_enemyXY[i].frame = 0;
 			}
 			// 파티클 생성
 			for (int i = 0; i < _enemyXY.size(); i++)
@@ -331,12 +333,16 @@ void Skill::DownSkill(Player* _pl)
 		{
 			for (int i = 0; i < 4; i++)
 			{
-				_enemyXY[i].frame++;
-				if (_enemyXY[i].frame == IMAGEMANAGER->findImage("스킬이펙트3")->getMaxFrameX())_enemyXY[i].frame = 13;
+				if (i < _enemyXY.size())
+				{
+					_enemyXY[i].frame++;
+					if (_enemyXY[i].frame == IMAGEMANAGER->findImage("스킬이펙트3")->getMaxFrameX())_enemyXY[i].frame = 13;
+				}
 			}
 		}
 		for (int i = 0; i < 4; i++)
 		{
+			if (i < _enemyXY.size())
 			if (_enemyXY[i].start)
 			{
 				IMAGEMANAGER->findImage("스킬이펙트3")->alphaFrameRender(getMemDC(), _enemyXY[i].x, _enemyXY[i].y + 35, 150, _enemyXY[i].frame, 0);
@@ -361,6 +367,7 @@ void Skill::DownSkill(Player* _pl)
 		{
 			for (int i = 0; i < 4; i++)
 			{
+				
 				_enemyXY[i].frame++;
 			}
 			for (int i = 0; i < _particle.size(); i++) _particle[i].frame++;
@@ -369,6 +376,7 @@ void Skill::DownSkill(Player* _pl)
 		{
 			for (int i = 4; i < 8; i++)
 			{
+				
 				_enemyXY[i].frame++;
 			}
 		}

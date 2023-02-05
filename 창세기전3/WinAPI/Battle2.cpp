@@ -311,6 +311,7 @@ void Battle2::render(void)
 	// 스킬 UI 창
 	if (_ui&& !_skillOn )
 	{
+
 		RECT _skillUI[4];
 		_skillUI[0]= RectMakeCenter(_pl->getPL()._x-80, _pl->getPL()._y-40, IMAGEMANAGER->findImage("스킬UI")->getFrameWidth(), IMAGEMANAGER->findImage("스킬UI")->getFrameHeight());
 		_skillUI[1]= RectMakeCenter(_pl->getPL()._x+130, _pl->getPL()._y-40, IMAGEMANAGER->findImage("스킬UI")->getFrameWidth(), IMAGEMANAGER->findImage("스킬UI")->getFrameHeight());
@@ -409,13 +410,12 @@ void Battle2::render(void)
 		{
 			_tileOn = false;
 			_skillOn = true;
-			bitset<20> bit;
-			bit.set(0, 1);
-			_sk->setBitset(bit);
+			_sk->setBitset(0,1);
 		}
 	}
 	#pragma endregion
 	#pragma region 스킬온
+	_skillTick++;
 	if (_skillOn)
 	{
 		IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), 255);
@@ -442,14 +442,10 @@ void Battle2::render(void)
 
 
 		// 카메라 쉐이킹
-		_skillTick++;
-		if (_sk->getBitset()[3] == 1 || _sk->getBitset()[5]==1)
+		if (_sk->getBitset()[3] == 1&& _skillTick % 4 == 0)
 		{
-			if (_skillTick % 4 == 0)
-			{
-				if (_skillBool == false) _skillBool = true;
-				else if (_skillBool == true) _skillBool = false;
-			}
+			if (_skillBool == false) _skillBool = true;
+			else if (_skillBool == true) _skillBool = false;
 			if (_skillBool)
 			{
 				for (int j = 0; j < V_NUM; j++)
@@ -510,9 +506,10 @@ void Battle2::render(void)
 		_tile[13][28].unit == 2;
 		_tile[25][28].unit == 2;
 	}
+	else if (_sk->getBitset()[5]==1)_skillTick = 0;
 	else if (_sk->getBitset()[6] == 1)
 	{
-		_skillTick = 0;
+		
 
 		_emRender = true;
 
@@ -537,7 +534,7 @@ void Battle2::render(void)
 		IMAGEMANAGER->findImage("클리어광원")->alphaRender(getMemDC(), 0, 300, 150);
 		IMAGEMANAGER->findImage("클리어텍스트")->alphaRender(getMemDC(), 305, 325, 100);
 		IMAGEMANAGER->findImage("클리어텍스트광원")->alphaRender(getMemDC(), 300, 320, 255);
-		if (_skillTick > 200)
+		if (_skillTick > 250)
 			SCENEMANAGER->changScene("월드맵");
 	}
 

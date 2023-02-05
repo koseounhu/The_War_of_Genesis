@@ -113,6 +113,7 @@ void UI::render(Player* _pl)
 		{
 			_ui = _ability = false;
 			_skillOn = true;
+			
 		}
 	}
 #pragma endregion

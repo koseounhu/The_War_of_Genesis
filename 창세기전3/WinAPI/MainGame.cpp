@@ -26,7 +26,7 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("시나리오컷씬", new firstCutScene);
 
 
-	SCENEMANAGER->changScene("전투2");
+	SCENEMANAGER->changScene("전투");
 
 
 	return S_OK;

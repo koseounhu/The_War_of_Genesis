@@ -97,6 +97,9 @@
     <Filter Include="UI">
       <UniqueIdentifier>{c55dacbc-040f-4a03-96c9-511d0c7c9fa4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit\Vermouth">
+      <UniqueIdentifier>{c7cce52b-b542-41d0-943e-26c4a09ecefa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C3DMatrix.cpp">
@@ -203,6 +206,9 @@
     <ClCompile Include="UI.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="Vermouth.cpp">
+      <Filter>Unit\Vermouth</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C3DMatrix.h">
@@ -307,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Vermouth.h">
+      <Filter>Unit\Vermouth</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 #include "Skill.h"
 #include "Enemy.h"
 #include "UI.h"
+#include "Vermouth.h"
 
 #pragma region ¸Ê, A*
 // °¡·Î Ä­ °³¼ö
@@ -98,7 +99,7 @@ private:
 
 	// ÇÃ·¹ÀÌ¾î
 	Player* _pl;
-	Enemy* _em[10];
+	Vermouth* _ve;
 	Skill* _sk;
 	bool _emRender;
 	UI* _ui;

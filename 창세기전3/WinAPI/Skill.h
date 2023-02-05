@@ -53,7 +53,7 @@ public:
 	void DownSkill(Player* _pl);
 
 	bitset<20> getBitset() { return _skill; }
-	void setBitset(bitset<20>bit) { _skill = bit; }
+	void setBitset(int bitnum, bool state) { _skill.set(bitnum,state); }
 	vector<SKILLXY> getSkillXY(void) { return _enemyXY; }
 	void setSkillXY(float x, float y, int frame, bool start) { _enemyXY.push_back({ x,y,frame,start }); }
 	void clearSkillXY(void) { _enemyXY.clear(); }
