@@ -19,6 +19,7 @@ struct particle
 	int alpha;
 	bool start;
 };
+
 struct SKILLXY
 {
 	float x;
@@ -48,7 +49,8 @@ public:
 	void update(void);
 	void render(void);
 
-	void skillRender(Player* _pl);
+	void UpSkill(Player* _pl);
+	void DownSkill(Player* _pl);
 
 	bitset<20> getBitset() { return _skill; }
 	void setBitset(bitset<20>bit) { _skill = bit; }
