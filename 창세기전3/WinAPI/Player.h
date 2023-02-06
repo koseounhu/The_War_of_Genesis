@@ -21,6 +21,7 @@ class Player : public GameNode
 private:
 	int _tick;
 	int _frame;
+	int _atked;
 	PL _pl;
 
 

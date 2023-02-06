@@ -54,6 +54,8 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("살라딘_대기", PL"살라딘_idle.bmp", 240, 400, 3, 4, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("살라딘_공격", PL"살라딘_atk.bmp", 700, 440, 5, 4, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("살라딘_스킬", PL"살라딘_스킬.bmp", 800, 100, 8, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("살라딘_피격좌", PL"피격좌.bmp", 1224, 80, 12, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("살라딘_피격우", PL"피격우.bmp", 1224, 80, 12, 1, true, MAZEN);
 
 	IMAGEMANAGER->addFrameImage("버몬트_걷기", PL"버몬트_WALK.bmp", 900, 360, 6, 4, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("버몬트_대기", PL"버몬트_IDLE.bmp", 270, 360, 3, 4, true, MAZEN);

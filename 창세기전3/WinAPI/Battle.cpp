@@ -290,7 +290,6 @@ void Battle::update(void)
 			if (_ve->getVE()._indexX == _closeList[6].idxX &&
 				_ve->getVE()._indexY == _closeList[6].idxY)
 			{
-				cout << "??" << endl;
 				for (int i = 0; i < _closeList.size(); i++)
 				{
 					_tile[_closeList[i].idxX][_closeList[i].idxY].unit = 0;
@@ -299,7 +298,9 @@ void Battle::update(void)
 				_ve->setVEIdx(_closeList.back().idxX, _closeList.back().idxY);
 				_ve->setVCount(0, 0);
 				_ve->setVEState(0);
+				turn.set(0, 0);
 			}
+			
 		}
 		else
 		{
@@ -314,26 +315,10 @@ void Battle::update(void)
 				_ve->setVEIdx(_closeList.back().idxX, _closeList.back().idxY);
 				_ve->setVCount(0, 0);
 				_ve->setVEState(0);
-
-				int sta = _pl->getPL()._indexX - _ve->getVEIndexX();
-				switch (sta)
-				{
-				case 1: _ve->setVEView(1);
-					_ve->setVEState(2);
-					break;
-
-				case -1:_ve->setVEView(0);
-					_ve->setVEState(2);
-					break;
-
-				default:
-					break;
-				}
+				turn.set(0, 0);
+				
 			}
-
 		}
-			
-
 	}
 	
 	// 버몬트 인덱스변화
@@ -352,7 +337,6 @@ void Battle::update(void)
 	}
 
 	_ve->update();
-
 #pragma endregion 
 
 	// 플레이어 UI 띄우기
@@ -378,11 +362,12 @@ void Battle::update(void)
 		if (!turn[0])	turn.set(0, 1);
 		else turn.reset();
 
-		// 플레이어 주변 렉트 검사
+		// 버몬트 턴
 		if (turn[0])
 		{
-			if ((_ve->getVEIndexX() != _pl->getPL()._indexX - 1 && _ve->getVEIndexY() != _pl->getPL()._indexY) &&
-				(_ve->getVEIndexX() != _pl->getPL()._indexX + 1 && _ve->getVEIndexY() != _pl->getPL()._indexY))
+			// 플레이어 근처가 아니면 a스타 발동
+			if ((_ve->getVEIndexX() != _pl->getPL()._indexX - 1 || _ve->getVEIndexX() != _pl->getPL()._indexX + 1) &&
+				_ve->getVEIndexY() != _pl->getPL()._indexY)
 			{
 				if (_tile[_pl->getPL()._indexX - 1][_pl->getPL()._indexY].unit == 0)
 					Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX - 1, _pl->getPL()._indexY);
@@ -391,12 +376,37 @@ void Battle::update(void)
 
 				// 에이스타 시작
 				if (_closeList.size() > 0)	_ve->setVEastar(true);
-
 			}
-			else
+
+			// 플레이어 양옆쪽이면 공격
+			if ((_ve->getVEIndexX() == _pl->getPL()._indexX - 1 || _ve->getVEIndexX() == _pl->getPL()._indexX + 1) &&
+				_ve->getVEIndexY() == _pl->getPL()._indexY)
 			{
+				_pl->setPState(4);
+				_ve->setVEState(2);
+
+				int sta = _pl->getPL()._indexX - _ve->getVEIndexX();
+
+				switch (sta)
+				{
+				case 1:
+					_ve->setVEView(1);
+					_pl->setPView(0);
+					break;
+
+				case -1:
+					_ve->setVEView(0);
+					_pl->setPView(1);
+					break;
+
+				default:
+					break;
+				}
+
 				
 			}
+			// 턴끝
+			turn.set(0, 0);
 		}
 	}
 

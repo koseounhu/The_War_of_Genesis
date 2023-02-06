@@ -7,7 +7,7 @@ HRESULT Player::init(void)
     _pl._y = 0;
     _frame = 0;
     _pl.skill = 0;
-
+    _atked = 0; // ÇÇ°İ½Ã
     return S_OK;
 }
 
@@ -23,7 +23,16 @@ void Player::update(void)
         _frame++;
         if (_frame > IMAGEMANAGER->findImage("»ì¶óµò_´ë±â")->getMaxFrameX())_frame = 0;
     }
-   
+    if (_tick % 5 == 0&& _pl._state ==4)
+    {
+        _atked++;
+        if (_frame > IMAGEMANAGER->findImage("»ì¶óµò_ÇÇ°İÁÂ")->getMaxFrameX())_atked = 0;
+
+    }
+    else if (_pl._state !=4)
+    {
+        _atked = 0;
+    }
 }
 
 void Player::render(void)
@@ -55,6 +64,21 @@ void Player::render(void)
     case 3:        
         IMAGEMANAGER->findImage("»ì¶óµò_½ºÅ³")->frameRender(getMemDC(), _pl._x-30, _pl._y - 50, _pl.skill, _pl._view);
         break;
+
+    case 4:
+
+        if (_pl._view == 1)
+        {
+            IMAGEMANAGER->findImage("»ì¶óµò_ÇÇ°İ¿ì")->frameRender(getMemDC(), _pl._x - 30, _pl._y - 50, _atked, _pl._view);
+        }
+        else
+        {
+            IMAGEMANAGER->findImage("»ì¶óµò_ÇÇ°İÁÂ")->frameRender(getMemDC(), _pl._x - 30, _pl._y - 50, _atked, _pl._view);
+        }
+
+        if (_pl._state == 4 && _atked >= 12) _pl._state = 0;
+        break;
+
     default:
         break;
     }
