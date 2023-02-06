@@ -33,6 +33,7 @@ class Skill : public GameNode
 private:
 	// ½ºÅ³
 	bitset<20>_skill;
+	bitset<10>_skillSound;
 	int _tick;
 	int _circleFrame;
 	bool _num2;

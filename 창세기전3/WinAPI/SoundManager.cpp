@@ -9,12 +9,9 @@ SoundManager::SoundManager() : _system(nullptr),_channel(nullptr),_sound(nullptr
 
 HRESULT SoundManager::init(void)
 {
-	// 사운드 시스템 생성
 	System_Create(&_system);
 	_system->init(totalSoundChannel,FMOD_INIT_NORMAL, 0);
 
-	// 채널 수 만큼 메모리 버퍼 및 사운드를 생성하겠다.
-	//	ㄴ 채널수와 사운드 수는 맞춰 주는 것이 좋다.
 	_sound = new Sound*[totalSoundChannel];
 	_channel = new Channel * [totalSoundChannel];
 
@@ -27,8 +24,6 @@ HRESULT SoundManager::init(void)
 
 void SoundManager::release(void)
 {
-	// 사운드 삭제
-	// 불규칙한 소리에 재수 없게 걸려서 날라가지않게 보호
 	if (_channel != nullptr || _sound != nullptr)
 	{
 		for (int i = 0; i < totalSoundChannel; i++)
@@ -60,9 +55,6 @@ void SoundManager::release(void)
 
 void SoundManager::update(void)
 {
-	// FMOD 시스템 갱신
-	//	ㄴ 사운드 시스템 업데이트
-	//	ㄴ 볼륨이 바뀌거나 재생이 끝난 사운드를 채널에서 빼는 등 다양한 작업을 자동으로 처리한다.
 	_system->update();
 
 }
@@ -96,7 +88,6 @@ void SoundManager::addSound(string keyName, string soundName, bool backGround, b
 
 
 // 프로그래스바 + 사운드 + 이펙트 + 애니메이션 계열
-//	ㄴ 0.0 ~ 1.0으로 표현한다.
 void SoundManager::play(string keyName, float volume)
 {
 	arrSoundIter iter = _mTotalSounds.begin();
@@ -157,6 +148,49 @@ void SoundManager::resume(string keyName)
 			break;
 		}
 	}
+}
+
+unsigned int SoundManager::getPosition(string keyName)
+{
+	
+	arrSoundIter iter = _mTotalSounds.begin();
+
+	int count=0;
+	unsigned int position;
+
+	for (iter; iter != _mTotalSounds.end(); ++iter, count++)
+	{
+		if (keyName == iter->first)
+		{
+			_channel[count]->getPosition(&position, FMOD_TIMEUNIT_MS);
+			break;
+		}
+	}
+
+	return position;
+}
+
+unsigned int SoundManager::getLength(string keyName)
+{
+	Sound* currentSound = nullptr;
+
+	int count = 0;
+	arrSoundIter iter = _mTotalSounds.begin();
+
+	unsigned int length;
+
+	for (iter; iter != _mTotalSounds.end(); ++iter, count++)
+	{
+		if (keyName == iter->first)
+		{
+			_channel[count]->getCurrentSound(&currentSound);
+			currentSound->getLength(&length, FMOD_TIMEUNIT_MS);
+			break;
+		}
+	}
+
+	return length;
+
 }
 
 bool SoundManager::isPlaySound(string keyName)

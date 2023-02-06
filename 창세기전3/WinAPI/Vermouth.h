@@ -29,10 +29,23 @@ public:
 	void update(void);
 	void render(void);
 
+	VERMOUTH getVE(void) { return _ve; }
+
+	int getVEIndexX(void) { return _ve._indexX; }
+	int getVEIndexY(void) { return _ve._indexY; }
+
 	void setVEX(int x) { _ve._x = x; }
 	void setVEY(int y) { _ve._y = y; }
+	void setVEState(int num) { _ve._state = num; }
+	void setVEView(int num) { _ve._view = num; }
+	void setVEIdx(int idxx, int idxy) {	_ve._indexX = idxx;
+									_ve._indexY = idxy;}
+	void setVCount(int numX, int numY) {_ve._xCount = numX;
+										_ve._yCount = numY;}
 
-	VERMOUTH getVE(void) { return _ve; }
+	void setVEastar(bool state) { _ve._astar = state; }
+
+
 
 	Vermouth() {}
 	~Vermouth() {}

@@ -9,6 +9,7 @@
 #define PL "Resources/Images/Player/"
 #define WM "Resources/Images/WorldMap/"
 #define UI "Resources/Images/UI/"
+#define SOUND "Resources/Sounds/"
 #define MAZEN RGB(255, 0, 255)
 #define RGBRED RGB(255, 0, 0)
 #define RGBBL RGB(4, 0, 4)
@@ -64,8 +65,8 @@ void MainGame::ImageInit(void)
 
 	// ½ºÅ³
 	IMAGEMANAGER->addFrameImage("½ºÅ³±¸", PL"½ºÅ³±¸.bmp", 6325, 192, 25, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ1", PL"ºÒ±âµÕ1.bmp", 1600, 300, 32, 1, true, SKILL);
-	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ1_1", PL"ºÒ±âµÕ1_1.bmp", 1600, 300, 32, 1, true, SKILL);
+	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ1", PL"ºÒ±âµÕ1.bmp", 1600, 230, 32, 1, true, SKILL);
+	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ1_1", PL"ºÒ±âµÕ1_1.bmp", 1600, 230, 32, 1, true, SKILL);
 	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ2", PL"ºÒ±âµÕ2.bmp", 1600, 300, 30, 1, true, SKILL);
 	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ2_1", PL"ºÒ±âµÕ2_1.bmp", 1600, 300, 32, 1, true, SKILL);
 	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ3", PL"ºÒ±âµÕ3.bmp", 1600, 300, 32, 1, true, SKILL);
@@ -86,8 +87,8 @@ void MainGame::ImageInit(void)
 
 	// ±¤¿ø
 	IMAGEMANAGER->addFrameImage("½ºÅ³±¸±¤¿ø", PL"½ºÅ³±¸±¤¿ø.bmp", 6325, 192, 25, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ1±¤¿ø", PL"ºÒ±âµÕ1±¤¿ø.bmp", 1600, 300, 32, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ1_1±¤¿ø", PL"ºÒ±âµÕ1_1±¤¿ø.bmp", 1600, 300, 32, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ1±¤¿ø", PL"ºÒ±âµÕ1±¤¿ø.bmp", 1600, 230, 32, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ1_1±¤¿ø", PL"ºÒ±âµÕ1_1±¤¿ø.bmp", 1600, 230, 32, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ2±¤¿ø", PL"ºÒ±âµÕ2±¤¿ø.bmp", 1600, 300, 32, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ2_1±¤¿ø", PL"ºÒ±âµÕ2_1±¤¿ø.bmp", 1600, 300, 32, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("½ºÅ³ºÒ±âµÕ3±¤¿ø", PL"ºÒ±âµÕ3±¤¿ø.bmp", 1600, 300, 32, 1, true, MAZEN);
@@ -124,7 +125,7 @@ void MainGame::ImageInit(void)
 
 	// ÀüÅõ¸Ê
 	IMAGEMANAGER->addImage("ÀüÅõ¸Ê", BAT"BattleMap.bmp", 1600, 1800);
-	IMAGEMANAGER->addImage("ÀüÅõ¸Ê2", BAT"BattleMap2.bmp", 1800, 1696);
+	IMAGEMANAGER->addImage("ÀüÅõ¸Ê2", BAT"BattleMap2.bmp", 2200, 2000);
 	IMAGEMANAGER->addImage("ÇÈÃæ¹è°æ", BAT"ÇÈÃæ¹è°æ.bmp", 1800, 1696);
 
 
@@ -137,10 +138,13 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addImage("¿ùµå¸ÊÆÄµµ", WM"Wave.bmp", WINSIZE_X*2, WINSIZE_Y*2);
 	IMAGEMANAGER->addImage("¿ùµå¸ÊÁö¿ª", WM"Location.bmp", 240, 101,true,MAZEN);
 	IMAGEMANAGER->addFrameImage("¿ùµå¸Ê¹öÆ°", WM"Button.bmp", 332, 48,2,1,true,MAZEN);
-	IMAGEMANAGER->addFrameImage("¿ùµå¸Ê°ÅÁ¡", WM"TeamRect.bmp", 1160, 150,10,1,true,MAZEN);
+	IMAGEMANAGER->addFrameImage("¿ùµå¸Ê°ÅÁ¡", WM"TeamRect.bmp", 2088, 150,18,1,true,MAZEN);
 	IMAGEMANAGER->addFrameImage("¿ùµå¸Ê¼±ÅÃ", WM"circle.bmp", 1450, 47,25,1,true,MAZEN);
 	IMAGEMANAGER->addFrameImage("¿ùµå¸ÊÇÁ·ÎÇÊ", WM"Profile.bmp", 800, 148,5,1,true,MAZEN);
 
 
 
+
+	// »ç¿îµå
+	SOUNDMANAGER->addSound("½ºÅ³±¸", SOUND"½ºÅ³±¸.snd", false, false);
 }

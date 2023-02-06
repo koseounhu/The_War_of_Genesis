@@ -40,8 +40,9 @@ HRESULT Battle::init(void)
 	// 플레이어
 	_pl = new Player;
 	_pl->init();
-	_pl->setPX(_tile[23][25].x);
-	_pl->setPY(_tile[23][25].y);
+	_pl->setPX(_tile[19][45].x);
+	_pl->setPY(_tile[19][45].y);
+	_pl->setPView(3);
 	_pl->setPcount(0, 0);
 
 	_sk = new Skill;
@@ -52,8 +53,12 @@ HRESULT Battle::init(void)
 
 	_ve = new Vermouth;
 	_ve->init();
-	_ve->setVEX(_tile[20][25].x);
-	_ve->setVEY(_tile[20][25].y);
+	_ve->setVEX(_tile[19][21].x);
+	_ve->setVEY(_tile[19][21].y);
+	_ve->setVEView(2);
+	_ve->setVCount(0, 0);
+
+
 
     return S_OK;
 }
@@ -75,7 +80,7 @@ void Battle::update(void)
 		{
 			_x -= 3;
 			_pl->setPX(_pl->getPL()._x - 3);
-
+			_ve->setVEX(_ve->getVE()._x - 3);
 			for (int j = 0; j < V_NUM; j++)
 			{
 				for (int i = 0; i < H_NUM; i++)
@@ -84,10 +89,11 @@ void Battle::update(void)
 				}
 			}
 		}
-		else if (_x < -250 && _y > -500)
+		else if (_x < -250 && _y > -900)
 		{
 			_y -= 3;
 			_pl->setPY(_pl->getPL()._y - 3);
+			_ve->setVEY(_ve->getVE()._y - 3);
 			for (int j = 0; j < V_NUM; j++)
 			{
 				for (int i = 0; i < H_NUM; i++)
@@ -99,10 +105,11 @@ void Battle::update(void)
 		else _gameStart = true;
 	}
 
+	 
 #pragma endregion
 #pragma region 화면 움직임 제어
 
-	if (!_ui->getUIState())
+	if (!_ui->getUIState() && !_pl->getPL()._astar && !_ve->getVE()._astar)
 	{
 
 		if (_ptMouse.x > WINSIZE_X - 50)
@@ -111,6 +118,7 @@ void Battle::update(void)
 			{
 				_x -= 2;
 				_pl->setPX(_pl->getPL()._x - 2);
+				_ve->setVEX(_ve->getVE()._x - 2);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
@@ -127,7 +135,7 @@ void Battle::update(void)
 			{
 				_y += 2;
 				_pl->setPY(_pl->getPL()._y + 2);
-
+				_ve->setVEY(_ve->getVE()._y + 2);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
@@ -143,7 +151,7 @@ void Battle::update(void)
 			{
 				_x += 2;
 				_pl->setPX(_pl->getPL()._x + 2);
-
+				_ve->setVEX(_ve->getVE()._x + 2);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
@@ -159,7 +167,7 @@ void Battle::update(void)
 			{
 				_y -= 2;
 				_pl->setPY(_pl->getPL()._y - 2);
-
+				_ve->setVEY(_ve->getVE()._y - 2);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
@@ -170,6 +178,7 @@ void Battle::update(void)
 			}
 		}
 	}
+
 
 #pragma endregion
 #pragma region 플레이어
@@ -235,12 +244,118 @@ void Battle::update(void)
 			}
 		}
 	}
-
 	_pl->update();
 	_sk->update();
 
 #pragma endregion
+#pragma region 버몬트
+	// 에이스타에 따른 플레이어 움직임
+	if (_ve->getVE()._astar && _closeList.size() != 0)
+	{
+		if (_ve->getVE()._indexX < _closeList[_ve->getVE()._xCount].idxX)
+		{
+			_ve->setVEState(1);
+			_ve->setVEView(1);
+			_ve->setVEX(_ve->getVE()._x + 1);
+		}
+		else if (_ve->getVE()._indexX > _closeList[_ve->getVE()._xCount].idxX)
+		{
+			_ve->setVEState(1);
+			_ve->setVEView(0);
+			_ve->setVEX(_ve->getVE()._x - 1);
+		}
+		else if (_ve->getVE()._indexY < _closeList[_ve->getVE()._yCount].idxY)
+		{
+			_ve->setVEState(1);
+			_ve->setVEView(2);
+			_ve->setVEY(_ve->getVE()._y + 1);
+		}
+		else if (_ve->getVE()._indexY > _closeList[_ve->getVE()._yCount].idxY)
+		{
+			_ve->setVEState(1);
+			_ve->setVEView(3);
+			_ve->setVEY(_ve->getVE()._y - 1);
+		}
 
+		if (_ve->getVE()._indexX == _closeList[_ve->getVE()._xCount].idxX &&
+			_ve->getVE()._indexY == _closeList[_ve->getVE()._yCount].idxY)
+		{
+			_ve->setVCount(_ve->getVE()._xCount + 1, _ve->getVE()._yCount + 1);
+		}
+
+
+		// 에이스타 끝
+		if (_closeList.size() >= 7)
+		{
+			if (_ve->getVE()._indexX == _closeList[6].idxX &&
+				_ve->getVE()._indexY == _closeList[6].idxY)
+			{
+				cout << "??" << endl;
+				for (int i = 0; i < _closeList.size(); i++)
+				{
+					_tile[_closeList[i].idxX][_closeList[i].idxY].unit = 0;
+				}
+				_ve->setVEastar(false);
+				_ve->setVEIdx(_closeList.back().idxX, _closeList.back().idxY);
+				_ve->setVCount(0, 0);
+				_ve->setVEState(0);
+			}
+		}
+		else
+		{
+			if (_ve->getVE()._indexX == _closeList.back().idxX &&
+				_ve->getVE()._indexY == _closeList.back().idxY)
+			{
+				for (int i = 0; i < _closeList.size(); i++)
+				{
+					_tile[_closeList[i].idxX][_closeList[i].idxY].unit = 0;
+				}
+				_ve->setVEastar(false);
+				_ve->setVEIdx(_closeList.back().idxX, _closeList.back().idxY);
+				_ve->setVCount(0, 0);
+				_ve->setVEState(0);
+
+				int sta = _pl->getPL()._indexX - _ve->getVEIndexX();
+				switch (sta)
+				{
+				case 1: _ve->setVEView(1);
+					_ve->setVEState(2);
+					break;
+
+				case -1:_ve->setVEView(0);
+					_ve->setVEState(2);
+					break;
+
+				default:
+					break;
+				}
+			}
+
+		}
+			
+
+	}
+	
+	// 버몬트 인덱스변화
+	for (int j = 0; j < V_NUM; j++)
+	{
+		for (int i = 0; i < H_NUM; i++)
+		{
+			if (_ve->getVE()._x == _tile[i][j].x &&
+				_ve->getVE()._y == _tile[i][j].y)
+			{
+				_ve->setVEIdx(i, j);
+				_tile[i][j].unit = 1;
+				break;
+			}
+		}
+	}
+
+	_ve->update();
+
+#pragma endregion 
+
+	// 플레이어 UI 띄우기
 	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 	{
 		if (!_ui->getTotalUI())
@@ -257,19 +372,54 @@ void Battle::update(void)
 		}
 	}
 
-	_ve->setVEX(_tile[20][25].x);
-	_ve->setVEY(_tile[20][25].y);
+	// 임시 버몬트 턴
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		if (!turn[0])	turn.set(0, 1);
+		else turn.reset();
+
+		// 플레이어 주변 렉트 검사
+		if (turn[0])
+		{
+			if ((_ve->getVEIndexX() != _pl->getPL()._indexX - 1 && _ve->getVEIndexY() != _pl->getPL()._indexY) &&
+				(_ve->getVEIndexX() != _pl->getPL()._indexX + 1 && _ve->getVEIndexY() != _pl->getPL()._indexY))
+			{
+				if (_tile[_pl->getPL()._indexX - 1][_pl->getPL()._indexY].unit == 0)
+					Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX - 1, _pl->getPL()._indexY);
+				else
+					Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX + 1, _pl->getPL()._indexY);
+
+				// 에이스타 시작
+				if (_closeList.size() > 0)	_ve->setVEastar(true);
+
+			}
+			else
+			{
+				
+			}
+		}
+	}
+
 
 
 	_ui->update();
-	_ve->update();
 }
 
 void Battle::render(void)
 {
     // 배경
    IMAGEMANAGER->findImage("전투맵")->render(getMemDC(),_x,_y);
-   
+   DrawRectMake(getMemDC(), RectMake(_tile[19][45].x, _tile[19][45].y, 10, 10));
+
+   if (_closeList.size() > 0)
+   {
+	   for (int i = 0; i < _closeList.size(); i++)
+	   {
+		   DrawRectMake(getMemDC(), RectMake(_tile[_closeList[i].idxX][_closeList[i].idxY].x,
+			   _tile[_closeList[i].idxX][_closeList[i].idxY].y, 40, 32));
+
+	   }
+   }
 #pragma region 마우스타일, 맵타일그리기
    // 마우스타일
    if (!_ui->getSkillState()&& _ui->getTileState())
@@ -365,13 +515,14 @@ void Battle::render(void)
 	   }
 	#pragma endregion
 	#pragma region 스킬온
-	   if (_sk->getSkillXY().size() < 8)
-	   {
-		   _sk->setSkillXY(_ve->getVE()._x, _ve->getVE()._y, 12, true);
-	   }
 
 	   if (_ui->getSkillState())
 	   {
+		   if (_sk->getSkillXY().size() < 8)
+		   {
+			   _sk->setSkillXY(_tile[_ve->getVEIndexX()][_ve->getVEIndexY()].x-8, _tile[_ve->getVEIndexX()][_ve->getVEIndexY()].y-115, 12, true);
+		   }
+
 		   if (_sk->getBitset().any() == 0)
 		   {
 			_sk->setBitset(0, 1);
@@ -447,7 +598,7 @@ void Battle::render(void)
 	#pragma endregion
 
 
-	#pragma region 적 렌더
+	#pragma region 스킬끝나면 게임종료
 	   if (!_emRender)
 	   {
 		   if (_sk->getBitset()[6] == 1)
@@ -458,10 +609,11 @@ void Battle::render(void)
 	   }
 
 	#pragma endregion
+
 	if (_ui->getSkillState())	_sk->DownSkill(_pl);
    _pl->render();
-   _ui->render(_pl);
    _ve->render();
+   _ui->render(_pl);
 	if(_ui->getSkillState()) _sk->UpSkill(_pl);
 
 #pragma endregion

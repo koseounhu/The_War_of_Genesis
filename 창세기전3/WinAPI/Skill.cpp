@@ -38,8 +38,12 @@ void Skill::UpSkill(Player* _pl)
 			_temp[0].frame++;
 
 		}
+		if (!_skillSound[0])
+		{
+			_skillSound.set(0, 1);
+			SOUNDMANAGER->play("½ºÅ³±¸", 1.0f);
+		}
 		IMAGEMANAGER->findImage("½ºÅ³±¸")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 110, _pl->getPL()._y - 100, 100, _temp[0].frame, 0);
-		// IMAGEMANAGER->findImage("½ºÅ³±¸±¤¿ø")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 110, _pl->getPL()._y - 100, 255, _skillFrame, 0);
 		if (IMAGEMANAGER->findImage("½ºÅ³±¸")->getFrameX() >= IMAGEMANAGER->findImage("½ºÅ³±¸")->getMaxFrameX())
 		{
 			_skill.reset();
@@ -114,17 +118,21 @@ void Skill::UpSkill(Player* _pl)
 				}
 			}
 
-
+			// ¹Ù´Ú »ç¶óÁü
 			if (_enemyXY[0].frame > IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getMaxFrameX())
 			{
-				if (_tick % 5 == 0)
+				if (_tick % 3 == 0)
 				{
-					for (int i = 0; i < _temp.size(); i++)
+					for (int i = 0; i <40; i++)
 					{
 						_temp[i].frame++;
+					}
 
+					if (_temp[39].frame > IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->getMaxFrameX())
+					for (int i = 40; i < 80; i++)
+					{
+						_temp[i].frame++;
 						if (_temp[i].frame > 12 && i + 1 < _temp.size())
-
 							if (_temp.back().frame > IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->getMaxFrameX()) _temp.back().start = false;
 
 					}
@@ -188,7 +196,7 @@ void Skill::UpSkill(Player* _pl)
 					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®5±¤¿ø")->alphaFrameRender(getMemDC(), _fireball[i].x - 50, _fireball[i].y - 20, 120, _fireball[i].frame, 0);
 				}
 
-				if (_temp[i].start && i > 39)
+				if (_temp[i].start && i > 39 && _temp[i].frame< IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->getMaxFrameX())
 				{
 					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y, 100, _temp[i].frame, 0);
 					IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®3±¤¿ø")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y, 255, _temp[i].frame, 0);
@@ -229,7 +237,7 @@ void Skill::UpSkill(Player* _pl)
 			// ºÒ±âµÕ ±¸Á¶Ã¼
 			for (int i = 0; i < _temp.size(); i++)
 			{
-				_fire.push_back({ _temp[i].x,_temp[i].y - 185,0,false });
+				_fire.push_back({ _temp[i].x,_temp[i].y - 120,0,false });
 			}
 			_particle.clear();
 		}
@@ -363,7 +371,7 @@ void Skill::DownSkill(Player* _pl)
 	{
 		if (_enemyXY[0].frame == 0)	IMAGEMANAGER->findImage("»¡°­¾ËÆÄ")->render(getMemDC());
 
-		if (_tick % 5 == 0)
+		if (_tick % 3 == 0)
 		{
 			for (int i = 0; i < 4; i++)
 			{
@@ -398,14 +406,7 @@ void Skill::DownSkill(Player* _pl)
 			_particle[i].alpha -= 3;
 			if (_particle[i].alpha < 0)_particle[i].alpha = 0;
 		}
-		for (int i = 0; i < 4; i++)
-		{
-			if (_enemyXY[i].start && _enemyXY[i].frame < IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getMaxFrameX())
-			{
-				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->alphaFrameRender(getMemDC(), _enemyXY[i].x - 80, _enemyXY[i].y - 100, 120, _enemyXY[i].frame, 0);
-				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1±¤¿ø")->alphaFrameRender(getMemDC(), _enemyXY[i].x - 80, _enemyXY[i].y - 100, 180, _enemyXY[i].frame, 0);
-			}
-		}
+
 		for (int i = 4; i < 8; i++)
 		{
 			if (_enemyXY[i].start && _enemyXY[i].frame < IMAGEMANAGER->findImage("½ºÅ³¹Ù´ÚºÒ")->getMaxFrameX())
@@ -413,8 +414,19 @@ void Skill::DownSkill(Player* _pl)
 				IMAGEMANAGER->findImage("½ºÅ³¹Ù´ÚºÒ")->alphaFrameRender(getMemDC(), _enemyXY[i].x - 50, _enemyXY[i].y + 55, 80, _enemyXY[i].frame, 0);
 				IMAGEMANAGER->findImage("½ºÅ³¹Ù´ÚºÒ±¤¿ø")->alphaFrameRender(getMemDC(), _enemyXY[i].x - 50, _enemyXY[i].y + 55, 255, _enemyXY[i].frame, 0);
 			}
+			else
+			{
+				_skill.set(8, 1);
+			}
 		}
-
+		for (int i = 0; i < 4; i++)
+		{
+			if (_enemyXY[i].start && _enemyXY[i].frame < IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getMaxFrameX())
+			{
+				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->alphaFrameRender(getMemDC(), _enemyXY[i].x - 80, _enemyXY[i].y - 50, 120, _enemyXY[i].frame, 0);
+				IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1±¤¿ø")->alphaFrameRender(getMemDC(), _enemyXY[i].x - 80, _enemyXY[i].y - 50, 180, _enemyXY[i].frame, 0);
+			}
+		}
 
 
 
@@ -435,10 +447,6 @@ void Skill::DownSkill(Player* _pl)
 			for (int i = 0; i < 8; i++) _enemyXY[i].frame = 0;
 		}
 
-		if (_enemyXY[0].frame > IMAGEMANAGER->findImage("½ºÅ³ÀÌÆåÆ®1")->getMaxFrameX())
-		{
-
-		}
 	}
 
 }

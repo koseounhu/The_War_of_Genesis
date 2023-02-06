@@ -104,6 +104,8 @@ private:
 	bool _emRender;
 	UI* _ui;
 	
+	// 턴
+	bitset<4> turn;
 	
 	// 배경 움직이기위한 위치값
 	int _x, _y;

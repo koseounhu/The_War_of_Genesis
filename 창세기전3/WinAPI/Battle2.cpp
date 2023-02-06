@@ -26,8 +26,8 @@ HRESULT Battle2::init(void)
 	// 플레이어
 	_pl = new Player;
 	_pl->init();
-	_pl->setPX(_tile[19][28].x);
-	_pl->setPY(_tile[19][28].y);
+	_pl->setPX(_tile[23][33].x);
+	_pl->setPY(_tile[23][33].y);
 	_pl->setPcount(0, 0);
 
 	_sk = new Skill;
@@ -57,7 +57,7 @@ void Battle2::update(void)
 #pragma region 시작시 카메라 무빙
 	if (!_gameStart)
 	{
-		if (_x > -250)
+		if (_x > -450)
 		{
 			_x -= 3;
 			_pl->setPX(_pl->getPL()._x - 3);
@@ -69,7 +69,7 @@ void Battle2::update(void)
 				}
 			}
 		}
-		else if (_x < -250 && _y > -500)
+		else if (_x <= -450 && _y > -700)
 		{
 			_y -= 3;
 			_pl->setPY(_pl->getPL()._y - 3);
@@ -141,7 +141,7 @@ void Battle2::update(void)
 		}
 		else if (PtInRect(&_rc[2], _ptMouse))
 		{
-			if (_y > -900)
+			if (_y > -1200)
 			{
 				_y -= 2;
 				_pl->setPY(_pl->getPL()._y - 2);
@@ -426,7 +426,6 @@ void Battle2::render(void)
 		}
 		if (_sk->getBitset()[1] == 1)
 		{
-			_skillTick++;
 			if (_skillTick % 5 == 0)
 			{
 				_skillFrame++;
@@ -434,31 +433,31 @@ void Battle2::render(void)
 			}
 			
 		}
-		if (_sk->getBitset()[5] == 1)
-		{
-			_pl->setPState(0);
-		}
+
 	
 
 
 		// 카메라 쉐이킹
-		if (_sk->getBitset()[3] == 1&& _skillTick % 4 == 0)
+		if (_sk->getBitset()[3] == 1 )
 		{
-			if (_skillBool == false) _skillBool = true;
-			else if (_skillBool == true) _skillBool = false;
+			if (_skillTick % 2 == 0)
+			{
+				if (_skillBool == false) _skillBool = true;
+				else if (_skillBool == true) _skillBool = false;
+			}
 			if (_skillBool)
 			{
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].x -= 3;
-						_tile[i][j].y -= 3;
+						_tile[i][j].x -= 2;
+						_tile[i][j].y -= 2;
 					}
 				}
 
-				_x -= 3;
-				_y -= 3;
+				_x -= 2;
+				_y -= 2;
 			}
 			else
 			{
@@ -466,13 +465,13 @@ void Battle2::render(void)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].x += 3;
-						_tile[i][j].y += 3;
+						_tile[i][j].x += 2;
+						_tile[i][j].y += 2;
 					}
 				}
 				
-				_x += 3;
-				_y += 3;
+				_x += 2;
+				_y += 2;
 			}
 		}
 		else
@@ -484,10 +483,10 @@ void Battle2::render(void)
 
 		if (_sk->getSkillXY().size() < 8)
 		{
-			_sk->setSkillXY(_tile[19][23].x - 5, _tile[19][23].y - 120, 12, true);
-			_sk->setSkillXY(_tile[19][34].x - 5, _tile[19][34].y - 120, 12, true);
-			_sk->setSkillXY(_tile[13][28].x - 5, _tile[13][28].y - 120, 12, true);
-			_sk->setSkillXY(_tile[25][28].x - 5, _tile[25][28].y - 120, 12, true);
+			_sk->setSkillXY(_tile[23][28].x - 5, _tile[23][28].y - 120, 12, true);
+			_sk->setSkillXY(_tile[23][39].x - 5, _tile[23][39].y - 120, 12, true);
+			_sk->setSkillXY(_tile[17][33].x - 5, _tile[17][33].y - 120, 12, true);
+			_sk->setSkillXY(_tile[29][33].x - 5, _tile[29][33].y - 120, 12, true);
 		}
 		
 	}
@@ -497,10 +496,10 @@ void Battle2::render(void)
 	#pragma region 적 렌더
 	if (_sk->getBitset()[7] == 0)
 	{
-		_em[0]->render(_tile[19][23].x - 20, _tile[19][23].y - 50, 0);
-		_em[1]->render(_tile[19][34].x - 20, _tile[19][34].y - 50, 1);
-		_em[2]->render(_tile[13][28].x - 20, _tile[13][28].y - 50, 0);
-		_em[3]->render(_tile[25][28].x - 20, _tile[25][28].y - 50, 0);
+		_em[0]->render(_tile[23][28].x - 20, _tile[23][28].y - 50, 0);
+		_em[1]->render(_tile[23][39].x - 20, _tile[23][39].y - 50, 1);
+		_em[2]->render(_tile[17][33].x - 20, _tile[17][33].y - 50, 0);
+		_em[3]->render(_tile[29][33].x - 20, _tile[29][33].y - 50, 0);
 		_tile[19][23].unit == 2;
 		_tile[19][34].unit == 2;
 		_tile[13][28].unit == 2;
@@ -517,6 +516,7 @@ void Battle2::render(void)
 		_ui = false;
 		_ability = false;
 		_sk->clearSkillXY();
+		_pl->setPState(0);
 	}
 
 	#pragma endregion
