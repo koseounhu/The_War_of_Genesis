@@ -147,7 +147,9 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Dialogue.cpp" />
-    <ClCompile Include="firstCutScene.cpp" />
+    <ClCompile Include="firstCutScene.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="moveTile.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scenario.cpp" />
@@ -176,6 +178,7 @@
     <ClCompile Include="Quest.cpp" />
     <ClCompile Include="QuestSample.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SecondScene.cpp" />
     <ClCompile Include="Skill.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Stdafx.cpp">
@@ -195,7 +198,9 @@
     <ClInclude Include="Battle2.h" />
     <ClInclude Include="Dialogue.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="firstCutScene.h" />
+    <ClInclude Include="firstCutScene.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scenario.h" />
     <ClInclude Include="C3DMatrix.h">
@@ -222,6 +227,7 @@
     <ClInclude Include="QuestSample.h" />
     <ClInclude Include="RandomFunction.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SecondScene.h" />
     <ClInclude Include="SingletonBase.h" />
     <ClInclude Include="Skill.h" />
     <ClInclude Include="SoundManager.h" />
@@ -234,8 +240,7 @@
     <ClInclude Include="WorldMap.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Character.json" />
-    <None Include="Item.json" />
+    <None Include="Dialog.json" />
     <None Include="Quest.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

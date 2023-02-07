@@ -101,6 +101,7 @@ void WorldMap::update(void)
 
 void WorldMap::render(void)
 {
+
     RECT _rc;
     _rc = RectMake(0, 0, WINSIZE_X, WINSIZE_Y);
     IMAGEMANAGER->findImage("ø˘µÂ∏ ∆ƒµµ")->loopRender(getMemDC(), &_rc, _loopX, _loopY);
@@ -128,6 +129,31 @@ void WorldMap::render(void)
 
     RECT tempA;
     tempA = RectMake(_point.left + 230, _point.top + 500, 100, 100);
+
+    if (PtInRect(&temp, _ptMouse))
+    {
+        IMAGEMANAGER->findImage("ø˘µÂ∏ º±≈√")->alphaFrameRender(getMemDC(), temp.left, temp.top, 140, _selectFrame, 0);
+        HPEN hpen;
+        HPEN oldpen;
+
+        hpen = CreatePen(PS_SOLID, 5, RGB(92, 106, 215));
+        oldpen = (HPEN)::SelectObject(getMemDC(), hpen);
+        LineMake(getMemDC(), _point.left + (_point.right - _point.left) / 2, _point.top + (_point.top - _point.bottom) / 2 + 150, _point.left + 550, _point.top + 185);
+        SelectObject(getMemDC(), oldpen);
+        DeleteObject(hpen);
+    }
+    else if (PtInRect(&tempA, _ptMouse))
+    {
+        IMAGEMANAGER->findImage("ø˘µÂ∏ º±≈√")->alphaFrameRender(getMemDC(), tempA.left + 20, tempA.top + 20, 140, _selectFrame, 0);
+        HPEN hpen;
+        HPEN oldpen;
+
+        hpen = CreatePen(PS_SOLID, 5, RGB(92, 106, 215));
+        oldpen = (HPEN)::SelectObject(getMemDC(), hpen);
+        LineMake(getMemDC(), temp.left + 30, temp.bottom - 50, _point.left + 290, _point.top + 500);
+        SelectObject(getMemDC(), oldpen);
+        DeleteObject(hpen);
+    }
     if (_ui && PtInRect(&tempA, _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
     {
         _move2 = true;
@@ -180,30 +206,7 @@ void WorldMap::render(void)
         FONTMANAGER->drawText(getMemDC(), _button[3].left + 30, _button[3].top + 10, 25, 255, 255, 255, "±º∏≤", true, "∏ﬁ¿Œ»≠∏È");
     }
 
-    if (PtInRect(&temp, _ptMouse))
-    {
-        IMAGEMANAGER->findImage("ø˘µÂ∏ º±≈√")->alphaFrameRender(getMemDC(), temp.left, temp.top, 140, _selectFrame, 0);
-        HPEN hpen;
-        HPEN oldpen;
 
-        hpen = CreatePen(PS_SOLID, 5, RGB(92, 106, 215));
-        oldpen = (HPEN)::SelectObject(getMemDC(), hpen);
-        LineMake(getMemDC(), _point.left + (_point.right-_point.left)/2, _point.top+(_point.top-_point.bottom)/2+150, _point.left + 550, _point.top + 185);
-        SelectObject(getMemDC(), oldpen);
-        DeleteObject(hpen);
-    }
-    else if (PtInRect(&tempA, _ptMouse))
-    {
-        IMAGEMANAGER->findImage("ø˘µÂ∏ º±≈√")->alphaFrameRender(getMemDC(), tempA.left+20,tempA.top+20, 140, _selectFrame, 0);
-        HPEN hpen;
-        HPEN oldpen;
-
-        hpen = CreatePen(PS_SOLID, 5, RGB(92, 106, 215));
-        oldpen = (HPEN)::SelectObject(getMemDC(), hpen);
-        LineMake(getMemDC(), temp.left+30, temp.bottom-50, _point.left + 290, _point.top + 500);
-        SelectObject(getMemDC(), oldpen);
-        DeleteObject(hpen);
-    }
 
 
     //æ¿¿¸»Ø

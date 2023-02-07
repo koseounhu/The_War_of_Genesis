@@ -100,6 +100,9 @@
     <Filter Include="Unit\Vermouth">
       <UniqueIdentifier>{c7cce52b-b542-41d0-943e-26c4a09ecefa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Scenario\Second">
+      <UniqueIdentifier>{a3e80b14-7267-415f-8805-c76cfe208dde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C3DMatrix.cpp">
@@ -209,6 +212,9 @@
     <ClCompile Include="Vermouth.cpp">
       <Filter>Unit\Vermouth</Filter>
     </ClCompile>
+    <ClCompile Include="SecondScene.cpp">
+      <Filter>Scene\Scenario\Second</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C3DMatrix.h">
@@ -317,16 +323,16 @@
     <ClInclude Include="Vermouth.h">
       <Filter>Unit\Vermouth</Filter>
     </ClInclude>
+    <ClInclude Include="SecondScene.h">
+      <Filter>Scene\Scenario\Second</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Item.json">
-      <Filter>API FrameWork\Json</Filter>
-    </None>
-    <None Include="Character.json">
-      <Filter>API FrameWork\Json</Filter>
-    </None>
     <None Include="Quest.json">
       <Filter>API FrameWork\Json</Filter>
+    </None>
+    <None Include="Dialog.json">
+      <Filter>Dialogue</Filter>
     </None>
   </ItemGroup>
 </Project>

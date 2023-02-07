@@ -15,7 +15,7 @@ void QuestSample::questSetUp(Quest* pQuest)
 	Json::Value root = JSONDATAMANAGER->loadJsonFile("Quest.json");
 	for (auto it = root["Quest"].begin(); it != root["Quest"].end(); it++)
 	{
-		if ((*it).isObject())		// C++ 언어가 개정되면서 허용된 방식
+		if ((*it).isObject())	
 		{
 			Quest* qQuest = new Quest;
 			qQuest->init
@@ -35,12 +35,4 @@ void QuestSample::questSetUp(Quest* pQuest)
 
 		}
 	}
-	/*
-		- asString()
-			ㄴ asString 변수가 스트링 값이 아니거나 NULL 값이 들어있다면 별도의 예외없이 그냥 NULL을 반환한다.
-
-
-		- ToString()
-			ㄴ ToString 변수가 NULL 값이라면 예외 발생
-	 */
 }

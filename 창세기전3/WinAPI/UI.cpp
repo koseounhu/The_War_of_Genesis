@@ -42,7 +42,7 @@ void UI::render(Player* _pl)
 		IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[1].left, _skillUI[1].top, 1, 0);
 		FONTMANAGER->drawText(getMemDC(), _skillUI[1].left + 32, _skillUI[1].top + 7, 12, 255, 255, 255, "굴림", true, "이동");
 		IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[2].left, _skillUI[2].top, 2, 0);
-		FONTMANAGER->drawText(getMemDC(), _skillUI[2].left + 32, _skillUI[2].top + 7, 12, 255, 255, 255, "굴림", true, "아이템");
+		FONTMANAGER->drawText(getMemDC(), _skillUI[2].left + 32, _skillUI[2].top + 7, 12, 255, 255, 255, "굴림", true, "일반공격");
 		IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[3].left, _skillUI[3].top, 3, 0);
 		FONTMANAGER->drawText(getMemDC(), _skillUI[3].left + 32, _skillUI[3].top + 7, 12, 255, 255, 255, "굴림", true, "상태");
 
@@ -60,7 +60,7 @@ void UI::render(Player* _pl)
 		if (PtInRect(&_skillUI[2], _ptMouse))
 		{
 			IMAGEMANAGER->findImage("스킬UI")->frameRender(getMemDC(), _skillUI[2].left, _skillUI[2].top, 2, 1);
-			FONTMANAGER->drawText(getMemDC(), _skillUI[2].left + 32, _skillUI[2].top + 7, 13, 255, 255, 255, "굴림", true, "아이템");
+			FONTMANAGER->drawText(getMemDC(), _skillUI[2].left + 32, _skillUI[2].top + 7, 13, 255, 255, 255, "굴림", true, "일반공격");
 		}
 		if (PtInRect(&_skillUI[3], _ptMouse))
 		{
@@ -85,12 +85,14 @@ void UI::render(Player* _pl)
 				_ui = false;
 				_tileOn = true;
 			}
+			else if (PtInRect(&_skillUI[2], _ptMouse))
+			{
+				_ui = false;
+				_atk = true;
+			}
 		}
 	}
-
-
 #pragma endregion
-
 #pragma region 어빌리티
 	if (_ability)
 	{
@@ -117,7 +119,6 @@ void UI::render(Player* _pl)
 		}
 	}
 #pragma endregion
-
 #pragma region 상태창
 	if (_state)
 	{
@@ -133,4 +134,5 @@ void UI::render(Player* _pl)
 
 
 #pragma endregion 
+
 }

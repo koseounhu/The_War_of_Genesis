@@ -16,7 +16,6 @@
 #define SKILL RGB(255, 239, 214)
 
 
-
 void MainGame::ImageInit(void)
 {
 	// 임시 1.5배씩 더해줌
@@ -28,6 +27,7 @@ void MainGame::ImageInit(void)
 
 	// 통합
 	IMAGEMANAGER->addImage("검정알파", BG"blackness.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("하얀알파", BG"whitness.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("빨강알파", BG"redness.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("시나리오클리어", BG"clear.bmp", WINSIZE_X, 100);
 	IMAGEMANAGER->addImage("클리어광원", BG"clear광원.bmp", WINSIZE_X, 100,true,MAZEN);
@@ -36,7 +36,7 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addImage("다이얼로그창", SCE"Dialogue.bmp", 818, 178);
 	IMAGEMANAGER->addImage("어빌리티창", OBJ"SkillBox.bmp", 208, 91);
 	IMAGEMANAGER->addImage("블루타일", OBJ"blueTile.bmp", 40, 32);
-	IMAGEMANAGER->addImage("레드타일", OBJ"redTile.bmp", 40, 32);
+	IMAGEMANAGER->addImage("오랑타일", OBJ"redTile.bmp", 40, 32);
 	IMAGEMANAGER->addImage("노랑타일", OBJ"orangeTile.bmp", 40, 32);
 	IMAGEMANAGER->addFrameImage("스킬UI", OBJ"PersonalBox.bmp", 416, 60,4,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("마우스타일", OBJ"MoveCursor.bmp", 240, 32,6,1, true, RGB(255, 0, 255));
@@ -60,6 +60,7 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("버몬트_걷기", PL"버몬트_WALK.bmp", 900, 360, 6, 4, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("버몬트_대기", PL"버몬트_IDLE.bmp", 270, 360, 3, 4, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("버몬트_공격", PL"버몬트_ATK.bmp", 900, 480, 6, 4, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("버몬트_피격", PL"버몬트_피격.bmp", 600, 132, 12, 2, true, MAZEN);
 
 	// 적
 	IMAGEMANAGER->addFrameImage("적1", PL"적1.bmp", 240, 160, 3, 2, true, MAZEN);
@@ -119,11 +120,34 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("오프닝불꽃", OPEN"OpeningFire.bmp", 11160, 256, 36, 1, true, RGB(0,0,0));
 	IMAGEMANAGER->addFrameImage("오프닝넥스트", OPEN"OpeningNext.bmp", 4335, 254, 17, 1, true, RGB(0,0,0));
 
-	// 시나리오
+	// 1번 시나리오
 	IMAGEMANAGER->addImage("시나리오배경", SCE"SceneBG.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("컷신배경", SCE"ScenarioBG.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("시나리오형제", SCE"brother.bmp", 120, 45,true,MAZEN);
 
+	// 2번 시나리오
+	IMAGEMANAGER->addImage("2_0", SCE"2_0.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("2_1", SCE"2_1.bmp", WINSIZE_X, WINSIZE_Y+30);
+	IMAGEMANAGER->addImage("2_2", SCE"2_2.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("2_3", SCE"2_3.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("2_4", SCE"2_4.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("2_5", SCE"2_5.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("2_6", SCE"2_6.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("2_7", SCE"2_7.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("2_8", SCE"2_8.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("2_9", SCE"2_9.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("2_10", SCE"2_10.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("3_1", SCE"3_1.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("4_1", SCE"4_1.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("4_2", SCE"4_2.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("4_3", SCE"4_3.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("4_4", SCE"4_4.bmp", WINSIZE_X, WINSIZE_Y);
+
+	IMAGEMANAGER->addImage("살라딘칼", SCE"살라딘칼찌름.bmp", 220, 90,true,MAZEN);
+	IMAGEMANAGER->addImage("버몬트칼찔림", SCE"버몬트칼찔림.bmp", 90, 90,true,MAZEN);
+	IMAGEMANAGER->addImage("살라딘_목걸이", SCE"살라딘_목걸이.bmp", 90, 120,true,MAZEN);
+	IMAGEMANAGER->addFrameImage("살라딘_휘파람", SCE"살라딘_휘파람.bmp", 180, 110,2,1,true,MAZEN);
+	IMAGEMANAGER->addImage("목걸이뺏김", SCE"목걸이뺏김.bmp", 90, 100,true,MAZEN);
 
 	// 전투맵
 	IMAGEMANAGER->addImage("전투맵", BAT"BattleMap.bmp", 1600, 1800);
@@ -148,5 +172,7 @@ void MainGame::ImageInit(void)
 
 
 	// 사운드
-	SOUNDMANAGER->addSound("스킬구", SOUND"스킬구.snd", false, false);
+	SOUNDMANAGER->addSound("스킬구", SOUND"스킬구.mp3", false, false);
+	SOUNDMANAGER->addSound("버몬트_죽여라", SOUND"버몬트_죽여라.mp3", false, false);
+	SOUNDMANAGER->addSound("버몬트_그것만은", SOUND"버몬트_그것만은.mp3", false, false);
 }

@@ -22,6 +22,7 @@ class Vermouth:public GameNode
 {
 private:
 	VERMOUTH _ve;
+	int _atked;
 
 public:
 	HRESULT init(void);

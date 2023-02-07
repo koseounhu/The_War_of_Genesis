@@ -27,12 +27,21 @@ void Player::update(void)
     {
         _atked++;
         if (_frame > IMAGEMANAGER->findImage("살라딘_피격좌")->getMaxFrameX())_atked = 0;
-
     }
     else if (_pl._state !=4)
     {
         _atked = 0;
     }
+    if (_tick % 15 == 0 && _pl._state == 2)
+    {
+        _atk++;
+        if (_atk > 5)
+        {
+            _atk = 0;
+            _pl._state=0;
+        }
+    }
+
 }
 
 void Player::render(void)
@@ -57,7 +66,7 @@ void Player::render(void)
 
         // 공격
     case 2:
-        IMAGEMANAGER->findImage("살라딘_공격")->frameRender(getMemDC(), _pl._x - 50, _pl._y-75, _frame, _pl._view);
+        IMAGEMANAGER->findImage("살라딘_공격")->frameRender(getMemDC(), _pl._x - 50, _pl._y - 75, _atk , _pl._view);
         break;
 
         // 스킬
@@ -65,6 +74,7 @@ void Player::render(void)
         IMAGEMANAGER->findImage("살라딘_스킬")->frameRender(getMemDC(), _pl._x-30, _pl._y - 50, _pl.skill, _pl._view);
         break;
 
+        // 피격
     case 4:
 
         if (_pl._view == 1)

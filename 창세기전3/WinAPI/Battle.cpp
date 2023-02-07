@@ -366,20 +366,20 @@ void Battle::update(void)
 		if (turn[0])
 		{
 			// 플레이어 근처가 아니면 a스타 발동
-			if ((_ve->getVEIndexX() != _pl->getPL()._indexX - 1 || _ve->getVEIndexX() != _pl->getPL()._indexX + 1) &&
+			if ((_ve->getVEIndexX() != _pl->getPL()._indexX - 2 || _ve->getVEIndexX() != _pl->getPL()._indexX + 2) &&
 				_ve->getVEIndexY() != _pl->getPL()._indexY)
 			{
-				if (_tile[_pl->getPL()._indexX - 1][_pl->getPL()._indexY].unit == 0)
-					Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX - 1, _pl->getPL()._indexY);
+				if (_tile[_pl->getPL()._indexX - 2][_pl->getPL()._indexY].unit == 0)
+					Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX - 2, _pl->getPL()._indexY);
 				else
-					Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX + 1, _pl->getPL()._indexY);
+					Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX + 2, _pl->getPL()._indexY);
 
 				// 에이스타 시작
 				if (_closeList.size() > 0)	_ve->setVEastar(true);
 			}
 
 			// 플레이어 양옆쪽이면 공격
-			if ((_ve->getVEIndexX() == _pl->getPL()._indexX - 1 || _ve->getVEIndexX() == _pl->getPL()._indexX + 1) &&
+			if ((_ve->getVEIndexX() == _pl->getPL()._indexX - 2 || _ve->getVEIndexX() == _pl->getPL()._indexX + 2) &&
 				_ve->getVEIndexY() == _pl->getPL()._indexY)
 			{
 				_pl->setPState(4);
@@ -389,12 +389,12 @@ void Battle::update(void)
 
 				switch (sta)
 				{
-				case 1:
+				case 2:
 					_ve->setVEView(1);
 					_pl->setPView(0);
 					break;
 
-				case -1:
+				case -2:
 					_ve->setVEView(0);
 					_pl->setPView(1);
 					break;
@@ -419,8 +419,9 @@ void Battle::render(void)
 {
     // 배경
    IMAGEMANAGER->findImage("전투맵")->render(getMemDC(),_x,_y);
-   DrawRectMake(getMemDC(), RectMake(_tile[19][45].x, _tile[19][45].y, 10, 10));
 
+
+   // 임시 이동타일 보이기
    if (_closeList.size() > 0)
    {
 	   for (int i = 0; i < _closeList.size(); i++)
@@ -619,27 +620,61 @@ void Battle::render(void)
 	   }
 
 	#pragma endregion
+	   
+	if (_ui->getAtkTile())
+	{
+		IMAGEMANAGER->findImage("오랑타일")->alphaRender(getMemDC(), _pl->getPL()._x - 80, _pl->getPL()._y, 100);
+		IMAGEMANAGER->findImage("오랑타일")->alphaRender(getMemDC(), _pl->getPL()._x + 80, _pl->getPL()._y, 100);
+		IMAGEMANAGER->findImage("오랑타일")->alphaRender(getMemDC(), _pl->getPL()._x, _pl->getPL()._y - 64, 100);
+		IMAGEMANAGER->findImage("오랑타일")->alphaRender(getMemDC(), _pl->getPL()._x, _pl->getPL()._y + 64, 100);
+		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+		{
+			_pl->setPState(2);
+			int view = _pl->getPL()._indexX - _ve->getVEIndexX();
+			switch (view)
+			{
+				// 우
+			case 2:
+				_pl->setPView(0);
+				_ve->setVEView(1);
+				_ve->setVEState(3);
+				break;
 
-	if (_ui->getSkillState())	_sk->DownSkill(_pl);
-   _pl->render();
-   _ve->render();
-   _ui->render(_pl);
+				// 좌
+			case -2:
+				_pl->setPView(1);
+				_ve->setVEView(0);
+				_ve->setVEState(3);
+				break;
+
+			default:
+				break;
+			}
+			_ui->setAtkTile(false);
+		}
+
+		
+	}
 	if(_ui->getSkillState()) _sk->UpSkill(_pl);
+   _ve->render();
+   _pl->render();
+   _ui->render(_pl);
+	if (_ui->getSkillState())	_sk->DownSkill(_pl);
 
 #pragma endregion
 
 
    // 시나리오 클리어
-   //if (_emRender)
-   //{
-	  // _skillTick++;
-	  // IMAGEMANAGER->findImage("시나리오클리어")->alphaRender(getMemDC(), 0, 300, 50);
-	  // IMAGEMANAGER->findImage("클리어광원")->alphaRender(getMemDC(), 0, 300, 150);
-	  // IMAGEMANAGER->findImage("클리어텍스트")->alphaRender(getMemDC(), 305, 325, 100);
-	  // IMAGEMANAGER->findImage("클리어텍스트광원")->alphaRender(getMemDC(), 300, 320, 255);
-	  // if (_skillTick > 200)
-		 //  SCENEMANAGER->changScene("월드맵");
-   //}
+   if (_emRender)
+   {
+	   _skillTick++;
+	   IMAGEMANAGER->findImage("시나리오클리어")->alphaRender(getMemDC(), 0, 300, 50);
+	   IMAGEMANAGER->findImage("클리어광원")->alphaRender(getMemDC(), 0, 300, 150);
+	   IMAGEMANAGER->findImage("클리어텍스트")->alphaRender(getMemDC(), 305, 325, 100);
+	   IMAGEMANAGER->findImage("클리어텍스트광원")->alphaRender(getMemDC(), 300, 320, 255);
+	   if (_skillTick > 200)
+		   SCENEMANAGER->changScene("월드맵");
+   }
 
 
 

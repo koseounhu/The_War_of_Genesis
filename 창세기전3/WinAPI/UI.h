@@ -12,6 +12,7 @@ private:
 	bool _tileOn;
 	bool _state;
 	bool _total;
+	bool _atk;
 
 public:
 	HRESULT init(void);
@@ -30,6 +31,10 @@ public:
 	void setUIState(bool ui) { _ui = ui; }
 	void setAbilityState(bool ability) { _ability = ability; }
 	void setTileState(bool tileOn) { _tileOn = tileOn; }
+
+	// 일반 공격시 타일
+	bool getAtkTile(void) { return _atk; }
+	void setAtkTile(bool atk) { _atk = atk; }
 
 	UI() {}
 	~UI() {}

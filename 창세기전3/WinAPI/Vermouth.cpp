@@ -34,6 +34,16 @@ void Vermouth::update(void)
        
     }
 
+    if (_ve.tick % 7 == 0 && _ve._state==3)
+    {
+        _atked++;
+        if (_atked > 12)
+        {
+            _atked = 0;
+            _ve._state = 0;
+        }
+    }
+
 }
 
 void Vermouth::render(void)
@@ -61,6 +71,12 @@ void Vermouth::render(void)
     case 2:
         IMAGEMANAGER->findImage("버몬트_공격")->frameRender(getMemDC(), _ve._x-55, _ve._y-85, _ve.frame, _ve._view);
         if (_ve._state == 2 && _ve.frame >=6)  _ve._state = 0;
+        break;
+
+        // 피격
+    case 3:
+        
+        IMAGEMANAGER->findImage("버몬트_피격")->frameRender(getMemDC(), _ve._x +10, _ve._y-30, _atked, _ve._view);
         break;
 
     default:

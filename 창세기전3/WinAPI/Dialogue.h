@@ -1,19 +1,25 @@
 #pragma once
 #include "GameNode.h"
 
-struct TagDialogue
+struct dia
 {
-	char* text;
-	int tick;
+	string _name;
+	string _text;
+
+	int tickName;
+	int tickText;
 	bool end;
-	bool skip;
 };
+
+
+
+
 
 class Dialogue : public GameNode
 {
 private:
 	int _tick;
-	vector<TagDialogue> _dialogue;
+	vector<dia>_dia;
 
 public:
 	HRESULT init(void);
@@ -22,8 +28,6 @@ public:
 	void render(void);
 
 	void drawTextNoSkip(int num, int posX, int posY, int width, int height, int textsize, int r, int g, int b);
-	bool getDialogueEnd(int num) { return _dialogue[num].end; }
-	void setDialogueSkip(int num) { _dialogue[num].skip = true; }
 
 	Dialogue() {}
 	~Dialogue() {}

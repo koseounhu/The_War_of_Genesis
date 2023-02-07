@@ -22,6 +22,7 @@ private:
 	int _tick;
 	int _frame;
 	int _atked;
+	int _atk;
 	PL _pl;
 
 
