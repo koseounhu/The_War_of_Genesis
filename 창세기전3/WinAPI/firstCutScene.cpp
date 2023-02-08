@@ -3,185 +3,466 @@
 
 HRESULT firstCutScene::init(void)
 {
-	_BgAlpha = 255;
-	_frame = 0;
-	_tick = 0;
-	_da = new Dialogue;
-	_da->init();
+	_dia = new Dialogue;
+	_dia->init(1);
 
+	// 전체 틱
+	_tick = 0;
+
+	// 메인 배경 알파
+	_BGalpha = 0;
+
+	// 다이얼로그 카운트
+	_diaCount = 0;
+
+	// 큰이미지
+	_bigImageAlpha2 = _bigImageAlpha = 0;
+
+	// 다이얼로그 사운드 초기화
+	_diaSound.reset();
 
 	return S_OK;
 }
 
 void firstCutScene::release(void)
 {
-	SAFE_DELETE(_da);
+	SAFE_DELETE(_dia);
 }
 
 void firstCutScene::update(void)
 {
-	_da->update();
-
 	_tick++;
-	if (_tick % 10 == 0)
-	{
-		//셰라자드 죽음 프레임
-		_frame++;
-		if (_frame > 23)_frame = 0;
 
-	}
-	if (_BgAlpha > 0)_BgAlpha--;
+	// 메인배경 알파
+	_BGalpha++;
+	if (_BGalpha >= 255) _BGalpha = 255;
 
 
-	if (KEYMANAGER->isOnceKeyDown(VK_F1)) SCENEMANAGER->changScene("전투2");
+	_dia->update();
 }
 
-
-// IMAGEMANAGER->findImage("셰라")->render(getMemDC(), 550, 200);
-// IMAGEMANAGER->findImage("버몬트")->render(getMemDC(), 370, 150);
-// IMAGEMANAGER->findImage("살라딘")->render(getMemDC(), -80, 80);
 
 void firstCutScene::render(void)
 {
-	_da->render();
+	IMAGEMANAGER->findImage("컷신배경")->alphaRender(getMemDC(), _BGalpha);
 
-	IMAGEMANAGER->findImage("컷신배경")->render(getMemDC());
-	IMAGEMANAGER->findImage("셰라죽음")->frameRender(getMemDC(), 180, 430, 0,0);
-
-	IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), _BgAlpha);
-	// 다이얼로그 시작
-	// 1번 다이얼로그
-	if (_BgAlpha == 0 && !_da->getDialogueEnd(1))
+// 버몬트 - 기다리고잇엇다
+	if (_diaCount == 0)
 	{
-		IMAGEMANAGER->findImage("버몬트")->render(getMemDC(), 370, 150);
-		RECT _text;
-		_text = RectMakeCenter(WINSIZE_X / 2, WINSIZE_Y / 2 + 250, 800, 180);
-		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), _text.left, _text.top, 155);
-		// 버몬트 이름
-		_da->drawTextNoSkip(0, 130, 550, 100, 100, 30, 54, 255, 159);
-		// 버몬트 대사
-		_da->drawTextNoSkip(1, 130, 580, 200, 100, 25, 255, 255, 255);
+		if (_BGalpha < 255)_tick = 0;
+		if (_BGalpha == 255)
+		{
+			// 캐릭터 알파 렌더
+			if (_tick < 200)
+			{
+				_bigImageAlpha += 5;
+				if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
+			}
+			else if (SOUNDMANAGER->getLength("기다리고잇엇다") == SOUNDMANAGER->getPosition("기다리고잇엇다"))
+			{
+				_bigImageAlpha -= 5;
+				if (_bigImageAlpha <= 0)_bigImageAlpha = 0;
+			}
+			IMAGEMANAGER->findImage("버몬트")->alphaRender(getMemDC(), 350, 250, _bigImageAlpha);
+
+			//다이얼로그 사운드
+			if (!_diaSound[0])
+			{
+				_diaSound.set(0, 1);
+				SOUNDMANAGER->play("기다리고잇엇다", 1.0f);
+			}
+
+			// 다이얼로그 창
+			IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 100, 580, 215);
+
+			_dia->drawTextNoSkip(_diaCount, 120, 590, 200, 200, 25, 255, 255, 255);
+
+			// 다음 넘기기
+			if (_bigImageAlpha == 0)
+			{
+				_bigImageAlpha = 0;
+				_diaCount++;
+				_tick = 0;
+			}
+
+		}
 	}
 
-	if (_da->getDialogueEnd(1)&& !_da->getDialogueEnd(3))
+// 살라딘 - ...
+	else if (_diaCount == 1)
 	{
-		IMAGEMANAGER->findImage("살라딘")->render(getMemDC(), 370, 150);
-		RECT _text;
-		_text = RectMakeCenter(WINSIZE_X / 2, WINSIZE_Y / 2 + 250, 800, 180);
-		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), _text.left, _text.top, 155);
-		// 살라딘 이름
-		_da->drawTextNoSkip(2, 130, 550, 100, 100, 30, 54, 255, 159);
-		// 버몬트 대사
-		_da->drawTextNoSkip(3, 130, 580, 200, 100, 25, 255, 255, 255);
+		// 캐릭터 알파 렌더
+		if (_tick < 200)
+		{
+			_bigImageAlpha += 5;
+			if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
+		}
+		else
+		{
+			_bigImageAlpha -= 5;
+			if (_bigImageAlpha <= 0)_bigImageAlpha = 0;
+		}
 
-	}
-	if (_da->getDialogueEnd(3) && !_da->getDialogueEnd(5))
-	{
-		IMAGEMANAGER->findImage("버몬트")->render(getMemDC(), 370, 150);
-		RECT _text;
-		_text = RectMakeCenter(WINSIZE_X / 2, WINSIZE_Y / 2 + 250, 800, 180);
-		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), _text.left, _text.top, 155);
-		// 살라딘 이름
-		_da->drawTextNoSkip(4, 130, 550, 100, 100, 30, 54, 255, 159);
-		// 버몬트 대사
-		_da->drawTextNoSkip(5, 130, 580, 200, 100, 25, 255, 255, 255);
-	}
+		// 캐릭터 이미지
+		IMAGEMANAGER->findImage("살라딘")->alphaRender(getMemDC(), 150, 200, _bigImageAlpha);
 
-	if (_da->getDialogueEnd(5) && !_da->getDialogueEnd(7))
-	{
-		IMAGEMANAGER->findImage("셰라")->render(getMemDC(), 370, 150);
-		RECT _text;
-		_text = RectMakeCenter(WINSIZE_X / 2, WINSIZE_Y / 2 + 250, 800, 180);
-		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), _text.left, _text.top, 155);
-		// 셰라 이름
-		_da->drawTextNoSkip(6, 130, 550, 100, 100, 30, 54, 255, 159);
-		// 셰라 대사
-		_da->drawTextNoSkip(7, 130, 580, 200, 100, 25, 255, 255, 255);
-	}
-	
-	if (_da->getDialogueEnd(7) && !_da->getDialogueEnd(9))
-	{
-		IMAGEMANAGER->findImage("살라딘")->render(getMemDC(), 370, 150);
-		RECT _text;
-		_text = RectMakeCenter(WINSIZE_X / 2, WINSIZE_Y / 2 + 250, 800, 180);
-		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), _text.left, _text.top, 155);
-		// 셰라 이름
-		_da->drawTextNoSkip(8, 130, 550, 100, 100, 30, 54, 255, 159);
-		// 셰라 대사
-		_da->drawTextNoSkip(9, 130, 580, 200, 100, 25, 255, 255, 255);
+		// 다이얼로그 창
+		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 100, 580, 215);
+
+		// 다이얼로그 텍스트
+		_dia->drawTextNoSkip(_diaCount, 120, 590, 200, 200, 25, 255, 255, 255);
+
+		if (_bigImageAlpha == 0)
+		{
+			_bigImageAlpha = 0;
+			_diaCount++;
+			_tick = 0;
+		}
 	}
 
-	if (_da->getDialogueEnd(9) && !_da->getDialogueEnd(11))
+// 버몬트 - 지난번엔 ~~~
+	else if (_diaCount == 2)
 	{
-		IMAGEMANAGER->findImage("버몬트")->render(getMemDC(), 370, 150);
-		RECT _text;
-		_text = RectMakeCenter(WINSIZE_X / 2, WINSIZE_Y / 2 + 250, 800, 180);
-		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), _text.left, _text.top, 155);
-		// 셰라 이름
-		_da->drawTextNoSkip(10, 130, 550, 100, 100, 30, 54, 255, 159);
-		// 셰라 대사
-		_da->drawTextNoSkip(11, 130, 580, 200, 100, 25, 255, 255, 255);
+		// 캐릭터 알파 렌더
+		if (_tick < 200)
+		{
+			_bigImageAlpha += 5;
+			if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
+		}
+		else if (SOUNDMANAGER->getLength("지난번엔") == SOUNDMANAGER->getPosition("지난번엔"))
+		{
+			_bigImageAlpha -= 5;
+			if (_bigImageAlpha <= 0)_bigImageAlpha = 0;
+		}
+
+		// 캐릭터 이미지
+		IMAGEMANAGER->findImage("버몬트")->alphaRender(getMemDC(), 350, 250, _bigImageAlpha);
+
+		//다이얼로그 사운드
+		if (!_diaSound[1])
+		{
+			_diaSound.set(1, 1);
+			SOUNDMANAGER->play("지난번엔", 1.0f);
+		}
+
+		// 다이얼로그 창
+		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 100, 580, 215);
+		// 다이얼로그 텍스트
+		_dia->drawTextNoSkip(_diaCount, 120, 590, 500, 500, 25, 255, 255, 255);
+
+		if (_bigImageAlpha == 0)
+		{
+			_bigImageAlpha = 0;
+			_diaCount++;
+			_tick = 0;
+		}
 	}
 
-	if (_da->getDialogueEnd(11) && !_da->getDialogueEnd(13))
+// 셰라 - 살라딘님 ...
+	else if (_diaCount == 3)
 	{
-		IMAGEMANAGER->findImage("셰라")->render(getMemDC(), 370, 150);
-		RECT _text;
-		_text = RectMakeCenter(WINSIZE_X / 2, WINSIZE_Y / 2 + 250, 800, 180);
-		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), _text.left, _text.top, 155);
-		// 셰라 이름
-		_da->drawTextNoSkip(12, 130, 550, 100, 100, 30, 54, 255, 159);
-		// 셰라 대사
-		_da->drawTextNoSkip(13, 130, 580, 200, 100, 25, 255, 255, 255);
+	// 캐릭터 알파 렌더
+	if (_tick < 200)
+	{
+		_bigImageAlpha += 5;
+		if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
+	}
+	else if (SOUNDMANAGER->getLength("셰라-살라딘") == SOUNDMANAGER->getPosition("셰라-살라딘"))
+	{
+		_bigImageAlpha -= 5;
+		if (_bigImageAlpha <= 0)_bigImageAlpha = 0;
 	}
 
-	if (_da->getDialogueEnd(13) && !_da->getDialogueEnd(15))
+	// 캐릭터 이미지
+	IMAGEMANAGER->findImage("셰라")->alphaRender(getMemDC(), 350, 250, _bigImageAlpha);
+
+	//다이얼로그 사운드
+	if (!_diaSound[2])
 	{
-		IMAGEMANAGER->findImage("살라딘")->render(getMemDC(), 370, 150);
-		RECT _text;
-		_text = RectMakeCenter(WINSIZE_X / 2, WINSIZE_Y / 2 + 250, 800, 180);
-		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), _text.left, _text.top, 155);
-		// 셰라 이름
-		_da->drawTextNoSkip(14, 130, 550, 100, 100, 30, 54, 255, 159);
-		// 셰라 대사
-		_da->drawTextNoSkip(15, 130, 580, 200, 100, 25, 255, 255, 255);
+		_diaSound.set(2, 1);
+		SOUNDMANAGER->play("셰라-살라딘", 1.0f);
 	}
 
-	if (_da->getDialogueEnd(15) && !_da->getDialogueEnd(17))
+	// 다이얼로그 창
+	IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 100, 580, 215);
+	// 다이얼로그 텍스트
+	_dia->drawTextNoSkip(_diaCount, 120, 590, 500, 500, 25, 255, 255, 255);
+
+	if (_bigImageAlpha == 0)
 	{
-		IMAGEMANAGER->findImage("버몬트")->render(getMemDC(), 370, 150);
-		RECT _text;
-		_text = RectMakeCenter(WINSIZE_X / 2, WINSIZE_Y / 2 + 250, 800, 180);
-		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), _text.left, _text.top, 155);
-		// 셰라 이름
-		_da->drawTextNoSkip(16, 130, 550, 100, 100, 30, 54, 255, 159);
-		// 셰라 대사
-		_da->drawTextNoSkip(17, 130, 580, 200, 100, 25, 255, 255, 255);
+		_bigImageAlpha = 0;
+		_diaCount++;
+		_tick = 0;
+	}
 	}
 
-	if (_da->getDialogueEnd(5) && !_da->getDialogueEnd(7))
+// 살라딘 걱정마시오
+	else if (_diaCount == 4)
 	{
-		IMAGEMANAGER->findImage("셰라")->render(getMemDC(), 370, 150);
-		RECT _text;
-		_text = RectMakeCenter(WINSIZE_X / 2, WINSIZE_Y / 2 + 250, 800, 180);
-		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), _text.left, _text.top, 155);
-		// 셰라 이름
-		_da->drawTextNoSkip(6, 130, 550, 100, 100, 30, 54, 255, 159);
-		// 셰라 대사
-		_da->drawTextNoSkip(7, 130, 580, 200, 100, 25, 255, 255, 255);
+	// 캐릭터 알파 렌더
+	if (_tick < 200)
+	{
+		_bigImageAlpha += 5;
+		if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
+	}
+	else if (SOUNDMANAGER->getLength("셰라자드걱정마시오") == SOUNDMANAGER->getPosition("셰라자드걱정마시오"))
+	{
+		_bigImageAlpha -= 5;
+		if (_bigImageAlpha <= 0)_bigImageAlpha = 0;
 	}
 
-	if (_da->getDialogueEnd(5) && !_da->getDialogueEnd(7))
+	// 캐릭터 이미지
+	IMAGEMANAGER->findImage("살라딘")->alphaRender(getMemDC(), 150, 200, _bigImageAlpha);
+
+	//다이얼로그 사운드
+	if (!_diaSound[3])
 	{
-		IMAGEMANAGER->findImage("셰라")->render(getMemDC(), 370, 150);
-		RECT _text;
-		_text = RectMakeCenter(WINSIZE_X / 2, WINSIZE_Y / 2 + 250, 800, 180);
-		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), _text.left, _text.top, 155);
-		// 셰라 이름
-		_da->drawTextNoSkip(6, 130, 550, 100, 100, 30, 54, 255, 159);
-		// 셰라 대사
-		_da->drawTextNoSkip(7, 130, 580, 200, 100, 25, 255, 255, 255);
+		_diaSound.set(3, 1);
+		SOUNDMANAGER->play("셰라자드걱정마시오", 1.0f);
 	}
+
+	// 다이얼로그 창
+	IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 100, 580, 215);
+	// 다이얼로그 텍스트
+	_dia->drawTextNoSkip(_diaCount, 120, 590, 500, 500, 25, 255, 255, 255);
+
+	if (_bigImageAlpha == 0)
+	{
+		_bigImageAlpha = 0;
+		_diaCount++;
+		_tick = 0;
+	}
+	}
+
+// 버몬트 요새두개
+	else if (_diaCount == 5)
+	{
+		// 캐릭터 알파 렌더
+		if (_tick < 200)
+		{
+			_bigImageAlpha += 5;
+			if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
+		}
+		else if (SOUNDMANAGER->getLength("요새두개") == SOUNDMANAGER->getPosition("요새두개"))
+		{
+			_bigImageAlpha -= 5;
+			if (_bigImageAlpha <= 0)_bigImageAlpha = 0;
+		}
+
+		// 캐릭터 이미지
+		IMAGEMANAGER->findImage("버몬트")->alphaRender(getMemDC(), 350, 250, _bigImageAlpha);
+
+		//다이얼로그 사운드
+		if (!_diaSound[4])
+		{
+			_diaSound.set(4, 1);
+			SOUNDMANAGER->play("요새두개", 1.0f);
+		}
+
+		// 다이얼로그 창
+		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 100, 580, 215);
+		// 다이얼로그 텍스트
+		_dia->drawTextNoSkip(_diaCount, 120, 590, 1000, 500, 25, 255, 255, 255);
+
+		if (_bigImageAlpha == 0)
+		{
+			_bigImageAlpha = 0;
+			_diaCount++;
+			_tick = 0;
+		}
+	}
+
+// 셰라 - 저는 개의치
+// 살라딘 - 설마 ...
+// 버몬트 - 투르제국 뭐시기
+// 사라딘 - 왜그런짓
+// 8번 사운드 사용
+// 9번 대사 끝
+	else if (_diaCount ==6)
+	{
+		// 캐릭터 알파 렌더
+		if (!_sara)
+		{
+			_bigImageAlpha += 5;
+			if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
+		}
+		else if (_sara&&!_ver)
+		{
+
+			_bigImageAlpha -= 5;
+			if (_bigImageAlpha <= 0)
+			{
+				_bigImageAlpha = 0;
+				_ver = true;
+			}
+		}
+		if (_ver)
+		{
+			_bigImageAlpha += 5;
+			if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
+		}
+
+		if (_sal)
+		{
+			_bigImageAlpha2 += 5;
+			if (_bigImageAlpha2 >= 255)_bigImageAlpha2 = 255;
+		}
+
+		// 캐릭터 이미지
+		if(!_ver)IMAGEMANAGER->findImage("셰라")->alphaRender(getMemDC(), 500, 150, _bigImageAlpha);
+		if(_sal) IMAGEMANAGER->findImage("살라딘")->alphaRender(getMemDC(), -100, 100, _bigImageAlpha2);
+		if (_ver) IMAGEMANAGER->findImage("버몬트")->alphaRender(getMemDC(), 550, 150, _bigImageAlpha);
+
+
+		// 다이얼로그 창
+		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 180, 580, 215);
+		if (_sal) IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 50, 380, 215);
+
+
+		// 다이얼로그 텍스트
+		if(!_ver)_dia->drawTextNoSkip(6, 200, 590, 500, 500, 25, 255, 255, 255);
+		else if (_ver)_dia->drawTextNoSkip(8, 200, 590, 800, 500, 25, 255, 255, 255);
+		if (_sal && !_last) _dia->drawTextNoSkip(7, 70, 390, 500, 500, 25, 255, 255, 255);
+		if (_last) _dia->drawTextNoSkip(9, 70, 390, 500, 500, 25, 255, 255, 255);
+
+
+
+		
+
+		//다이얼로그 사운드
+		if (!_diaSound[5])
+		{
+			_diaSound.set(5, 1);
+			SOUNDMANAGER->play("셰라개의치", 1.0f);
+		}
+		if (_sal && !_diaSound[6])
+		{
+			_diaSound.set(6, 1);
+			SOUNDMANAGER->play("살라딘설마", 1.0f);
+		}		
+		if (_ver && !_diaSound[7])
+		{
+			_diaSound.set(7, 1);
+			SOUNDMANAGER->play("버몬트여술탄", 1.0f);
+		}
+		if (_last && !_diaSound[8])
+		{
+			_diaSound.set(8, 1);
+			SOUNDMANAGER->play("살라딘왜그런짓", 1.0f);
+		}
+
+		// 사운드 끝나면 불값 변화
+		if (SOUNDMANAGER->getLength("셰라개의치") == SOUNDMANAGER->getPosition("셰라개의치"))
+		{
+			_sal = true;
+		}
+		if (SOUNDMANAGER->getLength("살라딘설마") == SOUNDMANAGER->getPosition("살라딘설마"))
+		{
+			_sara = true;
+		}
+		if (SOUNDMANAGER->getLength("버몬트여술탄") == SOUNDMANAGER->getPosition("버몬트여술탄"))
+		{
+			_last = true;
+		}		
+		if (SOUNDMANAGER->getLength("살라딘왜그런짓") == SOUNDMANAGER->getPosition("살라딘왜그런짓"))
+		{
+			_diaCount=10;
+			_bigImageAlpha = _bigImageAlpha2 = 0;
+			_ver = _sara = _sal = false;
+			_tick = 0;
+		}
+	}
+
+// 10번 대사
+// 9번 음성
+// 버몬트 - 복수다
+	else if (_diaCount == 10)
+	{
+		// 캐릭터 알파 렌더
+		if (_tick < 200)
+		{
+			_bigImageAlpha += 5;
+			if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
+		}
+		if (SOUNDMANAGER->getLength("버몬트복수다") == SOUNDMANAGER->getPosition("버몬트복수다"))
+		{
+			_bigImageAlpha -= 5;
+			if (_bigImageAlpha <=0)_bigImageAlpha = 0;
+		}
+		// 캐릭터 이미지
+		IMAGEMANAGER->findImage("버몬트")->alphaRender(getMemDC(), 350, 250, _bigImageAlpha);
+
+		//다이얼로그 사운드
+		if (!_diaSound[9])
+		{
+			SOUNDMANAGER->play("버몬트복수다", 1.0f);
+			_diaSound.set(9, 1);
+		}
+
+		// 다이얼로그 창
+		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 100, 580, 215);
+
+		// 다이얼로그 텍스트
+		_dia->drawTextNoSkip(_diaCount, 120, 590, 1000, 500, 25, 255, 255, 255);
+
+		// 다음 턴 넘기기
+		if(_bigImageAlpha==0)
+		{
+			_diaCount++;
+			_tick = 0;
+			_bigImageAlpha = 0;
+		}
+	}
+
+// 11번대사
+// 10번 음성
+// 살라딘 - 칼버리겟다
+	else if (_diaCount == 11)
+	{
+		// 캐릭터 알파 렌더
+		if (_tick < 200)
+		{
+			_bigImageAlpha += 5;
+			if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
+		}
+		if (SOUNDMANAGER->getLength("살라딘칼버림") == SOUNDMANAGER->getPosition("살라딘칼버림"))
+		{
+			_bigImageAlpha -= 5;
+			if (_bigImageAlpha <= 0)_bigImageAlpha = 0;
+		}
+		// 캐릭터 이미지
+		IMAGEMANAGER->findImage("살라딘")->alphaRender(getMemDC(), 150, 200, _bigImageAlpha);
+
+		//다이얼로그 사운드
+		if (!_diaSound[10])
+		{
+			SOUNDMANAGER->play("살라딘칼버림", 1.0f);
+			_diaSound.set(10, 1);
+		}
+
+		// 다이얼로그 창
+		IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 100, 580, 215);
+
+		// 다이얼로그 텍스트
+		_dia->drawTextNoSkip(_diaCount, 120, 590, 1000, 500, 25, 255, 255, 255);
+
+		// 다음 턴 넘기기
+		if (_bigImageAlpha==0)
+		{
+			_diaCount++;
+			_tick = 0;
+			_bigImageAlpha = 0;
+		}
+
+	}
+
+
+
+
+
+
+
 
 
 }
+

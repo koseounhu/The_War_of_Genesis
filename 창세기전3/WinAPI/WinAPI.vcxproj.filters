@@ -103,6 +103,9 @@
     <Filter Include="Scene\Scenario\Second">
       <UniqueIdentifier>{a3e80b14-7267-415f-8805-c76cfe208dde}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Loading">
+      <UniqueIdentifier>{52dba803-fd8a-4df9-bcb3-19978b155e0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C3DMatrix.cpp">
@@ -215,6 +218,9 @@
     <ClCompile Include="SecondScene.cpp">
       <Filter>Scene\Scenario\Second</Filter>
     </ClCompile>
+    <ClCompile Include="Loading.cpp">
+      <Filter>Scene\Loading</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C3DMatrix.h">
@@ -325,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="SecondScene.h">
       <Filter>Scene\Scenario\Second</Filter>
+    </ClInclude>
+    <ClInclude Include="Loading.h">
+      <Filter>Scene\Loading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

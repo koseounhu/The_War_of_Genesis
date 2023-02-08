@@ -22,7 +22,21 @@ void Skill::update(void)
 
 void Skill::render(void)
 {
+/*
+ ★ 스킬 사운드 사용 내역 ★
 
+0번 스킬구
+1번 마지막 찍을때
+2번 처음 찍을때
+3번 화염구 터질때
+4번 적불기둥때
+5번 대각선 전체 불기둥
+
+※ 특이사항
+/ 1 /스킬 끝나면 클리어소리 자동 플레이
+/ 2 / 화염구 터질때 이펙트 대기
+
+*/
 }
 
 void Skill::UpSkill(Player* _pl)
@@ -43,9 +57,11 @@ void Skill::UpSkill(Player* _pl)
 			_skillSound.set(0, 1);
 			SOUNDMANAGER->play("스킬구", 1.0f);
 		}
+		
 		IMAGEMANAGER->findImage("스킬구")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 110, _pl->getPL()._y - 100, 100, _temp[0].frame, 0);
 		if (IMAGEMANAGER->findImage("스킬구")->getFrameX() >= IMAGEMANAGER->findImage("스킬구")->getMaxFrameX())
 		{
+
 			_skill.reset();
 			_skill.set(1, 1);
 			_temp.clear();
@@ -106,9 +122,17 @@ void Skill::UpSkill(Player* _pl)
 	// 바닥불 + 폭발
 	else if (_skill[1] == 1)
 	{
+
+
+		if (!_skillSound[2])
+		{
+			SOUNDMANAGER->play("찍을때", 1.0f);
+			_skillSound.set(2, 1);
+		}
+
+
 		if (IMAGEMANAGER->findImage("살라딘_스킬")->getFrameX() == IMAGEMANAGER->findImage("살라딘_스킬")->getMaxFrameX())
 		{
-
 			if (_tick % 2 == 0 && _enemyXY[0].frame < IMAGEMANAGER->findImage("스킬이펙트1")->getMaxFrameX())
 			{
 				for (int i = 0; i < _temp.size(); i++)
@@ -139,6 +163,7 @@ void Skill::UpSkill(Player* _pl)
 				}
 			}
 
+			// 프레임
 			if (_tick % 10 == 0)
 			{
 				for (int i = 0; i < _fireball.size(); i++)
@@ -168,9 +193,21 @@ void Skill::UpSkill(Player* _pl)
 			//	IMAGEMANAGER->findImage("스킬이펙트1광원")->alphaFrameRender(getMemDC(), _pl->getPL()._x - 85, _pl->getPL()._y - 170, 255, _circleFrame, 0);
 			//}
 
-
+			if(IMAGEMANAGER->findImage("스킬이펙트2")->getFrameX() >= IMAGEMANAGER->findImage("스킬이펙트2")->getMaxFrameX())
 			for (int i = 0; i < _temp.size(); i++)
 			{
+				if (!_skillSound[5])
+				{
+					SOUNDMANAGER->play("대각선불기둥", 1.0f);
+					_skillSound.set(5, 1);
+				}
+
+				if (!_skillSound[3])
+				{
+					SOUNDMANAGER->play("화염구터질때", 1.0f);
+					_skillSound.set(3, 1);
+				}
+
 				if (_temp[i].start)
 				{
 					for (int k = i * 30; k < i * 30 + 30; k++)
@@ -182,6 +219,8 @@ void Skill::UpSkill(Player* _pl)
 
 				if (_temp[i].start && _temp.back().frame < IMAGEMANAGER->findImage("스킬이펙트3")->getMaxFrameX())
 				{
+
+
 					if (_temp[i].frame > 1 && i + 1 < _temp.size() && !_temp.back().start)
 					{
 						_temp[i + 1].start = true;
@@ -198,11 +237,13 @@ void Skill::UpSkill(Player* _pl)
 
 				if (_temp[i].start && i > 39 && _temp[i].frame< IMAGEMANAGER->findImage("스킬이펙트3")->getMaxFrameX())
 				{
+
 					IMAGEMANAGER->findImage("스킬이펙트3")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y, 100, _temp[i].frame, 0);
 					IMAGEMANAGER->findImage("스킬이펙트3광원")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y, 255, _temp[i].frame, 0);
 				}
 				else if (_temp[i].start && i < 40)
 				{
+
 					IMAGEMANAGER->findImage("스킬이펙트3_1")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y, 100, _temp[i].frame, 0);
 					IMAGEMANAGER->findImage("스킬이펙트3_1광원")->alphaFrameRender(getMemDC(), _temp[i].x, _temp[i].y, 255, _temp[i].frame, 0);
 				}
@@ -232,6 +273,8 @@ void Skill::UpSkill(Player* _pl)
 		// 초기화
 		if (_temp.back().start && !_num2)
 		{
+
+
 			_skill.set(2, 1);
 			_num2 = true;
 			// 불기둥 구조체
@@ -245,7 +288,7 @@ void Skill::UpSkill(Player* _pl)
 	// 노란 불기둥
 	if (_skill[2] == 1)
 	{
-
+		
 		if (_tick % 3 == 0)
 		{
 			for (int i = 0; i < _fire.size(); i++)
@@ -288,7 +331,6 @@ void Skill::UpSkill(Player* _pl)
 		{
 			for (int i = 4; i < 8; i++)
 			{
-				
 				if(_enemyXY[i].frame < IMAGEMANAGER->findImage("스킬불기둥2")->getMaxFrameX())_enemyXY[i].frame++;
 			}
 		}
@@ -335,8 +377,16 @@ void Skill::UpSkill(Player* _pl)
 
 void Skill::DownSkill(Player* _pl)
 {
+	// 적 불기둥 전 바닥 용암
 	if (_skill[3] == 1)
 	{
+		if (!_skillSound[4])
+		{
+			SOUNDMANAGER->play("적불기둥때", 1.0f);
+			_skillSound.set(4, 1);
+		}
+
+
 		if (_tick % 6 == 0)
 		{
 			for (int i = 0; i < 4; i++)
@@ -369,6 +419,14 @@ void Skill::DownSkill(Player* _pl)
 
 	if (_skill[5] == 1)
 	{
+		// 사운드
+		if (!_skillSound[1])
+		{
+			SOUNDMANAGER->play("마지막터질때", 1.0f);
+			_skillSound.set(1, 1);
+		}
+
+
 		if (_enemyXY[0].frame == 0)	IMAGEMANAGER->findImage("빨강알파")->render(getMemDC());
 
 		if (_tick % 3 == 0)
@@ -441,6 +499,7 @@ void Skill::DownSkill(Player* _pl)
 		}
 		if (_temp.back().start == false)
 		{
+			SOUNDMANAGER->play("클리어소리", 1.0f);
 			_skill.reset();
 			_skill.set(6, 1);
 			_skill.set(7, 1); // 적렌더를 위해 트루값설정

@@ -101,3 +101,26 @@ HRESULT SceneManager::changScene(string sceneName)
 
 	return E_FAIL;
 }
+
+HRESULT SceneManager::changScene(string loadingScene, string reservationScene)
+{
+	_reservationScene = reservationScene;
+
+	mapSceneIter find = _mSceneList.find(loadingScene);
+
+	if (find == _mSceneList.end()) return E_FAIL;
+	if (find->second == _currentScene) return S_OK;
+
+	if (SUCCEEDED(find->second->init()))
+	{
+		// Ãß°¡
+		if (_currentScene != nullptr) _currentScene->release();
+
+		_currentScene = find->second;
+
+		return S_OK;
+	}
+
+	return E_FAIL;
+	
+}

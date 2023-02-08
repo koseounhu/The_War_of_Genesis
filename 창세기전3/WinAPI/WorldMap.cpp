@@ -92,7 +92,10 @@ void WorldMap::update(void)
         }
 
         // UI 판정
-        if (PtInRect(&_button[3], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) SCENEMANAGER->changScene("오프닝");
+        if (PtInRect(&_button[3], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+        {
+            SCENEMANAGER->changScene("로딩","오프닝");
+        }
         if (PtInRect(&_button[i], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) _ui = true;
     }
   
@@ -217,7 +220,7 @@ void WorldMap::render(void)
         {
             _ui = false;
             _move = false;
-            SCENEMANAGER->changScene("시나리오컷씬");
+            SCENEMANAGER->changScene("로딩","1번시나리오");
         }
     }
     else if (_move2)
@@ -227,7 +230,7 @@ void WorldMap::render(void)
         {
             _ui = false;
             _move2 = false;
-            SCENEMANAGER->changScene("전투");
+            SCENEMANAGER->changScene("로딩", "전투");
         }
     }
 

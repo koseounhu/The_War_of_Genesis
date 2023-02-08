@@ -567,23 +567,26 @@ void Battle::render(void)
 
 
 		   // 카메라 쉐이킹
-		   if (_sk->getBitset()[3] == 1 && _skillTick % 4 == 0)
+		   if (_sk->getBitset()[3] == 1 )
 		   {
-			   if (_skillBool == false) _skillBool = true;
-			   else if (_skillBool == true) _skillBool = false;
+			   if (_skillTick % 2 == 0)
+			   {
+				   if (_skillBool == false) _skillBool = true;
+				   else if (_skillBool == true) _skillBool = false;
+			   }
 			   if (_skillBool)
 			   {
 				   for (int j = 0; j < V_NUM; j++)
 				   {
 					   for (int i = 0; i < H_NUM; i++)
 					   {
-						   _tile[i][j].x -= 3;
-						   _tile[i][j].y -= 3;
+						   _tile[i][j].x -= 2;
+						   _tile[i][j].y -= 2;
 					   }
 				   }
 
-				   _x -= 3;
-				   _y -= 3;
+				   _x -= 2;
+				   _y -= 2;
 			   }
 			   else
 			   {
@@ -591,13 +594,13 @@ void Battle::render(void)
 				   {
 					   for (int i = 0; i < H_NUM; i++)
 					   {
-						   _tile[i][j].x += 3;
-						   _tile[i][j].y += 3;
+						   _tile[i][j].x += 2;
+						   _tile[i][j].y += 2;
 					   }
 				   }
 
-				   _x += 3;
-				   _y += 3;
+				   _x += 2;
+				   _y += 2;
 			   }
 		   }
 		   else

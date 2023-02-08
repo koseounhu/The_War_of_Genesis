@@ -9,6 +9,7 @@ private:
 	typedef map<string, GameNode*> mapSceneList;
 	typedef map<string, GameNode*>::iterator mapSceneIter;
 
+
 private:
 	static GameNode* _currentScene;
 	static GameNode* _loadingScene;
@@ -17,6 +18,7 @@ private:
 	mapSceneList _mSceneList;
 	mapSceneList _mLoadingSceneList;
 
+	string _reservationScene;
 
 
 
@@ -30,10 +32,11 @@ public:
 	GameNode* addLoadingScene(string loadingSceneName, GameNode* scene);
 
 	HRESULT changScene(string sceneName);
-	
+	HRESULT changScene(string loadingScene, string reservationScene);
+
 	friend DWORD CALLBACK loadingThread(LPVOID prc);
 
-
+	string getReservationScene(void) { return _reservationScene; }
 
 	SceneManager() {}
 	~SceneManager() {}

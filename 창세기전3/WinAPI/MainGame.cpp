@@ -7,6 +7,7 @@
 #include "firstCutScene.h"
 #include "WorldMap.h"
 #include "SecondScene.h"
+#include "Loading.h"
 
 #pragma region 임시
 
@@ -23,16 +24,16 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("시나리오", new Scenario);
 	SCENEMANAGER->addScene("전투", new Battle);
 	SCENEMANAGER->addScene("전투2", new Battle2);
-	// SCENEMANAGER->addScene("시나리오컷씬", new firstCutScene);
+	SCENEMANAGER->addScene("1번시나리오", new firstCutScene);
 	SCENEMANAGER->addScene("2번시나리오", new SecondScene);
+	SCENEMANAGER->addScene("로딩", new Loading);
 
 
-	SCENEMANAGER->changScene("2번시나리오");
+	SCENEMANAGER->changScene("1번시나리오");
 
 
 	return S_OK;
 }
-
 void MainGame::release(void)
 {
 	GameNode::release();

@@ -145,10 +145,13 @@
     <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Battle2.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Loading.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="firstCutScene.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="moveTile.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -199,7 +202,10 @@
     <ClInclude Include="Dialogue.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="firstCutScene.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Loading.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scenario.h" />

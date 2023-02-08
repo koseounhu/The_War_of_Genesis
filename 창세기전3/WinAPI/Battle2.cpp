@@ -11,7 +11,6 @@ HRESULT Battle2::init(void)
 	_rc[3] = RectMake(WINSIZE_X - 50, 0, 50, WINSIZE_Y);
 	_x = _y = 0;
 #pragma endregion
-
 #pragma region 맵, A*
 	// 타일 배열 초기화
 	for (int j = 0; j < V_NUM; j++)

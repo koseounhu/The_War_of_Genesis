@@ -236,4 +236,14 @@ bool SoundManager::isPauseSound(string keyName)
 
 
 
+void SoundManager::stopAllSound(void)
+{
+	arrSoundIter iter = _mTotalSounds.begin();
 
+	int count = 0;
+
+	for (iter; iter != _mTotalSounds.end(); ++iter, count++)
+	{
+		_channel[count]->stop();
+	}
+}

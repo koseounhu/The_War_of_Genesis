@@ -2,13 +2,7 @@
 #include "GameNode.h"
 #include "Dialogue.h"
 
-struct JSON
-{
-	int x;
-	int y;
-	string text;
-	int tick;
-};
+
 
 class SecondScene : public GameNode
 {
@@ -20,6 +14,7 @@ private:
 	int _alpha;
 	int _count;
 	int _tick;
+	int _frame;
 	
 	int _bigImageAlpha;
 

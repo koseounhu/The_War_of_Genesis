@@ -5,11 +5,11 @@ HRESULT SecondScene::init(void)
 {
 	_tick = _alpha = _count = 0;
 	_dia = new Dialogue;
-	_dia->init();
+	_dia->init(2);
 
 	x = 470;
 	y = 610;
-
+	_frame = 0;
 	// 다이얼로그 관련 비트셋
 	_diaText.reset();
 	_diaSound.reset();
@@ -30,10 +30,17 @@ void SecondScene::update(void)
 	_tick++;
 
 	// 알파값 관리
-	/*if (_tick % 3 == 0)*/ _alpha++;
+	if(_count <1)_alpha++;
 	if (_alpha >= 255)
 	{
 		_alpha = 255;
+	}
+
+	// 엔딩 프레임
+	if (_tick % 25 == 0&& _count ==11 && _alpha ==255)
+	{
+		_frame++;
+		if (_frame > 5)_frame = 5;
 	}
 
 	_dia->update();
@@ -191,7 +198,8 @@ void SecondScene::render(void)
 
 				if (_bigImageAlpha >= 255)
 				{
-					_bigImageAlpha = 0;
+					_alpha = 0;
+					_bigImageAlpha = 255;
 					_count++;
 				}
 			}
@@ -202,7 +210,7 @@ void SecondScene::render(void)
 		break;
 
 	case 1:
-		IMAGEMANAGER->findImage("2_2")->render(getMemDC());
+		IMAGEMANAGER->findImage("2_2")->alphaRender(getMemDC(), _alpha);
 
 		break;
 
@@ -241,35 +249,84 @@ void SecondScene::render(void)
 	
 	case 10:
 		IMAGEMANAGER->findImage("2_10")->alphaRender(getMemDC(), _alpha);
+		_tick = 0;
 		break;
 	
 	case 11:
-		IMAGEMANAGER->findImage("3_1")->alphaRender(getMemDC(), _alpha);
+		if (_alpha < 255)_alpha++;
+		IMAGEMANAGER->findImage("2_1")->alphaRender(getMemDC(), _alpha);
+		IMAGEMANAGER->findImage("버몬트살라딘엔딩")->frameRender(getMemDC(), x, y, _frame, 0);
+		if (_frame == 5)
+		{
+			_bigImageAlpha += 2;
+			IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
+			if (_bigImageAlpha >= 255)
+			{
+				_bigImageAlpha = 255;
+				_count++;
+			}
+		}
 		break;
 	
 	case 12:
-		IMAGEMANAGER->findImage("4_1")->alphaRender(getMemDC(), _alpha);
+		IMAGEMANAGER->findImage("3_1")->alphaRender(getMemDC(), _alpha);
+		
 		break;
 	
 	case 13:
-		IMAGEMANAGER->findImage("4_2")->alphaRender(getMemDC(), _alpha);
+		IMAGEMANAGER->findImage("4_1")->alphaRender(getMemDC(), _alpha);
+		
 		break;
 	
 	case 14:
-		IMAGEMANAGER->findImage("4_3")->alphaRender(getMemDC(), _alpha);
+		IMAGEMANAGER->findImage("4_2")->alphaRender(getMemDC(), _alpha);
+		
 		break;
 
 	case 15:
+		IMAGEMANAGER->findImage("4_3")->alphaRender(getMemDC(), _alpha);
+		break;
+
+	case 16:
 		IMAGEMANAGER->findImage("4_4")->alphaRender(getMemDC(), _alpha);
 		break;
+	case 17:
+		SCENEMANAGER->changScene("시나리오");
 
 	default:
 		break;
 	}
 
+
+	// 다음 카운터 넘기기
 	if (_count > 0 && _count<11)
 	{
-		_bigImageAlpha+=2;
+		if (_alpha < 255)
+		{
+			_alpha +=2;
+			_bigImageAlpha -= 2;
+			if (_bigImageAlpha <= 0)_bigImageAlpha = 0;
+			if (_alpha >= 255)_alpha = 255;
+			IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
+		}
+
+		if (_alpha >= 255)
+		{
+			_bigImageAlpha += 2;
+			if(_bigImageAlpha >= 255)_bigImageAlpha=255;
+			IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
+		}
+
+		if (_alpha >=255 && _bigImageAlpha>=255)
+		{
+			_alpha = 0;
+			_bigImageAlpha = 255;
+			_count++;
+		}
+	}
+	else if (_count == 12)
+	{
+		_bigImageAlpha += 2;
 		IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
 		if (_bigImageAlpha >= 255)
 		{
@@ -277,28 +334,17 @@ void SecondScene::render(void)
 			_count++;
 		}
 	}
+	else if (_count > 12)
+	{
+		_alpha -= 2;
+		if (_alpha <= 0)
+		{
+			_alpha = 255;
+			_count++;
+		}
+	}
 
 
 
 }
-
-//void SecondScene::drawText(char* string, int x, int y, int jsonNum)
-//{
-//	char str[256];
-//	queue<Dialog2*>* temp = _diaSample->getDialog2();
-//	Dialog2* node = temp->front();
-//	sprintf_s(str, "%s", node->getName().c_str());
-//	FONTMANAGER->drawText(getMemDC(), 120, 600, 20, 52, 255, 192, "굴림", true, str);
-//	sprintf_s(str, "%s", node->getText().c_str());
-//	FONTMANAGER->drawText(getMemDC(), 140, 630, 20, 255, 255, 255, "굴림", true, str);
-//
-//
-//	if (_tick % 3 == 0) _dialogue[jsonNum].tick++;
-//
-//	if(_dialogue[jsonNum].tick > strlen(_dialogue[jsonNum].text))
-//
-//
-//
-//
-//}
 

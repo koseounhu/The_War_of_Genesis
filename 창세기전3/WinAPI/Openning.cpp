@@ -165,6 +165,6 @@ void Openning::render(void)
     {
         _nextAlpha+=5;
         IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), _nextAlpha);
-        if(_nextAlpha>250) SCENEMANAGER->changScene("시나리오");
+        if(_nextAlpha>250) SCENEMANAGER->changScene("로딩","시나리오");
     }
 }

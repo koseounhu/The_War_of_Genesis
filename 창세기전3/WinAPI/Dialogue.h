@@ -11,10 +11,6 @@ struct dia
 	bool end;
 };
 
-
-
-
-
 class Dialogue : public GameNode
 {
 private:
@@ -22,7 +18,7 @@ private:
 	vector<dia>_dia;
 
 public:
-	HRESULT init(void);
+	HRESULT init(int num);
 	void release(void);
 	void update(void);
 	void render(void);

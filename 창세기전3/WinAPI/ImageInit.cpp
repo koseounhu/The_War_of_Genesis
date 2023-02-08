@@ -148,14 +148,12 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addImage("살라딘_목걸이", SCE"살라딘_목걸이.bmp", 90, 120,true,MAZEN);
 	IMAGEMANAGER->addFrameImage("살라딘_휘파람", SCE"살라딘_휘파람.bmp", 180, 110,2,1,true,MAZEN);
 	IMAGEMANAGER->addImage("목걸이뺏김", SCE"목걸이뺏김.bmp", 90, 100,true,MAZEN);
+	IMAGEMANAGER->addFrameImage("버몬트살라딘엔딩", SCE"버몬트살라딘엔딩.bmp", 720, 120,6,1,true,MAZEN);
 
 	// 전투맵
 	IMAGEMANAGER->addImage("전투맵", BAT"BattleMap.bmp", 1600, 1800);
 	IMAGEMANAGER->addImage("전투맵2", BAT"BattleMap2.bmp", 2200, 2000);
 	IMAGEMANAGER->addImage("픽충배경", BAT"픽충배경.bmp", 1800, 1696);
-
-
-
 
 	// WorldMap
 	IMAGEMANAGER->addImage("월드맵배경", WM"WorldBG.bmp", 1446, 1074, true, MAZEN);
@@ -168,11 +166,39 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("월드맵선택", WM"circle.bmp", 1450, 47,25,1,true,MAZEN);
 	IMAGEMANAGER->addFrameImage("월드맵프로필", WM"Profile.bmp", 800, 148,5,1,true,MAZEN);
 
+	// Loading
+	IMAGEMANAGER->addFrameImage("LoadingCharacter", "Resources/Images/Loading/LoadingCharacter.bmp", 12400, 200, 31, 1);
+	IMAGEMANAGER->addImage("LoadingBlack", "Resources/Images/Loading/LoadingBlack.bmp", WINSIZE_X,WINSIZE_Y);
 
-
-
+	//=========
 	// 사운드
-	SOUNDMANAGER->addSound("스킬구", SOUND"스킬구.mp3", false, false);
+	// ========
+
+	// 1번 시나리오
+	SOUNDMANAGER->addSound("기다리고잇엇다", SOUND"기다리고잇엇다.mp3", false, false);
+	SOUNDMANAGER->addSound("지난번엔", SOUND"지난번엔.mp3", false, false);
+	SOUNDMANAGER->addSound("셰라-살라딘", SOUND"셰라-살라딘.mp3", false, false);
+	SOUNDMANAGER->addSound("셰라자드걱정마시오", SOUND"셰라자드걱정마시오.mp3", false, false);
+	SOUNDMANAGER->addSound("좋다칼버림", SOUND"좋다칼버림.mp3", false, false);
+	SOUNDMANAGER->addSound("요새두개", SOUND"요새두개.mp3", false, false);
+	SOUNDMANAGER->addSound("셰라개의치", SOUND"셰라개의치.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘설마", SOUND"살라딘설마.mp3", false, false);
+	SOUNDMANAGER->addSound("버몬트여술탄", SOUND"버몬트여술탄.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘왜그런짓", SOUND"살라딘왜그런짓.mp3", false, false);
+	SOUNDMANAGER->addSound("버몬트복수다", SOUND"버몬트복수다.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘칼버림", SOUND"살라딘칼버림.mp3", false, false);
+
+	
+	// 2번 시나리오
 	SOUNDMANAGER->addSound("버몬트_죽여라", SOUND"버몬트_죽여라.mp3", false, false);
 	SOUNDMANAGER->addSound("버몬트_그것만은", SOUND"버몬트_그것만은.mp3", false, false);
+	
+	// 스킬
+	SOUNDMANAGER->addSound("스킬구", SOUND"스킬구.mp3", false, false);
+	SOUNDMANAGER->addSound("클리어소리", SOUND"클리어소리.mp3", false, false);
+	SOUNDMANAGER->addSound("마지막터질때", SOUND"마지막터질때.mp3", false, false);
+	SOUNDMANAGER->addSound("찍을때", SOUND"찍을때.mp3", false, false);
+	SOUNDMANAGER->addSound("화염구터질때", SOUND"화염구터질때.mp3", false, false);
+	SOUNDMANAGER->addSound("적불기둥때", SOUND"적불기둥때.mp3", false, false);
+	SOUNDMANAGER->addSound("대각선불기둥", SOUND"대각선불기둥.mp3", false, false);
 }
