@@ -187,6 +187,12 @@ void MainGame::ImageInit(void)
 	SOUNDMANAGER->addSound("살라딘왜그런짓", SOUND"살라딘왜그런짓.mp3", false, false);
 	SOUNDMANAGER->addSound("버몬트복수다", SOUND"버몬트복수다.mp3", false, false);
 	SOUNDMANAGER->addSound("살라딘칼버림", SOUND"살라딘칼버림.mp3", false, false);
+	SOUNDMANAGER->addSound("셰라안되요", SOUND"셰라안되요.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘투르인", SOUND"살라딘투르인.mp3", false, false);
+	SOUNDMANAGER->addSound("버몬트체포해라", SOUND"버몬트체포해라.mp3", false, false);
+	SOUNDMANAGER->addSound("셰라자살", SOUND"셰라자살.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘안돼", SOUND"살라딘안돼.mp3", false, false);
+	SOUNDMANAGER->addSound("버몬트제길", SOUND"버몬트제길.mp3", false, false);
 
 	
 	// 2번 시나리오
