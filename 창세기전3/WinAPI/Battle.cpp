@@ -676,7 +676,7 @@ void Battle::render(void)
 	   IMAGEMANAGER->findImage("클리어텍스트")->alphaRender(getMemDC(), 305, 325, 100);
 	   IMAGEMANAGER->findImage("클리어텍스트광원")->alphaRender(getMemDC(), 300, 320, 255);
 	   if (_skillTick > 200)
-		   SCENEMANAGER->changScene("월드맵");
+		   SCENEMANAGER->changScene("로딩","2번시나리오");
    }
 
 

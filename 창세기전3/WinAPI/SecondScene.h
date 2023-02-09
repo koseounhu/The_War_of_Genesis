@@ -9,7 +9,7 @@ class SecondScene : public GameNode
 private:
 	Dialogue* _dia;
 	bitset<10> _diaText;
-	bitset<10> _diaSound;
+	bitset<30> _diaSound;
 
 	int _alpha;
 	int _count;

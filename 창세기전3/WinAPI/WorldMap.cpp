@@ -220,7 +220,7 @@ void WorldMap::render(void)
         {
             _ui = false;
             _move = false;
-            SCENEMANAGER->changScene("로딩","1번시나리오");
+            SCENEMANAGER->changScene("로딩","전투2");
         }
     }
     else if (_move2)
@@ -230,7 +230,7 @@ void WorldMap::render(void)
         {
             _ui = false;
             _move2 = false;
-            SCENEMANAGER->changScene("로딩", "전투");
+            SCENEMANAGER->changScene("로딩", "1번시나리오");
         }
     }
 

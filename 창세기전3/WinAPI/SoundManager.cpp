@@ -117,6 +117,7 @@ void SoundManager::stop(string keyName)
 
 			break;
 		}
+		else cout << "종료 실패" << endl;
 	}
 }
 

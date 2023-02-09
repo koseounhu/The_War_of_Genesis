@@ -20,7 +20,6 @@ void MainGame::ImageInit(void)
 {
 	// 임시 1.5배씩 더해줌
 	IMAGEMANAGER->addFrameImage("셰라죽음", SCE"셰라죽음.bmp", 5520, 150,23,1,true,MAZEN);
-	IMAGEMANAGER->addImage("임시2", SCE"임시2.bmp", 250, 250, true,MAZEN);
 	IMAGEMANAGER->addImage("버몬트", SCE"버몬트.bmp", 390, 640, true,MAZEN);
 	IMAGEMANAGER->addImage("살라딘", SCE"살라딘.bmp", 600, 680, true,MAZEN);
 	IMAGEMANAGER->addImage("셰라", SCE"셰라.bmp", 625, 622, true,MAZEN);
@@ -123,7 +122,14 @@ void MainGame::ImageInit(void)
 	// 1번 시나리오
 	IMAGEMANAGER->addImage("시나리오배경", SCE"SceneBG.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("컷신배경", SCE"ScenarioBG.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("2번전투시작전배경", SCE"2번전투시작전배경.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("셰라죽음배경", SCE"셰라죽음배경.bmp", WINSIZE_X, WINSIZE_Y);
+	IMAGEMANAGER->addImage("셰라눈감음", SCE"셰라눈감음.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("시나리오형제", SCE"brother.bmp", 120, 45,true,MAZEN);
+	IMAGEMANAGER->addFrameImage("셰라죽을때", SCE"셰라죽을때.bmp", 540, 120, 4, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("버몬트_걷기2", PL"버몬트_WALK.bmp", 1350, 540, 6, 4, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("살라딘_걷기2", PL"살라딘_walk.bmp", 1080, 540, 6, 4, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("살라딘_대기2", PL"살라딘_idle.bmp", 360, 600, 3, 4, true, MAZEN);
 
 	// 2번 시나리오
 	IMAGEMANAGER->addImage("2_0", SCE"2_0.bmp", WINSIZE_X, WINSIZE_Y);
@@ -193,6 +199,30 @@ void MainGame::ImageInit(void)
 	SOUNDMANAGER->addSound("셰라자살", SOUND"셰라자살.mp3", false, false);
 	SOUNDMANAGER->addSound("살라딘안돼", SOUND"살라딘안돼.mp3", false, false);
 	SOUNDMANAGER->addSound("버몬트제길", SOUND"버몬트제길.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘이게무슨짓", SOUND"살라딘이게무슨짓.mp3", false, false);
+	SOUNDMANAGER->addSound("셰라순결", SOUND"셰라순결.mp3", false, false);
+	SOUNDMANAGER->addSound("셰라투르선택감사", SOUND"셰라투르선택감사.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘이젠늦엇소", SOUND"살라딘이젠늦엇소.mp3", false, false);
+	SOUNDMANAGER->addSound("셰라언젠가말씀", SOUND"셰라언젠가말씀.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘죽으면안되오", SOUND"살라딘죽으면안되오.mp3", false, false);
+	SOUNDMANAGER->addSound("셰라약속해줘", SOUND"셰라약속해줘.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘하지만녀석들", SOUND"살라딘하지만녀석들.mp3", false, false);
+	SOUNDMANAGER->addSound("셰라마지막소원", SOUND"셰라마지막소원.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘어려운약속", SOUND"살라딘어려운약속.mp3", false, false);
+	SOUNDMANAGER->addSound("셰라그런느낌", SOUND"셰라그런느낌.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘셰라자드", SOUND"살라딘셰라자드.mp3", false, false);
+	SOUNDMANAGER->addSound("셰라안녕", SOUND"셰라안녕.mp3", false, false);
+	SOUNDMANAGER->addSound("버몬트다끝나셧나", SOUND"버몬트다끝나셧나.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘복수심에", SOUND"살라딘복수심에.mp3", false, false);
+	SOUNDMANAGER->addSound("버몬트각오해라", SOUND"버몬트각오해라.mp3", false, false);
+	SOUNDMANAGER->addSound("살라딘좋은왕", SOUND"살라딘좋은왕.mp3", false, false);
+	SOUNDMANAGER->addSound("울음", SOUND"울음.mp3", false, false);
+
+	// 1번 시나리오 배경
+	SOUNDMANAGER->addSound("배경셰라언젠가말할때", SOUND"배경셰라언젠가말할때.mp3", true, true);
+	SOUNDMANAGER->addSound("dia18번배경", SOUND"dia18번배경.mp3", false, false);
+	SOUNDMANAGER->addSound("1번시나리오배경음악", SOUND"1번시나리오배경음악.mp3", false, true);
+	SOUNDMANAGER->addSound("휘파람", SOUND"휘파람.mp3", false, false);
 
 	
 	// 2번 시나리오

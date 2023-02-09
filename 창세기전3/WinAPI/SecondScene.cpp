@@ -14,6 +14,9 @@ HRESULT SecondScene::init(void)
 	_diaText.reset();
 	_diaSound.reset();
 
+
+	_count = 0;
+
 	// 큰이미지
 	_bigImageAlpha = 0;
 
@@ -45,6 +48,11 @@ void SecondScene::update(void)
 
 	_dia->update();
 	
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		SOUNDMANAGER->stopAllSound();
+		_count = 17;
+	}
 }
 
 void SecondScene::render(void)
@@ -60,7 +68,7 @@ void SecondScene::render(void)
 		// 사운드 추가 출력 안되게 막는 비트셋
 		_diaSound.set(0, 1);
 
-		if (_diaText.any()==0)
+		if (_diaText.any() == 0)
 		{
 			IMAGEMANAGER->findImage("버몬트칼찔림")->render(getMemDC(), x + 150, y);
 			IMAGEMANAGER->findImage("살라딘칼")->render(getMemDC(), x, y);
@@ -82,7 +90,7 @@ void SecondScene::render(void)
 				IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 100, 580, 215);
 
 				// 버몬트 - 죽여라
-				_dia->drawTextNoSkip(0, 120, 590, 200, 200, 20, 255, 255, 255);
+				_dia->drawTextNoSkip(0, 120, 590, 200, 200, 25, 255, 255, 255);
 
 				if (SOUNDMANAGER->getLength("버몬트_죽여라") == SOUNDMANAGER->getPosition("버몬트_죽여라") && _diaText[0] == 0)
 				{
@@ -95,9 +103,9 @@ void SecondScene::render(void)
 						_tick = 0;
 					}
 				}
-				
+
 			}
-			
+
 
 			// 1번 다이얼로그
 			if (_diaText[1])
@@ -107,11 +115,11 @@ void SecondScene::render(void)
 					// 큰이미지
 					if (_tick < 150)_bigImageAlpha += 5;
 					else if (_tick > 150)_bigImageAlpha -= 5;
-					
+
 					if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
 					else if (_bigImageAlpha <= 0)_bigImageAlpha = 0;
 
-				
+
 					IMAGEMANAGER->findImage("살라딘")->alphaRender(getMemDC(), 150, 200, _bigImageAlpha);
 
 
@@ -119,11 +127,11 @@ void SecondScene::render(void)
 					IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 100, 580, 215);
 
 					// 살라딘 - ...
-					_dia->drawTextNoSkip(1, 120, 590, 200, 200, 20, 255, 255, 255);
+					_dia->drawTextNoSkip(1, 120, 590, 200, 200, 25, 255, 255, 255);
 				}
-				
-				
-				else if (_bigImageAlpha>=0)
+
+
+				else if (_bigImageAlpha >= 0)
 				{
 					_diaText.set(1, 0);
 					_diaText.set(2, 1);
@@ -136,7 +144,7 @@ void SecondScene::render(void)
 			{
 				if (_tick > 100 && _tick < 200)
 				{
-					IMAGEMANAGER->findImage("목걸이뺏김")->render(getMemDC(), x+170, y);
+					IMAGEMANAGER->findImage("목걸이뺏김")->render(getMemDC(), x + 170, y);
 					IMAGEMANAGER->findImage("살라딘_목걸이")->render(getMemDC(), x + 70, y - 20);
 				}
 				else if (_tick < 100)
@@ -144,7 +152,7 @@ void SecondScene::render(void)
 					IMAGEMANAGER->findImage("목걸이뺏김")->render(getMemDC(), x + 170, y);
 					IMAGEMANAGER->findImage("살라딘칼")->render(getMemDC(), x, y);
 				}
-				
+
 				if (_tick > 200 && _tick < 400)
 				{
 					IMAGEMANAGER->findImage("목걸이뺏김")->render(getMemDC(), x + 170, y);
@@ -173,7 +181,7 @@ void SecondScene::render(void)
 					IMAGEMANAGER->findImage("다이얼로그창")->alphaRender(getMemDC(), 100, 580, 215);
 
 					// 버몬트 - 그것만은 ..
-					_dia->drawTextNoSkip(2, 120, 590, 200, 200, 20, 255, 255, 255);
+					_dia->drawTextNoSkip(2, 120, 590, 500, 200, 25, 255, 255, 255);
 
 					// 사운드 추가 출력 안되게 막는 비트셋
 					if (!_diaSound[1]) SOUNDMANAGER->play("버몬트_그것만은", 1.0f);
@@ -191,7 +199,13 @@ void SecondScene::render(void)
 
 			else if (_diaText[4])
 			{
-				_bigImageAlpha+=2;
+				if (!_diaSound[2])
+				{
+					_diaSound.set(2, 1);
+					SOUNDMANAGER->play("휘파람", 0.2f);
+				}
+
+				_bigImageAlpha += 2;
 				IMAGEMANAGER->findImage("목걸이뺏김")->render(getMemDC(), x + 170, y);
 				IMAGEMANAGER->findImage("살라딘_휘파람")->frameRender(getMemDC(), x + 70, y - 10, 1, 0);
 				IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
@@ -204,7 +218,7 @@ void SecondScene::render(void)
 				}
 			}
 
-			
+
 		}
 
 		break;
@@ -222,19 +236,19 @@ void SecondScene::render(void)
 	case 3:
 		IMAGEMANAGER->findImage("2_4")->alphaRender(getMemDC(), _alpha);
 		break;
-	
+
 	case 4:
 		IMAGEMANAGER->findImage("2_5")->alphaRender(getMemDC(), _alpha);
 		break;
-	
+
 	case 5:
 		IMAGEMANAGER->findImage("2_6")->alphaRender(getMemDC(), _alpha);
 		break;
-	
+
 	case 6:
 		IMAGEMANAGER->findImage("2_7")->alphaRender(getMemDC(), _alpha);
 		break;
-	
+
 	case 7:
 		IMAGEMANAGER->findImage("2_8")->alphaRender(getMemDC(), _alpha);
 		break;
@@ -242,16 +256,16 @@ void SecondScene::render(void)
 	case 8:
 		IMAGEMANAGER->findImage("2_9")->alphaRender(getMemDC(), _alpha);
 		break;
-	
+
 	case 9:
 		IMAGEMANAGER->findImage("2_2")->alphaRender(getMemDC(), _alpha);
 		break;
-	
+
 	case 10:
 		IMAGEMANAGER->findImage("2_10")->alphaRender(getMemDC(), _alpha);
 		_tick = 0;
 		break;
-	
+
 	case 11:
 		if (_alpha < 255)_alpha++;
 		IMAGEMANAGER->findImage("2_1")->alphaRender(getMemDC(), _alpha);
@@ -267,20 +281,24 @@ void SecondScene::render(void)
 			}
 		}
 		break;
-	
+
 	case 12:
 		IMAGEMANAGER->findImage("3_1")->alphaRender(getMemDC(), _alpha);
-		
+		if (!_diaSound[3])
+		{
+			_diaSound.set(3, 1);
+			SOUNDMANAGER->play("살라딘좋은왕", 1.0f);
+		}
 		break;
-	
+
 	case 13:
 		IMAGEMANAGER->findImage("4_1")->alphaRender(getMemDC(), _alpha);
-		
+
 		break;
-	
+
 	case 14:
 		IMAGEMANAGER->findImage("4_2")->alphaRender(getMemDC(), _alpha);
-		
+
 		break;
 
 	case 15:
@@ -291,7 +309,7 @@ void SecondScene::render(void)
 		IMAGEMANAGER->findImage("4_4")->alphaRender(getMemDC(), _alpha);
 		break;
 	case 17:
-		SCENEMANAGER->changScene("시나리오");
+		SCENEMANAGER->changScene("로딩", "오프닝");
 
 	default:
 		break;
@@ -299,11 +317,11 @@ void SecondScene::render(void)
 
 
 	// 다음 카운터 넘기기
-	if (_count > 0 && _count<11)
+	if (_count > 0 && _count < 11)
 	{
 		if (_alpha < 255)
 		{
-			_alpha +=2;
+			_alpha += 2;
 			_bigImageAlpha -= 2;
 			if (_bigImageAlpha <= 0)_bigImageAlpha = 0;
 			if (_alpha >= 255)_alpha = 255;
@@ -313,38 +331,80 @@ void SecondScene::render(void)
 		if (_alpha >= 255)
 		{
 			_bigImageAlpha += 2;
-			if(_bigImageAlpha >= 255)_bigImageAlpha=255;
+			if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
 			IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
 		}
 
-		if (_alpha >=255 && _bigImageAlpha>=255)
+		if (_alpha >= 255 && _bigImageAlpha >= 255)
 		{
 			_alpha = 0;
 			_bigImageAlpha = 255;
 			_count++;
 		}
 	}
-	else if (_count == 12)
+
+
+	if (_count == 12)
 	{
-		_bigImageAlpha += 2;
-		IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
-		if (_bigImageAlpha >= 255)
+		if (SOUNDMANAGER->getPosition("울음") < 3000)
 		{
-			_bigImageAlpha = 0;
+			IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
+			_bigImageAlpha -= 2;
+			if (_bigImageAlpha <= 0)_bigImageAlpha = 0;
+
+		}
+
+
+		if (SOUNDMANAGER->getLength("살라딘좋은왕") == SOUNDMANAGER->getPosition("살라딘좋은왕"))
+		{
+			if (!_diaSound[4])
+			{
+				_diaSound.set(4, 1);
+				SOUNDMANAGER->play("울음", 0.1f);
+			}
+
+			if (SOUNDMANAGER->getPosition("울음") >= 3000)
+			{
+				IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
+				_bigImageAlpha++;
+				if (_bigImageAlpha >= 255)
+				{
+					_bigImageAlpha = 255;
+					_tick = 0;
+					_count++;
+					_alpha = 0;
+				}
+			}
+		}
+
+	}
+
+	if (_count > 12)
+	{
+		if (_alpha < 255)
+		{
+			_alpha += 2;
+			_bigImageAlpha -= 2;
+			if (_bigImageAlpha <= 0)_bigImageAlpha = 0;
+			if (_alpha >= 255)_alpha = 255;
+			IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
+		}
+
+		if (_alpha >= 255)
+		{
+			_bigImageAlpha += 1;
+			if (_bigImageAlpha >= 255)_bigImageAlpha = 255;
+			IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
+		}
+
+		if (_alpha >= 255 && _bigImageAlpha >= 255)
+		{
+			_alpha = 0;
+			_bigImageAlpha = 255;
 			_count++;
 		}
+
+
 	}
-	else if (_count > 12)
-	{
-		_alpha -= 2;
-		if (_alpha <= 0)
-		{
-			_alpha = 255;
-			_count++;
-		}
-	}
-
-
-
 }
 

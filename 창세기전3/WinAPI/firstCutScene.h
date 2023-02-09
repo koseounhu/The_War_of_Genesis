@@ -8,13 +8,13 @@ class firstCutScene : public GameNode
 {
 private:
 	Dialogue* _dia;
-	bitset<30> _diaSound;
+	bitset<40> _diaSound;
 	
 	bool _sal;
 	bool _sara;
 	bool _ver;
 	bool _last;
-	
+	bool _die;
 
 	int _tick;
 	int _BGalpha;
@@ -23,6 +23,18 @@ private:
 	int _bigImageAlpha;
 
 	int _bigImageAlpha2;
+
+	int _lastAlpha;
+	int _saraFrame;
+
+	int _verX, _verY;
+	int _verFrame;
+	int _dieFrame;
+
+	int _salX;
+	int _salY;
+	int _salFrame;
+
 
 public:
 	HRESULT init(void);

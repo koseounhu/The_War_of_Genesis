@@ -2,7 +2,7 @@
 #include "SingletonBase.h"
 
 
-constexpr auto soundBuffer = 10;
+constexpr auto soundBuffer = 100;
 constexpr auto extraSoundChannel = 5;
 constexpr auto totalSoundChannel = soundBuffer + extraSoundChannel;
 

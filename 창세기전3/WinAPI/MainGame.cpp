@@ -29,7 +29,7 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("로딩", new Loading);
 
 
-	SCENEMANAGER->changScene("1번시나리오");
+	SCENEMANAGER->changScene("2번시나리오");
 
 
 	return S_OK;
