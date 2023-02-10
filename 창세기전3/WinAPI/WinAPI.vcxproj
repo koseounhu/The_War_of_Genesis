@@ -145,6 +145,7 @@
     <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Battle2.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Loading.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
@@ -187,11 +188,13 @@
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Store.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Vermouth.cpp" />
+    <ClCompile Include="WeaponShop.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
@@ -204,6 +207,7 @@
     <ClInclude Include="firstCutScene.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Loading.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
@@ -238,15 +242,18 @@
     <ClInclude Include="Skill.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Stdafx.h" />
+    <ClInclude Include="Store.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Vermouth.h" />
+    <ClInclude Include="WeaponShop.h" />
     <ClInclude Include="WorldMap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dialog.json" />
+    <None Include="Item.json" />
     <None Include="Quest.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

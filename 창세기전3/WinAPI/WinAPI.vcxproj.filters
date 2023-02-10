@@ -106,6 +106,18 @@
     <Filter Include="Scene\Loading">
       <UniqueIdentifier>{52dba803-fd8a-4df9-bcb3-19978b155e0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Store">
+      <UniqueIdentifier>{caebec36-551a-4563-b3ed-58e30ef67844}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Store\WeaponShop">
+      <UniqueIdentifier>{d1d11801-8a36-40b7-b044-d2f519e48872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Store\MainStore">
+      <UniqueIdentifier>{89876973-593a-44a3-9193-858063d94433}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item">
+      <UniqueIdentifier>{4ad4cf13-c695-4d59-bb5d-bcbd699eb88a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C3DMatrix.cpp">
@@ -221,6 +233,15 @@
     <ClCompile Include="Loading.cpp">
       <Filter>Scene\Loading</Filter>
     </ClCompile>
+    <ClCompile Include="WeaponShop.cpp">
+      <Filter>Scene\Store\WeaponShop</Filter>
+    </ClCompile>
+    <ClCompile Include="Store.cpp">
+      <Filter>Scene\Store\MainStore</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C3DMatrix.h">
@@ -335,6 +356,15 @@
     <ClInclude Include="Loading.h">
       <Filter>Scene\Loading</Filter>
     </ClInclude>
+    <ClInclude Include="WeaponShop.h">
+      <Filter>Scene\Store\WeaponShop</Filter>
+    </ClInclude>
+    <ClInclude Include="Store.h">
+      <Filter>Scene\Store\MainStore</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Quest.json">
@@ -342,6 +372,9 @@
     </None>
     <None Include="Dialog.json">
       <Filter>Dialogue</Filter>
+    </None>
+    <None Include="Item.json">
+      <Filter>Item</Filter>
     </None>
   </ItemGroup>
 </Project>

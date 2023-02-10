@@ -15,6 +15,11 @@ private:
 	int _count;
 	int _tick;
 	int _frame;
+	int _effect;
+
+	int _neckX;
+	int _neckY;
+	int _neckFrame;
 	
 	int _bigImageAlpha;
 

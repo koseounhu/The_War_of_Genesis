@@ -9,6 +9,7 @@
 #define PL "Resources/Images/Player/"
 #define WM "Resources/Images/WorldMap/"
 #define UI "Resources/Images/UI/"
+#define ST "Resources/Images/Store/"
 #define SOUND "Resources/Sounds/"
 #define MAZEN RGB(255, 0, 255)
 #define RGBRED RGB(255, 0, 0)
@@ -18,12 +19,12 @@
 
 void MainGame::ImageInit(void)
 {
-	// 임시 1.5배씩 더해줌
-	IMAGEMANAGER->addFrameImage("셰라죽음", SCE"셰라죽음.bmp", 5520, 150,23,1,true,MAZEN);
+	// 큰 캐릭터 이미지
 	IMAGEMANAGER->addImage("버몬트", SCE"버몬트.bmp", 390, 640, true,MAZEN);
 	IMAGEMANAGER->addImage("살라딘", SCE"살라딘.bmp", 600, 680, true,MAZEN);
 	IMAGEMANAGER->addImage("셰라", SCE"셰라.bmp", 625, 622, true,MAZEN);
 
+#pragma region 통합 UI
 	// 통합
 	IMAGEMANAGER->addImage("검정알파", BG"blackness.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("하얀알파", BG"whitness.bmp", WINSIZE_X, WINSIZE_Y);
@@ -45,8 +46,9 @@ void MainGame::ImageInit(void)
 
 	// UI
 	IMAGEMANAGER->addImage("UI스테이터창", UI"state.bmp", 218, 384);
+#pragma endregion
 
-
+#pragma region Unit
 
 	//플레이어
 	IMAGEMANAGER->addFrameImage("살라딘_걷기", PL"살라딘_walk.bmp", 720, 360, 6, 4, true,MAZEN );
@@ -64,7 +66,31 @@ void MainGame::ImageInit(void)
 	// 적
 	IMAGEMANAGER->addFrameImage("적1", PL"적1.bmp", 240, 160, 3, 2, true, MAZEN);
 
+#pragma endregion
 
+#pragma region 상점
+
+	IMAGEMANAGER->addImage("상점배경", ST"StoreBG.bmp", WINSIZE_X, WINSIZE_Y, true, MAZEN);
+	IMAGEMANAGER->addImage("상점타이틀", ST"StoreTitle.bmp", 1024, 64, true, MAZEN);
+	IMAGEMANAGER->addImage("상점바닥얼굴", ST"StoreFaceTitle.bmp", 1024, 192, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("상점메뉴건물이미지", ST"StoreMainBtnBuilding.bmp", 224, 56,4,1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("상점메인메뉴버튼", ST"StoreMainBtn.bmp", 672, 56,3,1, true, MAZEN);
+	IMAGEMANAGER->addImage("무기상점여자", ST"storeGirl.bmp", 400, 490, true, MAZEN);
+	IMAGEMANAGER->addImage("상점다이얼로그", ST"WeaponDialogue.bmp", 1024, 192, true, MAZEN);
+	IMAGEMANAGER->addImage("무기리스트배경", ST"WeaponList.bmp", 501, 349, true, MAZEN);
+	IMAGEMANAGER->addImage("무기상점타이틀", ST"StoreProfileBox2.bmp", 266, 66, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("상점작은버튼", ST"StoreMiniBtn.bmp", 180, 26, 2,1,true, MAZEN);
+	IMAGEMANAGER->addFrameImage("위아래버튼", ST"WeaponArrowBtn.bmp", 40, 52, 2,2,true, MAZEN);
+	IMAGEMANAGER->addImage("무기구매", ST"WeaponBuy.bmp", 373, 128,true, MAZEN);
+	IMAGEMANAGER->addImage("스크롤", ST"WeaponScroll.bmp", 26, 286,true, MAZEN);
+	IMAGEMANAGER->addImage("구매카운트", ST"WeaponCount.bmp", 28, 26,true, MAZEN);
+	IMAGEMANAGER->addFrameImage("무기아이콘", ST"무기아이콘.bmp", 40, 280,1,7,true, MAZEN);
+
+
+
+#pragma endregion
+
+#pragma region 스킬
 	// 스킬
 	IMAGEMANAGER->addFrameImage("스킬구", PL"스킬구.bmp", 6325, 192, 25, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("스킬불기둥1", PL"불기둥1.bmp", 1600, 230, 32, 1, true, SKILL);
@@ -104,8 +130,9 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("스킬이펙트3_1광원", PL"이펙트3_1광원.bmp", 1150, 150, 23, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("스킬이펙트5광원", PL"이펙트5광원.bmp", 1200, 150, 8, 1, true, MAZEN);
 
+#pragma endregion
 	
-	
+#pragma region 오프닝
 	// 오프닝
 	IMAGEMANAGER->addImage("오프닝배경", OPEN"OpeningBG.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("오프닝로고", OPEN"OpeningLogo.bmp", 902, 234,true, MAZEN);
@@ -118,7 +145,9 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("오프닝선택창2", OPEN"OpeningBtn2.bmp", 460, 217, 1, 4, true, RGBRED);
 	IMAGEMANAGER->addFrameImage("오프닝불꽃", OPEN"OpeningFire.bmp", 11160, 256, 36, 1, true, RGB(0,0,0));
 	IMAGEMANAGER->addFrameImage("오프닝넥스트", OPEN"OpeningNext.bmp", 4335, 254, 17, 1, true, RGB(0,0,0));
+#pragma endregion
 
+#pragma region 시나리오
 	// 1번 시나리오
 	IMAGEMANAGER->addImage("시나리오배경", SCE"SceneBG.bmp", WINSIZE_X, WINSIZE_Y);
 	IMAGEMANAGER->addImage("컷신배경", SCE"ScenarioBG.bmp", WINSIZE_X, WINSIZE_Y);
@@ -130,6 +159,9 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("버몬트_걷기2", PL"버몬트_WALK.bmp", 1350, 540, 6, 4, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("살라딘_걷기2", PL"살라딘_walk.bmp", 1080, 540, 6, 4, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("살라딘_대기2", PL"살라딘_idle.bmp", 360, 600, 3, 4, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("목걸이뺏기이펙트", SCE"목걸이뺏기이펙트.bmp", 900, 135, 5, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("목걸이", SCE"목걸이.bmp", 200, 20, 10, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("셰라죽음", SCE"셰라죽음.bmp", 5520, 150, 23, 1, true, MAZEN);
 
 	// 2번 시나리오
 	IMAGEMANAGER->addImage("2_0", SCE"2_0.bmp", WINSIZE_X, WINSIZE_Y);
@@ -155,6 +187,9 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("살라딘_휘파람", SCE"살라딘_휘파람.bmp", 180, 110,2,1,true,MAZEN);
 	IMAGEMANAGER->addImage("목걸이뺏김", SCE"목걸이뺏김.bmp", 90, 100,true,MAZEN);
 	IMAGEMANAGER->addFrameImage("버몬트살라딘엔딩", SCE"버몬트살라딘엔딩.bmp", 720, 120,6,1,true,MAZEN);
+#pragma endregion
+
+#pragma region 맵 + 상점
 
 	// 전투맵
 	IMAGEMANAGER->addImage("전투맵", BAT"BattleMap.bmp", 1600, 1800);
@@ -176,6 +211,9 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("LoadingCharacter", "Resources/Images/Loading/LoadingCharacter.bmp", 12400, 200, 31, 1);
 	IMAGEMANAGER->addImage("LoadingBlack", "Resources/Images/Loading/LoadingBlack.bmp", WINSIZE_X,WINSIZE_Y);
 
+#pragma  endregion
+
+#pragma region 사운드
 	//=========
 	// 사운드
 	// ========
@@ -237,4 +275,6 @@ void MainGame::ImageInit(void)
 	SOUNDMANAGER->addSound("화염구터질때", SOUND"화염구터질때.mp3", false, false);
 	SOUNDMANAGER->addSound("적불기둥때", SOUND"적불기둥때.mp3", false, false);
 	SOUNDMANAGER->addSound("대각선불기둥", SOUND"대각선불기둥.mp3", false, false);
+
+#pragma endregion
 }

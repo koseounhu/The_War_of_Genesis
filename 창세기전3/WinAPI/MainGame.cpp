@@ -8,6 +8,8 @@
 #include "WorldMap.h"
 #include "SecondScene.h"
 #include "Loading.h"
+#include "Store.h"
+#include "WeaponShop.h"
 
 #pragma region 임시
 
@@ -27,9 +29,11 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("1번시나리오", new firstCutScene);
 	SCENEMANAGER->addScene("2번시나리오", new SecondScene);
 	SCENEMANAGER->addScene("로딩", new Loading);
+	SCENEMANAGER->addScene("메인상점", new Store);
+	SCENEMANAGER->addScene("무기상점", new WeaponShop);
 
 
-	SCENEMANAGER->changScene("2번시나리오");
+	SCENEMANAGER->changScene("무기상점");
 
 
 	return S_OK;

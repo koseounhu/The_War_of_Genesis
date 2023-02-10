@@ -26,6 +26,17 @@ HRESULT Dialogue::init(int num)
 			}
 		}
 	}
+	else if (num ==3)
+	{
+
+		for (auto it = root["상점"].begin(); it != root["상점"].end(); it++)
+		{
+			if ((*it).isObject())
+			{
+				_dia.push_back({ (*it)["_name"].asString(), (*it)["_text"].asString() });
+			}
+		}
+	}
 
 	return S_OK;
 }

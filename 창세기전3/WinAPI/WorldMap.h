@@ -15,8 +15,8 @@ private:
 
 	RECT _point;
 
-	RECT _button[4];
-	int _buttonNum[4];
+	RECT _button[5];
+	int _buttonNum[5];
 
 	int _selectFrame;
 

@@ -7,6 +7,12 @@ HRESULT SecondScene::init(void)
 	_dia = new Dialogue;
 	_dia->init(2);
 
+
+	_neckX = 660;
+	_neckY = 610;
+	_neckFrame = 0;
+
+	_effect = 0;
 	x = 470;
 	y = 610;
 	_frame = 0;
@@ -142,10 +148,28 @@ void SecondScene::render(void)
 			// ¸ñ°ÉÀÌ »¯´Â Àå¸é
 			else if (_diaText[2])
 			{
+				if (_tick % 3 == 0)_neckFrame++;
+				if (_neckFrame >= IMAGEMANAGER->findImage("¸ñ°ÉÀÌ")->getMaxFrameX()) _neckFrame = 0;
+
 				if (_tick > 100 && _tick < 200)
 				{
+					if (_tick % 5 == 0)_effect++;
+					IMAGEMANAGER->findImage("¸ñ°ÉÀÌ»¯±âÀÌÆåÆ®")->alphaFrameRender(getMemDC(), x + 65, y-15, 100, _effect, 0);
 					IMAGEMANAGER->findImage("¸ñ°ÉÀÌ»¯±è")->render(getMemDC(), x + 170, y);
 					IMAGEMANAGER->findImage("»ì¶óµò_¸ñ°ÉÀÌ")->render(getMemDC(), x + 70, y - 20);
+
+					
+					IMAGEMANAGER->findImage("¸ñ°ÉÀÌ")->frameRender(getMemDC(), _neckX, _neckY, _neckFrame, 0);
+					if (_effect > 1 && _effect<5)
+					{
+						_neckX--;
+						_neckY--;
+					}
+					else if (_effect > 5 && _effect < 9)
+					{
+						_neckX-=2;
+						_neckY++;
+					}
 				}
 				else if (_tick < 100)
 				{

@@ -12,7 +12,7 @@ HRESULT WorldMap::init(void)
     _point = RectMakeCenter(465, 337, IMAGEMANAGER->findImage("월드맵거점")->getFrameWidth(), IMAGEMANAGER->findImage("월드맵거점")->getFrameHeight());
     
     int temp = 0;
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 5; i++)
     {
         _buttonNum[i] = 0;
         _button[i] = RectMake(830, 123 + temp, IMAGEMANAGER->findImage("월드맵버튼")->getFrameWidth(), IMAGEMANAGER->findImage("월드맵버튼")->getFrameHeight());
@@ -80,7 +80,7 @@ void WorldMap::update(void)
     }
     if(_move||_move2) _alpha++;
 #pragma endregion
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 5; i++)
     {
         if (PtInRect(&_button[i], _ptMouse))
         {
@@ -92,9 +92,14 @@ void WorldMap::update(void)
         }
 
         // UI 판정
-        if (PtInRect(&_button[3], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+        if (PtInRect(&_button[4], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
         {
             SCENEMANAGER->changScene("로딩","오프닝");
+        }
+
+        if (PtInRect(&_button[1], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+        {
+            SCENEMANAGER->changScene("로딩", "메인상점");
         }
         if (PtInRect(&_button[i], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) _ui = true;
     }
@@ -199,14 +204,19 @@ void WorldMap::render(void)
     // 우측 버튼 UI
     if (!_ui)
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
-            if (i == 2)continue;
-            IMAGEMANAGER->findImage("월드맵버튼")->frameRender(getMemDC(), _button[i].left, _button[i].top, _buttonNum[i], 0);
+            if (i<4)
+              IMAGEMANAGER->findImage("월드맵버튼")->frameRender(getMemDC(), _button[i].left, _button[i].top, _buttonNum[i], 0);
+            else
+                IMAGEMANAGER->findImage("월드맵버튼")->frameRender(getMemDC(), _button[i].left, _button[i].top+10, _buttonNum[i], 0);
+
         }
         FONTMANAGER->drawText(getMemDC(), _button[0].left + 50, _button[0].top + 10, 25, 255, 255, 255, "굴림", true, "이 동");
         FONTMANAGER->drawText(getMemDC(), _button[1].left + 50, _button[1].top + 10, 25, 255, 255, 255, "굴림", true, "진 입");
-        FONTMANAGER->drawText(getMemDC(), _button[3].left + 30, _button[3].top + 10, 25, 255, 255, 255, "굴림", true, "메인화면");
+        FONTMANAGER->drawText(getMemDC(), _button[2].left + 50, _button[2].top + 10, 25, 150, 150, 150, "굴림", true, "상 태");
+        FONTMANAGER->drawText(getMemDC(), _button[3].left + 50, _button[3].top + 10, 25, 150, 150, 150, "굴림", true, "교 환");
+        FONTMANAGER->drawText(getMemDC(), _button[4].left + 30, _button[4].top + 20, 25, 255, 255, 255, "굴림", true, "메인화면");
     }
 
 
