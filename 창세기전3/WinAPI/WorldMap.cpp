@@ -3,7 +3,7 @@
 
 HRESULT WorldMap::init(void)
 {
-
+    SOUNDMANAGER->play("월드맵배경", 1.0f);
     _tick = _loopX = _loopY = 0;
     _pointFrame=_bgX= _bgY = 0;
     _selectFrame = 0;
@@ -94,14 +94,21 @@ void WorldMap::update(void)
         // UI 판정
         if (PtInRect(&_button[4], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
         {
+            SOUNDMANAGER->play("버튼", 1.0f);
             SCENEMANAGER->changScene("로딩","오프닝");
         }
 
         if (PtInRect(&_button[1], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
         {
+            SOUNDMANAGER->play("버튼", 1.0f);
             SCENEMANAGER->changScene("로딩", "메인상점");
+
         }
-        if (PtInRect(&_button[i], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) _ui = true;
+        if (PtInRect(&_button[i], _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+        {
+            SOUNDMANAGER->play("버튼", 1.0f);
+            _ui = true;
+        }
     }
   
 
@@ -124,6 +131,7 @@ void WorldMap::render(void)
     _warPoint = RectMake(_point.left + 535, _point.top + 160, 100, 100);
     if (_ui && PtInRect(&_warPoint, _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
     {
+        SOUNDMANAGER->play("버튼", 1.0f);
         _move = true;
         _selectPoint = 1;
     }
@@ -164,6 +172,7 @@ void WorldMap::render(void)
     }
     if (_ui && PtInRect(&tempA, _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
     {
+        SOUNDMANAGER->play("버튼", 1.0f);
         _move2 = true;
         _selectPoint = 3;
     }

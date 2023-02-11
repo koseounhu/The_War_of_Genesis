@@ -31,6 +31,9 @@ HRESULT Openning::init(void)
     // 임시 사용 렉트
     _rc[0] = RectMakeCenter(500, 410, 10,10);
 
+
+    SOUNDMANAGER->play("게임시작", 1.0f);
+
     return S_OK;
 }
 
@@ -145,7 +148,11 @@ void Openning::render(void)
         if (PtInRect(&_rc[1], _ptMouse))
         {
             IMAGEMANAGER->findImage("오프닝선택창2")->frameRender(getMemDC(), _rc[1].left, _rc[1].top, 0, 0);
-            if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))_next = true;
+            if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+            {
+                SOUNDMANAGER->play("메인선택", 1.0f);
+                _next = true;
+            }
         }
         else if (PtInRect(&_rc[2], _ptMouse))
         {

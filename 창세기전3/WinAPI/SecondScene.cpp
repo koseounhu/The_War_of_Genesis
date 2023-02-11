@@ -26,6 +26,8 @@ HRESULT SecondScene::init(void)
 	// 큰이미지
 	_bigImageAlpha = 0;
 
+	SOUNDMANAGER->play("2번시나리오배경", 0.5f);
+
 	return S_OK;
 }
 
@@ -153,11 +155,16 @@ void SecondScene::render(void)
 
 				if (_tick > 100 && _tick < 200)
 				{
+					if (!_diaSound[5])
+					{
+						_diaSound.set(5, 1);
+						SOUNDMANAGER->play("목걸이뺏기", 1.0f);
+					}
 					if (_tick % 5 == 0)_effect++;
 					IMAGEMANAGER->findImage("목걸이뺏기이펙트")->alphaFrameRender(getMemDC(), x + 65, y-15, 100, _effect, 0);
 					IMAGEMANAGER->findImage("목걸이뺏김")->render(getMemDC(), x + 170, y);
 					IMAGEMANAGER->findImage("살라딘_목걸이")->render(getMemDC(), x + 70, y - 20);
-
+					
 					
 					IMAGEMANAGER->findImage("목걸이")->frameRender(getMemDC(), _neckX, _neckY, _neckFrame, 0);
 					if (_effect > 1 && _effect<5)
@@ -217,6 +224,7 @@ void SecondScene::render(void)
 					_diaText.set(4, 1);
 					_bigImageAlpha = 0;
 					_tick = 0;
+					SOUNDMANAGER->stop("2번시나리오배경");
 				}
 
 			}
@@ -384,7 +392,7 @@ void SecondScene::render(void)
 			if (!_diaSound[4])
 			{
 				_diaSound.set(4, 1);
-				SOUNDMANAGER->play("울음", 0.1f);
+				SOUNDMANAGER->play("울음", 0.2f);
 			}
 
 			if (SOUNDMANAGER->getPosition("울음") >= 3000)

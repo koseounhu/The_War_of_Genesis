@@ -118,6 +118,9 @@
     <Filter Include="Item">
       <UniqueIdentifier>{4ad4cf13-c695-4d59-bb5d-bcbd699eb88a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="API FrameWork\Gold">
+      <UniqueIdentifier>{f36242e6-8937-4f04-9046-92dfac928817}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C3DMatrix.cpp">
@@ -164,15 +167,6 @@
     </ClCompile>
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="JsonSaveLoader.cpp">
-      <Filter>API FrameWork\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="JsonDataScene.cpp">
-      <Filter>API FrameWork\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Quest.cpp">
-      <Filter>API FrameWork\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="QuestSample.cpp">
       <Filter>API FrameWork\Json</Filter>
     </ClCompile>
     <ClCompile Include="ProgressBar.cpp">
@@ -299,15 +293,6 @@
     <ClInclude Include="JsonSaveLoader.h">
       <Filter>API FrameWork\Json</Filter>
     </ClInclude>
-    <ClInclude Include="JsonDataScene.h">
-      <Filter>API FrameWork\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Quest.h">
-      <Filter>API FrameWork\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="QuestSample.h">
-      <Filter>API FrameWork\Json</Filter>
-    </ClInclude>
     <ClInclude Include="ProgressBar.h">
       <Filter>API FrameWork\PB</Filter>
     </ClInclude>
@@ -365,11 +350,11 @@
     <ClInclude Include="Item.h">
       <Filter>Item</Filter>
     </ClInclude>
+    <ClInclude Include="GOLD.h">
+      <Filter>API FrameWork\Gold</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Quest.json">
-      <Filter>API FrameWork\Json</Filter>
-    </None>
     <None Include="Dialog.json">
       <Filter>Dialogue</Filter>
     </None>

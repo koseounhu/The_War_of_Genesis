@@ -75,7 +75,6 @@ HRESULT WeaponShop::init(void)
 
 
 
-
     _dia = new Dialogue;
     _dia->init(3);
 
@@ -84,6 +83,7 @@ HRESULT WeaponShop::init(void)
     _item->init();
 
 
+    _buyPay = 0;
 
 
     return S_OK;
@@ -100,9 +100,10 @@ void WeaponShop::update(void)
     _dia->update();
     _item->update();
 
-   
+
     if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
     {
+        SOUNDMANAGER->play("버튼", 1.0f);
         // 미니 버튼
         if (PtInRect(&_button[0].rc, _ptMouse))
         {
@@ -126,7 +127,7 @@ void WeaponShop::update(void)
         // 업다운 버튼 변화 + 구매할 아이템 수량 변화
         for (int i = 0; i < _countof(_updown); i++)
         {
-            if (PtInRect(&_updown[i].rc, _ptMouse))
+            if (PtInRect(&_updown[i].rc, _ptMouse) && _button[0].click)
             {
                 // 업다운 버튼 프레임변화
                 _updown[i].yFrame = true;
@@ -137,9 +138,72 @@ void WeaponShop::update(void)
                 else if (i >= 7 && _buyCount[i-7].count>0)
                     _buyCount[i - 7].count--;
             }
+            else if (PtInRect(&_updown[i].rc, _ptMouse) && _button[1].click)
+            {
+                // 업다운 버튼 프레임변화
+                _updown[i].yFrame = true;
+
+                // 구매 할 수량 변화
+                if (i < 7 && _buyCount[i].count < _item->getItemAmount(i))
+                    _buyCount[i].count++;
+                else if (i >= 7 && _buyCount[i - 7].count > 0)
+                    _buyCount[i - 7].count--;
+            }
         }
         //-------------------------------------------------------------------------
-        
+
+        // 구매
+        if (_button[0].click)
+        {
+            _buyPay = 0;
+            for (int i = 0; i < _countof(_buyCount); i++)
+            {
+                // 구매할 수량 곱하기 아이템 금액
+                _buyPay += _buyCount[i].count * _item->getItemGold(i);
+            }
+            // 구매 결정
+            if (PtInRect(&_button[2].rc, _ptMouse))
+            {
+                // 골드 변화
+                GOLD->setGold(GOLD->getGold() - _buyPay);
+
+                // 수량 초기화
+                _buyPay = 0;
+                for (int i = 0; i < _countof(_buyCount); i++)
+                {
+                    if (_buyCount[i].count != 0) _item->setItemAmount(i, _buyCount[i].count);
+                    _shopAmount[i].amount = _shopAmount[i].amount - _buyCount[i].count;
+                    _buyCount[i].count = 0;
+                }
+            }
+        }
+        // 판매
+        else
+        {
+            _buyPay = 0;
+            for (int i = 0; i < _countof(_buyCount); i++)
+            {
+                // 구매할 수량 곱하기 아이템 금액
+                _buyPay += _buyCount[i].count * _item->getItemGold(i)/2;
+            }
+
+            // 판매결정
+            if (PtInRect(&_button[2].rc, _ptMouse))
+            {
+                // 골드 변화
+                GOLD->setGold(GOLD->getGold() + _buyPay);
+
+                // 수량 초기화
+                _buyPay = 0;
+                for (int i = 0; i < _countof(_buyCount); i++)
+                {
+                    if (_buyCount[i].count != 0) _item->setItemAmount(i, _item->getItemAmount(i)- _buyCount[i].count);
+                    _shopAmount[i].amount = _shopAmount[i].amount + _buyCount[i].count;
+                    _buyCount[i].count = 0;
+                }
+            }
+        }
+       
     }
     else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
     {
@@ -148,6 +212,7 @@ void WeaponShop::update(void)
         {
             if (PtInRect(&_button[i].rc, _ptMouse))
             {
+                if (_button[3].click) SCENEMANAGER->changScene("메인상점");
                 _button[i].click = false;
             }
         }
@@ -214,6 +279,7 @@ void WeaponShop::render(void)
     FONTMANAGER->drawText(getMemDC(), _button[2].rc.left+23, _button[2].rc.top+3, 17, 255, 255, 255, "굴림",true, "결  정");
     FONTMANAGER->drawText(getMemDC(), _button[3].rc.left+18, _button[3].rc.top+3, 17, 255, 255, 255, "굴림",true, "E X I T");
 
+    // 구매 할 수량
     for (int i = 0; i < _countof(_buyCount); i++)
     {
         FONTMANAGER->drawInt(getMemDC(), _buyCount[i].x+10, _buyCount[i].y+5, 17, 255, 215, 0,
@@ -226,17 +292,33 @@ void WeaponShop::render(void)
     int temp = 0;
     for (int i = 0; i < 7; i++)
     {
-        _item->rendItem(i, 130, 158+temp, 18, 255, 255, 255, true);
+        if(!_button[1].click)
+            _item->rendItem(false,i, 130, 158+temp, 18, 255, 255, 255, true);
+        else
+            _item->rendItem(true, i, 130, 158 + temp, 18, 255, 255, 255, true);
         temp += 36;
     }
     
     // 상점 아이템 보유 수량
     for (int i = 0; i < _countof(_shopAmount); i++)
     {
-        FONTMANAGER->drawText(getMemDC(), _shopAmount[i].x - 20, _shopAmount[i].y, 17, 255, 255, 255,
-                                         "굴림", false, "(     )");
-        FONTMANAGER->drawInt(getMemDC(), _shopAmount[i].x, _shopAmount[i].y, 17, 255, 255, 255, 
-                                            "굴림", false, (char*)_shopAmount[i].amount);
+        if (!_button[1].click)
+        {
+            FONTMANAGER->drawText(getMemDC(), _shopAmount[i].x - 20, _shopAmount[i].y, 17, 255, 255, 255,
+                "굴림", false, "(        )");
+            FONTMANAGER->drawInt(getMemDC(), _shopAmount[i].x, _shopAmount[i].y, 17, 255, 255, 255,
+                "굴림", false, (char*)_shopAmount[i].amount);
+        }
+        else
+        {
+            FONTMANAGER->drawText(getMemDC(), _shopAmount[i].x - 20, _shopAmount[i].y, 17, 255, 255, 255,
+                "굴림", false, "(        )");
+            FONTMANAGER->drawInt(getMemDC(), _shopAmount[i].x, _shopAmount[i].y, 17, 255, 255, 255,
+                "굴림", false, (char*)_item->getItemAmount(i));
+        }
+
+
+
     }
 
     // 구매창
@@ -246,5 +328,14 @@ void WeaponShop::render(void)
     FONTMANAGER->drawText(getMemDC(), 400, 450, 17, 255, 255, 255, "굴림", true, "Eld");
     FONTMANAGER->drawText(getMemDC(), 400, 490, 17, 255, 255, 255, "굴림", true, "Eld");
     FONTMANAGER->drawText(getMemDC(), 400, 530, 17, 255, 255, 255, "굴림", true, "Eld");
+
+
+
+    FONTMANAGER->drawInt(getMemDC(), 320, 450, 17, 255, 255, 255, "굴림", true, (char*)GOLD->getGold());
+    FONTMANAGER->drawInt(getMemDC(), 320, 490, 17, 255, 255, 255, "굴림", true,(char*)_buyPay);
+
+    if(!_button[1].click)
+    FONTMANAGER->drawInt(getMemDC(), 320, 530, 17, 255, 255, 255, "굴림", true, (char*)GOLD->getGold()-_buyPay);
+    else  FONTMANAGER->drawInt(getMemDC(), 320, 530, 17, 255, 255, 255, "굴림", true, (char*)GOLD->getGold() + _buyPay);
 
 }

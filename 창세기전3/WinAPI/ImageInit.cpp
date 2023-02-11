@@ -162,6 +162,9 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("목걸이뺏기이펙트", SCE"목걸이뺏기이펙트.bmp", 900, 135, 5, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("목걸이", SCE"목걸이.bmp", 200, 20, 10, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("셰라죽음", SCE"셰라죽음.bmp", 5520, 150, 23, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("셰라죽음파티클", SCE"셰라죽음파티클.bmp", 7750, 250, 31, 1, true, RGB(0,0,0));
+	IMAGEMANAGER->addFrameImage("파티클", SCE"파티클.bmp", 11625, 375, 31, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("파티클광원", SCE"파티클광원.bmp", 11625, 375, 31, 1, true, MAZEN);
 
 	// 2번 시나리오
 	IMAGEMANAGER->addImage("2_0", SCE"2_0.bmp", WINSIZE_X, WINSIZE_Y);
@@ -214,9 +217,29 @@ void MainGame::ImageInit(void)
 #pragma  endregion
 
 #pragma region 사운드
-	//=========
-	// 사운드
-	// ========
+
+	// 게임시작
+	SOUNDMANAGER->addSound("게임시작", SOUND"게임시작.mp3", false, false);
+	SOUNDMANAGER->addSound("메인선택", SOUND"메인선택.mp3", false, false);
+	SOUNDMANAGER->addSound("시나리오선택", SOUND"시나리오선택.mp3", false, false);
+
+	// 월드맵
+	SOUNDMANAGER->addSound("월드맵배경", SOUND"월드맵배경.mp3", false, false);
+
+	// UI
+	SOUNDMANAGER->addSound("버튼", SOUND"button.mp3", false, false);
+
+	// 상점 배경
+	SOUNDMANAGER->addSound("상점배경", SOUND"상점배경.mp3", false, false);
+
+
+	// 1번 전투 배경
+	SOUNDMANAGER->addSound("1번전투배경", SOUND"1번전투배경.mp3", false, false);
+
+	// 2번 전투 배경
+	SOUNDMANAGER->addSound("2번전투배경", SOUND"2번전투배경.mp3", false, false);
+
+
 
 	// 1번 시나리오
 	SOUNDMANAGER->addSound("기다리고잇엇다", SOUND"기다리고잇엇다.mp3", false, false);
@@ -266,6 +289,8 @@ void MainGame::ImageInit(void)
 	// 2번 시나리오
 	SOUNDMANAGER->addSound("버몬트_죽여라", SOUND"버몬트_죽여라.mp3", false, false);
 	SOUNDMANAGER->addSound("버몬트_그것만은", SOUND"버몬트_그것만은.mp3", false, false);
+	SOUNDMANAGER->addSound("2번시나리오배경", SOUND"2번시나리오배경.mp3", false, false);
+	SOUNDMANAGER->addSound("목걸이뺏기", SOUND"목걸이뺏기.mp3", false, false);
 	
 	// 스킬
 	SOUNDMANAGER->addSound("스킬구", SOUND"스킬구.mp3", false, false);

@@ -70,6 +70,7 @@ void UI::render(Player* _pl)
 
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
+			SOUNDMANAGER->play("버튼", 1.0f);
 			if (PtInRect(&_skillUI[0], _ptMouse))
 			{
 				_ui = false;
@@ -113,6 +114,7 @@ void UI::render(Player* _pl)
 		_abilityB = RectMake(_abilityA.left + 5, _abilityA.top + 10, 150, 20);
 		if (PtInRect(&_abilityB, _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
+			SOUNDMANAGER->play("버튼", 1.0f);
 			_ui = _ability = false;
 			_skillOn = true;
 			

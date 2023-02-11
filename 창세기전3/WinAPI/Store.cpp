@@ -15,6 +15,12 @@ HRESULT Store::init(void)
 	// 시작시 메인 이므로 true설정
 	_main = true;
 
+	if(SOUNDMANAGER->getPosition("상점배경")==0) SOUNDMANAGER->play("상점배경", 1.0f);
+
+
+	_exitX = 910;
+	_exitY = 720;
+	_exitRC = RectMake(_exitX, _exitY, 90, 26);
 
 
 	return S_OK;
@@ -32,6 +38,7 @@ void Store::render(void)
 {
 	// 상점 공통 렌더
 	IMAGEMANAGER->findImage("상점배경")->render(getMemDC());
+
 
 	// 메인 메뉴
 	if (_main)
@@ -55,8 +62,11 @@ void Store::render(void)
 			{
 				if (PtInRect(&_menu.rc[i], _ptMouse))
 				{
+					SOUNDMANAGER->play("버튼", 1.0f);
 					SCENEMANAGER->changScene("무기상점");
 				}
+				if (PtInRect(&_exitRC, _ptMouse)) SCENEMANAGER->changScene("로딩","월드맵");
+				
 			}
 		}
 
@@ -70,6 +80,8 @@ void Store::render(void)
 
 	} // 메인== true
 
-
+	// 나가기 버튼
+	IMAGEMANAGER->findImage("상점작은버튼")->frameRender(getMemDC(), _exitX, _exitY,0,0);
+	FONTMANAGER->drawText(getMemDC(), _exitX + 18, _exitY + 3, 17, 255, 255, 255, "굴림", true, "E X I T");
 
 }

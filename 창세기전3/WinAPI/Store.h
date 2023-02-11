@@ -16,6 +16,10 @@ private:
 
 	bool _main;
 
+	int _exitX;
+	int _exitY;
+	RECT _exitRC;
+
 
 public:
 	HRESULT init(void);

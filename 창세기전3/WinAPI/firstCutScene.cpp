@@ -28,7 +28,7 @@ HRESULT firstCutScene::init(void)
 	_BGalpha = 0;
 
 	// 다이얼로그 카운트
-	_diaCount = 0;
+	_diaCount = 17;
 
 	// 큰이미지
 	_bigImageAlpha2 = _bigImageAlpha = 0;
@@ -38,6 +38,9 @@ HRESULT firstCutScene::init(void)
 
 	// 마지막 알파
 	_lastAlpha = 255;
+
+	// 셰라 죽음 파티클 초기화
+	for (int i = 0; i < _countof(_particle); i++) _particle[i] = RND->getFromIntTo(0, 31);
 
 	return S_OK;
 }
@@ -852,62 +855,62 @@ void firstCutScene::render(void)
 		}
 
 
-		//IMAGEMANAGER->findImage("검정알파")->render(getMemDC());
-		//IMAGEMANAGER->findImage("셰라죽음배경")->alphaRender(getMemDC(), _BGalpha);
-		//
-		//// 살라딘 이게 무슨짓
-		//if (_BGalpha == 255)
-		//{
+		IMAGEMANAGER->findImage("검정알파")->render(getMemDC());
+		IMAGEMANAGER->findImage("셰라죽음배경")->alphaRender(getMemDC(), _BGalpha);
+		
+		// 살라딘 이게 무슨짓
+		if (_BGalpha == 255)
+		{
 
 
-		//	if (!_diaSound[17])
-		//	{
-		//		_diaSound.set(17, 1);
-		//		SOUNDMANAGER->play("살라딘이게무슨짓", 1.0f);
-		//	}
-		//}
+			if (!_diaSound[17])
+			{
+				_diaSound.set(17, 1);
+				SOUNDMANAGER->play("살라딘이게무슨짓", 1.0f);
+			}
+		}
 
-		//// 셰라 순결잃음 재생
-		//if (SOUNDMANAGER->getLength("살라딘이게무슨짓") == SOUNDMANAGER->getPosition("살라딘이게무슨짓"))
-		//{
-		//	if (!_diaSound[18])
-		//	{
-		//		_diaSound.set(18, 1);
-		//		SOUNDMANAGER->play("셰라순결",1.0f);
-		//	}
-		//}
+		// 셰라 순결잃음 재생
+		if (SOUNDMANAGER->getLength("살라딘이게무슨짓") == SOUNDMANAGER->getPosition("살라딘이게무슨짓"))
+		{
+			if (!_diaSound[18])
+			{
+				_diaSound.set(18, 1);
+				SOUNDMANAGER->play("셰라순결",1.0f);
+			}
+		}
 
-		//// 셰라 투르선택 감사
-		//if (SOUNDMANAGER->getLength("셰라순결") == SOUNDMANAGER->getPosition("셰라순결"))
-		//{
-		//	if (!_diaSound[19])
-		//	{
-		//		_diaSound.set(19, 1);
-		//		SOUNDMANAGER->play("셰라투르선택감사", 1.0f);
-		//	}
-		//}
+		// 셰라 투르선택 감사
+		if (SOUNDMANAGER->getLength("셰라순결") == SOUNDMANAGER->getPosition("셰라순결"))
+		{
+			if (!_diaSound[19])
+			{
+				_diaSound.set(19, 1);
+				SOUNDMANAGER->play("셰라투르선택감사", 1.0f);
+			}
+		}
 
-		//// 살라딘 이젠늦엇소
-		//if (SOUNDMANAGER->getLength("셰라투르선택감사") == SOUNDMANAGER->getPosition("셰라투르선택감사"))
-		//{
-		//	if (!_diaSound[20])
-		//	{
-		//		_diaSound.set(20, 1);
-		//		SOUNDMANAGER->play("살라딘이젠늦엇소", 1.0f);
-		//	}
-		//}
+		// 살라딘 이젠늦엇소
+		if (SOUNDMANAGER->getLength("셰라투르선택감사") == SOUNDMANAGER->getPosition("셰라투르선택감사"))
+		{
+			if (!_diaSound[20])
+			{
+				_diaSound.set(20, 1);
+				SOUNDMANAGER->play("살라딘이젠늦엇소", 1.0f);
+			}
+		}
 		
 		// 셰라 언젠가말씀
 		if (SOUNDMANAGER->getLength("살라딘이젠늦엇소") == SOUNDMANAGER->getPosition("살라딘이젠늦엇소"))
 		{
-
+			if (!_diaSound[21])
+			{
+				_diaSound.set(21, 1);
+				SOUNDMANAGER->play("셰라언젠가말씀", 1.0f);
+			}
 		}
 
-		if (!_diaSound[21])
-		{
-			_diaSound.set(21, 1);
-			SOUNDMANAGER->play("셰라언젠가말씀", 1.0f);
-		}
+		
 		// 살라딘 죽으면안되오
 		if (SOUNDMANAGER->getLength("셰라언젠가말씀") == SOUNDMANAGER->getPosition("셰라언젠가말씀"))
 		{
@@ -993,6 +996,26 @@ void firstCutScene::render(void)
 
 
 		IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
+
+		if (_tick % 7 == 0)
+		{
+			for (int i = 0; i < 5; i++)
+			{
+				_particle[i]++;
+				if (_particle[i] > 31)_particle[i] = 0;
+			}
+		}
+
+		
+		IMAGEMANAGER->findImage("파티클")->alphaFrameRender(getMemDC(), 0, 425, 100, _particle[0], 0);
+		IMAGEMANAGER->findImage("파티클")->alphaFrameRender(getMemDC(), 250, 425, 100, _particle[1], 0);
+		IMAGEMANAGER->findImage("파티클")->alphaFrameRender(getMemDC(), 500, 425, 100, _particle[2], 0);
+		
+		IMAGEMANAGER->findImage("파티클광원")->alphaFrameRender(getMemDC(), 0, 425, 150, _particle[0], 0);
+		IMAGEMANAGER->findImage("파티클광원")->alphaFrameRender(getMemDC(), 250, 425, 150, _particle[1], 0);
+		IMAGEMANAGER->findImage("파티클광원")->alphaFrameRender(getMemDC(), 500, 425, 150, _particle[2], 0);
+
+
 
 		// 끝
 		if (_bigImageAlpha==255)

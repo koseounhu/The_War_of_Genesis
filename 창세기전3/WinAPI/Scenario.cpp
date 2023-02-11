@@ -10,6 +10,7 @@ HRESULT Scenario::init(void)
 
     _tick= _fireAlpha = 0;
 
+    SOUNDMANAGER->play("시나리오선택", 0.5f);
     return S_OK;
 }
 
@@ -31,7 +32,11 @@ void Scenario::render(void)
   if (PtInRect(&_rc, _ptMouse))
   {
       IMAGEMANAGER->findImage("시나리오형제")->render(getMemDC(), _rc.left + 30, _rc.top);
-      if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) _next = true;
+      if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+      {
+          SOUNDMANAGER->play("버튼", 1.0f);
+        _next = true;
+      }
      
   }
   if (_next)
@@ -45,7 +50,7 @@ void Scenario::render(void)
           _fireAlpha++;
           if (_fireAlpha > IMAGEMANAGER->findImage("오프닝넥스트")->getMaxFrameX())_fireAlpha = 0;
       }
-      if (_alpha > 250)SCENEMANAGER->changScene("월드맵");
+      if (_alpha > 250)SCENEMANAGER->changScene("로딩","월드맵");
       
       IMAGEMANAGER->alphaFrameRender("오프닝넥스트", getMemDC(), WINSIZE_X / 2 - 150, WINSIZE_Y / 2 - 150, 150, _fireAlpha, 0);
 

@@ -59,6 +59,7 @@ HRESULT Battle::init(void)
 	_ve->setVCount(0, 0);
 
 
+	SOUNDMANAGER->play("2번전투배경", 0.3f);
 
     return S_OK;
 }
@@ -342,6 +343,7 @@ void Battle::update(void)
 	// 플레이어 UI 띄우기
 	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 	{
+		SOUNDMANAGER->play("버튼", 1.0f);
 		if (!_ui->getTotalUI())
 		{
 			// 플레이어 렉트
@@ -501,6 +503,8 @@ void Battle::render(void)
 
 		   if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		   {
+			   SOUNDMANAGER->play("버튼", 1.0f);
+
 			   // 플레이어이동
 			   if (_ui->getTileState())
 			   {
@@ -632,6 +636,7 @@ void Battle::render(void)
 		IMAGEMANAGER->findImage("오랑타일")->alphaRender(getMemDC(), _pl->getPL()._x, _pl->getPL()._y + 64, 100);
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
+			SOUNDMANAGER->play("버튼", 1.0f);
 			_pl->setPState(2);
 			int view = _pl->getPL()._indexX - _ve->getVEIndexX();
 			switch (view)

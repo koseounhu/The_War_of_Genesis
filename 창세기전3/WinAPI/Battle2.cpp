@@ -39,6 +39,8 @@ HRESULT Battle2::init(void)
 	}
 
 	_skillFrame= _skillTick = 0;
+
+	SOUNDMANAGER->play("1번전투배경", 0.3f);
     return S_OK;
 }
 
@@ -278,6 +280,7 @@ void Battle2::render(void)
 	// Astar 움직임
 	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 	{
+		SOUNDMANAGER->play("버튼",1.0f);
 		// 플레이어 렉트
 		RECT _temp;
 		_temp = RectMake(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x,
@@ -534,7 +537,7 @@ void Battle2::render(void)
 		IMAGEMANAGER->findImage("클리어텍스트")->alphaRender(getMemDC(), 305, 325, 100);
 		IMAGEMANAGER->findImage("클리어텍스트광원")->alphaRender(getMemDC(), 300, 320, 255);
 		if (_skillTick > 250)
-			SCENEMANAGER->changScene("월드맵");
+			SCENEMANAGER->changScene("로딩","월드맵");
 	}
 
 

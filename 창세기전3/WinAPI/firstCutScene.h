@@ -35,6 +35,7 @@ private:
 	int _salY;
 	int _salFrame;
 
+	int _particle[5];
 
 public:
 	HRESULT init(void);

@@ -171,7 +171,6 @@
     <ClCompile Include="IWindowMessage.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="JsonDataScene.cpp" />
     <ClCompile Include="JsonSaveLoader.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="MainGame.cpp">
@@ -179,8 +178,6 @@
     </ClCompile>
     <ClCompile Include="Openning.cpp" />
     <ClCompile Include="ProgressBar.cpp" />
-    <ClCompile Include="Quest.cpp" />
-    <ClCompile Include="QuestSample.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SecondScene.cpp" />
     <ClCompile Include="Skill.cpp" />
@@ -207,6 +204,7 @@
     <ClInclude Include="firstCutScene.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="GOLD.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Loading.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -227,14 +225,11 @@
     <ClInclude Include="IWindowMessage.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="JsonDataScene.h" />
     <ClInclude Include="JsonSaveLoader.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Openning.h" />
     <ClInclude Include="ProgressBar.h" />
-    <ClInclude Include="Quest.h" />
-    <ClInclude Include="QuestSample.h" />
     <ClInclude Include="RandomFunction.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SecondScene.h" />
@@ -254,7 +249,6 @@
   <ItemGroup>
     <None Include="Dialog.json" />
     <None Include="Item.json" />
-    <None Include="Quest.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

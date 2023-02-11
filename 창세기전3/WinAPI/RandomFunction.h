@@ -6,9 +6,6 @@ class RandomFunction : public SingletonBase<RandomFunction>
 public:
 	RandomFunction()
 	{
-		//API 공용 함수
-		// GetTickCount() : API 함수로 OS가 부팅된 후의 경과 시간을 체크
-		// ㄴ 밀리세컨 단위로 체크가 가능하며 밀리세컨 단위로 시간값을 반환하기 때문에 규모가 크지 않은 난수에 좋다.
 		srand(GetTickCount());
 	}
 	~RandomFunction() {}

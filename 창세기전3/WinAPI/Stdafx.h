@@ -76,6 +76,7 @@ using namespace std;
 #include "SceneManager.h"
 #include "SoundManager.h"
 #include "JsonSaveLoader.h"
+#include "GOLD.h"
 
 using namespace MY_UTIL;
 
@@ -90,7 +91,7 @@ using namespace MY_UTIL;
 #define SCENEMANAGER SceneManager::getSingleton()
 #define SOUNDMANAGER SoundManager::getSingleton()
 #define JSONDATAMANAGER JsonSaveLoader::getSingleton()
-
+#define GOLD GOLD::getSingleton()
 
 //==============================
 // # 매크로 # (윈도우창 초기화)

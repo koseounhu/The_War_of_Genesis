@@ -56,6 +56,7 @@ private:
 	Dialogue* _dia;
 	Item* _item;
 	
+	int _buyPay;
 
 public :
 	HRESULT init(void);

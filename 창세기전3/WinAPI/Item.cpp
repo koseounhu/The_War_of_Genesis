@@ -13,6 +13,7 @@ HRESULT Item::init(void)
 	}
 
 
+
 	return S_OK;
 }
 
@@ -28,12 +29,16 @@ void Item::render(void)
 {
 }
 
-void Item::rendItem(int num, int posX, int posY, int textsize, int r, int g, int b, bool bold)
+void Item::rendItem(bool sell, int num, int posX, int posY, int textsize, int r, int g, int b, bool bold)
 {
+
 	char itemName[512];
 	strcpy_s(itemName, _item[num]._name.c_str());
 	FONTMANAGER->drawText(getMemDC(),posX,posY,textsize,r,g,b,"±¼¸²",bold, itemName);
-	FONTMANAGER->drawInt(getMemDC(), posX + 150, posY, textsize, r, g, b, "±¼¸²", bold, (char*)_item[num]._gold);
 	FONTMANAGER->drawText(getMemDC(),posX+200,posY,textsize,r,g,b,"±¼¸²",bold, "Eld");
 
+	if(!sell)
+		FONTMANAGER->drawInt(getMemDC(), posX + 150, posY, textsize, r, g, b, "±¼¸²", bold, (char*)_item[num]._gold);
+	else 
+		FONTMANAGER->drawInt(getMemDC(), posX + 150, posY, textsize, r, g, b, "±¼¸²", bold, (char*)(_item[num]._gold/2));
 }

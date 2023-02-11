@@ -27,6 +27,7 @@ HRESULT GameNode::init(bool managerInit)
         SCENEMANAGER->init();
         SOUNDMANAGER->init();
         JSONDATAMANAGER->init();
+
     }
 
     return S_OK;
@@ -51,6 +52,7 @@ void GameNode::release(void)
         SOUNDMANAGER->releaseSingleton();
         JSONDATAMANAGER->release();
         JSONDATAMANAGER->releaseSingleton();
+        GOLD->releaseSingleton();
 
     }
 
@@ -60,9 +62,6 @@ void GameNode::release(void)
 
 void GameNode::update(void)
 {
-	// 버퍼링 처리와 타이머가 없기 때문에 기본 함수 사용
-	// 새로고침
-	// InvalidateRect(_hWnd, NULL, false);
 }
 
 void GameNode::render(void)
