@@ -118,6 +118,9 @@
     <Filter Include="API FrameWork\Gold">
       <UniqueIdentifier>{f36242e6-8937-4f04-9046-92dfac928817}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit\Tiger">
+      <UniqueIdentifier>{28bb2bac-c7d2-483c-bad4-8481afa08903}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Stdafx.cpp">
@@ -226,6 +229,9 @@
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Tiger.cpp">
+      <Filter>Unit\Tiger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="GOLD.h">
       <Filter>API FrameWork\Gold</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiger.h">
+      <Filter>Unit\Tiger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

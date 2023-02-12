@@ -10,6 +10,7 @@
 #define WM "Resources/Images/WorldMap/"
 #define UI "Resources/Images/UI/"
 #define ST "Resources/Images/Store/"
+#define SK "Resources/Images/Skill/"
 #define SOUND "Resources/Sounds/"
 #define MAZEN RGB(255, 0, 255)
 #define RGBRED RGB(255, 0, 0)
@@ -34,7 +35,7 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addImage("클리어텍스트", BG"cleartxt.bmp", 480, 54,true,MAZEN);
 	IMAGEMANAGER->addImage("클리어텍스트광원", BG"cleartxt광원.bmp", 480, 54,true,MAZEN);
 	IMAGEMANAGER->addImage("다이얼로그창", SCE"Dialogue.bmp", 818, 178);
-	IMAGEMANAGER->addImage("어빌리티창", OBJ"SkillBox.bmp", 208, 91);
+	IMAGEMANAGER->addImage("어빌리티창", OBJ"SkillBox.bmp", 208, 150);
 	IMAGEMANAGER->addImage("블루타일", OBJ"blueTile.bmp", 40, 32);
 	IMAGEMANAGER->addImage("오랑타일", OBJ"redTile.bmp", 40, 32);
 	IMAGEMANAGER->addImage("노랑타일", OBJ"orangeTile.bmp", 40, 32);
@@ -94,45 +95,53 @@ void MainGame::ImageInit(void)
 #pragma endregion
 
 #pragma region 스킬
-	// 스킬
-	IMAGEMANAGER->addFrameImage("스킬구", PL"스킬구.bmp", 6325, 192, 25, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬불기둥1", PL"불기둥1.bmp", 1600, 230, 32, 1, true, SKILL);
-	IMAGEMANAGER->addFrameImage("스킬불기둥1_1", PL"불기둥1_1.bmp", 1600, 230, 32, 1, true, SKILL);
-	IMAGEMANAGER->addFrameImage("스킬불기둥2", PL"불기둥2.bmp", 1600, 300, 30, 1, true, SKILL);
-	IMAGEMANAGER->addFrameImage("스킬불기둥2_1", PL"불기둥2_1.bmp", 1600, 300, 32, 1, true, SKILL);
-	IMAGEMANAGER->addFrameImage("스킬불기둥3", PL"불기둥3.bmp", 1600, 300, 32, 1, true, SKILL);
-	IMAGEMANAGER->addFrameImage("스킬불기둥3_1", PL"불기둥3_1.bmp", 1600, 300, 32, 1, true, SKILL);
-	IMAGEMANAGER->addFrameImage("스킬이펙트1", PL"이펙트2.bmp", 7000, 250, 28, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬이펙트2", PL"이펙트1.bmp", 6400, 160, 32, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬이펙트3", PL"이펙트3.bmp", 1150, 150, 23, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬이펙트3_1", PL"이펙트3_1.bmp", 1150, 150, 23, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬이펙트3_1", PL"이펙트3_1.bmp", 1150, 150, 23, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬이펙트4", PL"이펙트4.bmp", 3600, 150, 24, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬이펙트5", PL"이펙트5.bmp", 1200, 150, 8, 1, true, MAZEN);
+	#pragma region 천지파열무
+		IMAGEMANAGER->addFrameImage("스킬구", PL"스킬구.bmp", 6325, 192, 25, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬불기둥1", PL"불기둥1.bmp", 1600, 230, 32, 1, true, SKILL);
+		IMAGEMANAGER->addFrameImage("스킬불기둥1_1", PL"불기둥1_1.bmp", 1600, 230, 32, 1, true, SKILL);
+		IMAGEMANAGER->addFrameImage("스킬불기둥2", PL"불기둥2.bmp", 1600, 300, 30, 1, true, SKILL);
+		IMAGEMANAGER->addFrameImage("스킬불기둥2_1", PL"불기둥2_1.bmp", 1600, 300, 32, 1, true, SKILL);
+		IMAGEMANAGER->addFrameImage("스킬불기둥3", PL"불기둥3.bmp", 1600, 300, 32, 1, true, SKILL);
+		IMAGEMANAGER->addFrameImage("스킬불기둥3_1", PL"불기둥3_1.bmp", 1600, 300, 32, 1, true, SKILL);
+		IMAGEMANAGER->addFrameImage("스킬이펙트1", PL"이펙트2.bmp", 7000, 250, 28, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬이펙트2", PL"이펙트1.bmp", 6400, 160, 32, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬이펙트3", PL"이펙트3.bmp", 1150, 150, 23, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬이펙트3_1", PL"이펙트3_1.bmp", 1150, 150, 23, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬이펙트3_1", PL"이펙트3_1.bmp", 1150, 150, 23, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬이펙트4", PL"이펙트4.bmp", 3600, 150, 24, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬이펙트5", PL"이펙트5.bmp", 1200, 150, 8, 1, true, MAZEN);
 
-	IMAGEMANAGER->addFrameImage("스킬파티클1", PL"파티클1.bmp", 300, 20, 15, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬파티클2", PL"파티클2.bmp", 450, 30, 15, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬파티클3", PL"파티클3.bmp", 750, 50, 15, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬파티클1", PL"파티클1.bmp", 300, 20, 15, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬파티클2", PL"파티클2.bmp", 450, 30, 15, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬파티클3", PL"파티클3.bmp", 750, 50, 15, 1, true, MAZEN);
 
-	IMAGEMANAGER->addFrameImage("스킬바닥불", PL"바닥불.bmp", 1800, 150, 12, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬바닥불", PL"바닥불.bmp", 1800, 150, 12, 1, true, MAZEN);
 
-	// 광원
-	IMAGEMANAGER->addFrameImage("스킬구광원", PL"스킬구광원.bmp", 6325, 192, 25, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬불기둥1광원", PL"불기둥1광원.bmp", 1600, 230, 32, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬불기둥1_1광원", PL"불기둥1_1광원.bmp", 1600, 230, 32, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬불기둥2광원", PL"불기둥2광원.bmp", 1600, 300, 32, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬불기둥2_1광원", PL"불기둥2_1광원.bmp", 1600, 300, 32, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬불기둥3광원", PL"불기둥3광원.bmp", 1600, 300, 32, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬불기둥3_1광원", PL"불기둥3_1광원.bmp", 1600, 300, 32, 1, true, MAZEN);
+		// 광원
+		IMAGEMANAGER->addFrameImage("스킬구광원", PL"스킬구광원.bmp", 6325, 192, 25, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬불기둥1광원", PL"불기둥1광원.bmp", 1600, 230, 32, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬불기둥1_1광원", PL"불기둥1_1광원.bmp", 1600, 230, 32, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬불기둥2광원", PL"불기둥2광원.bmp", 1600, 300, 32, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬불기둥2_1광원", PL"불기둥2_1광원.bmp", 1600, 300, 32, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬불기둥3광원", PL"불기둥3광원.bmp", 1600, 300, 32, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬불기둥3_1광원", PL"불기둥3_1광원.bmp", 1600, 300, 32, 1, true, MAZEN);
 
-	IMAGEMANAGER->addFrameImage("스킬바닥불광원", PL"바닥불광원.bmp", 1800, 150, 12, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬바닥불광원", PL"바닥불광원.bmp", 1800, 150, 12, 1, true, MAZEN);
 
-	IMAGEMANAGER->addFrameImage("스킬이펙트1광원", PL"이펙트2광원.bmp", 7000, 250, 28, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬이펙트2광원", PL"이펙트1광원.bmp", 6400, 160, 32, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬이펙트3광원", PL"이펙트3광원.bmp", 1150, 150, 23, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬이펙트3_1광원", PL"이펙트3_1광원.bmp", 1150, 150, 23, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("스킬이펙트5광원", PL"이펙트5광원.bmp", 1200, 150, 8, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬이펙트1광원", PL"이펙트2광원.bmp", 7000, 250, 28, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬이펙트2광원", PL"이펙트1광원.bmp", 6400, 160, 32, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬이펙트3광원", PL"이펙트3광원.bmp", 1150, 150, 23, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬이펙트3_1광원", PL"이펙트3_1광원.bmp", 1150, 150, 23, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("스킬이펙트5광원", PL"이펙트5광원.bmp", 1200, 150, 8, 1, true, MAZEN);
 
+	#pragma endregion
+	#pragma region 혈량마혼
+		IMAGEMANAGER->addFrameImage("호랑이", SK"호랑이.bmp", 6500, 250, 26, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("번개기둥", SK"번개기둥.bmp", 600, 300, 6, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("번개바닥", SK"번개바닥.bmp", 2250, 150, 15, 1, true, RGB(0,0,0));
+		IMAGEMANAGER->addFrameImage("토탈번개", SK"토탈번개.bmp", 2250, 400, 15, 1, true, RGB(0,0,0));
+		IMAGEMANAGER->addFrameImage("토탈번개광원", SK"토탈번개광원.bmp", 2250, 400, 15, 1, true, RGB(0,0,0));
+	#pragma endregion
 #pragma endregion
 	
 #pragma region 오프닝

@@ -58,6 +58,9 @@ HRESULT Battle::init(void)
 	_x = _y = 0;
 	_ui = new UI;
 	_ui->init();
+	
+	_ti = new Tiger;
+	_ti->init();
 
 
 
@@ -72,6 +75,7 @@ void Battle::release(void)
 	SAFE_DELETE(_pl);
 	SAFE_DELETE(_ui);
 	SAFE_DELETE(_ve);
+	SAFE_DELETE(_ti);
 }
 
 void Battle::update(void)
@@ -416,8 +420,7 @@ void Battle::update(void)
 		}
 	}
 
-
-
+	if(_ui->getTigerState()) _ti->update(_pl,_ve);
 	_ui->update();
 }
 
@@ -643,6 +646,8 @@ void Battle::render(void)
 			   _pl->setPY(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y);
 		   }
 	   }
+
+	  
 	#pragma endregion
 
 
@@ -694,9 +699,11 @@ void Battle::render(void)
 		
 	}
 	if(_ui->getSkillState()) _sk->UpSkill(_pl);
+	if(_ui->getTigerState())IMAGEMANAGER->findImage("검정알파")->alphaRender(getMemDC(), 255);
    _ve->render();
    _pl->render();
    _ui->render(_pl);
+   if (_ui->getTigerState()) _ti->render(_pl,_ve);
 	if (_ui->getSkillState())	_sk->DownSkill(_pl);
 
 #pragma endregion

@@ -323,8 +323,143 @@ void Battle2::render(void)
 		}
 	}
 
-#pragma region skillUI
+#pragma region ·»´õ¼ø¼­
 
+
+#pragma region Å¸ÀÏ¿Â
+
+	if (_tileOn)
+	{
+		moveTileStar(_pl->getPL()._indexX, _pl->getPL()._indexY);
+		for (int i = 0; i < V_NUM; i++)
+		{
+			for (int j = 0; j < H_NUM; j++)
+			{
+				if (_tile[j][i].moveTileColli)
+				{
+					IMAGEMANAGER->findImage("ºí·çÅ¸ÀÏ")->alphaRender(getMemDC(), _tile[j][i].x, _tile[j][i].y, 100);
+				}
+			}
+		}
+		for (int i = 0; i < _cantMoveList.size(); i++)
+		{
+			IMAGEMANAGER->findImage("³ë¶ûÅ¸ÀÏ")->alphaRender(getMemDC(), _tile[_cantMoveList[i].idxX][_cantMoveList[i].idxY].x,
+				_tile[_cantMoveList[i].idxX][_cantMoveList[i].idxY].y, 100);
+		}
+
+		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+		{
+			_tileOn = false;
+			_skillOn = true;
+			_sk->setBitset(0, 1);
+		}
+	}
+#pragma endregion
+#pragma region ½ºÅ³¿Â
+	_skillTick++;
+	if (_skillOn)
+	{
+		IMAGEMANAGER->findImage("°ËÁ¤¾ËÆÄ")->alphaRender(getMemDC(), 255);
+		if (_sk->getBitset()[0] == 1)
+		{
+			_pl->setPState(3);
+			_pl->setPSkill(0);
+		}
+		if (_sk->getBitset()[1] == 1)
+		{
+			if (_skillTick % 5 == 0)
+			{
+				_skillFrame++;
+				_pl->setPSkill(_skillFrame);
+			}
+
+		}
+
+
+
+
+		// Ä«¸Þ¶ó ½¦ÀÌÅ·
+		if (_sk->getBitset()[3] == 1)
+		{
+			if (_skillTick % 2 == 0)
+			{
+				if (_skillBool == false) _skillBool = true;
+				else if (_skillBool == true) _skillBool = false;
+			}
+			if (_skillBool)
+			{
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x -= 2;
+						_tile[i][j].y -= 2;
+					}
+				}
+
+				_x -= 2;
+				_y -= 2;
+			}
+			else
+			{
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x += 2;
+						_tile[i][j].y += 2;
+					}
+				}
+
+				_x += 2;
+				_y += 2;
+			}
+		}
+		else
+		{
+			_pl->setPX(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x);
+			_pl->setPY(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y);
+		}
+
+
+		if (_sk->getSkillXY().size() < 8)
+		{
+			_sk->setSkillXY(_tile[23][28].x - 5, _tile[23][28].y - 120, 12, true);
+			_sk->setSkillXY(_tile[23][39].x - 5, _tile[23][39].y - 120, 12, true);
+			_sk->setSkillXY(_tile[17][33].x - 5, _tile[17][33].y - 120, 12, true);
+			_sk->setSkillXY(_tile[29][33].x - 5, _tile[29][33].y - 120, 12, true);
+		}
+
+	}
+#pragma endregion
+
+#pragma region À¯´Ö ·»´õ
+	_sk->DownSkill(_pl);
+	if (_sk->getBitset()[7] == 0)
+	{
+		_em[0]->render(_tile[23][28].x - 20, _tile[23][28].y - 50, 0);
+		_em[1]->render(_tile[23][39].x - 20, _tile[23][39].y - 50, 1);
+		_em[2]->render(_tile[17][33].x - 20, _tile[17][33].y - 50, 0);
+		_em[3]->render(_tile[29][33].x - 20, _tile[29][33].y - 50, 0);
+		_tile[19][23].unit == 2;
+		_tile[19][34].unit == 2;
+		_tile[13][28].unit == 2;
+		_tile[25][28].unit == 2;
+	}
+	else if (_sk->getBitset()[5] == 1)_skillTick = 0;
+	else if (_sk->getBitset()[6] == 1)
+	{
+
+
+		_emRender = true;
+
+		_skillOn = false;
+		_ui = false;
+		_ability = false;
+		_sk->clearSkillXY();
+		_pl->setPState(0);
+	}
+#pragma endregion
 	#pragma region UI
 	// ½ºÅ³ UI Ã¢
 	if (_ui&& !_skillOn )
@@ -386,13 +521,26 @@ void Battle2::render(void)
 
 		IMAGEMANAGER->findImage("¾îºô¸®Æ¼Ã¢")->alphaRender(getMemDC(), _abilityA.left, _abilityA.top,150);
 		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left+10, _abilityA.top+10,1,0);
-		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left+10, _abilityA.top+35,0,0);
+		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left+10, _abilityA.top+35,1,0);
 		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left+10, _abilityA.top+60,0,0);
+		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left+10, _abilityA.top+85,0,0);
 
 
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 10, 15, 255, 255, 255, "±¼¸²", true, "ÃµÁöÆÄ¿­¹«");
-		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 35, 15, 255, 255, 255, "±¼¸²", true, "¿¬");
-		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 60, 15, 255, 255, 255, "±¼¸²", true, "ÆÄ");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 35, 15, 255, 255, 255, "±¼¸²", true, "Ç÷·®¸¶Ãµ");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 60, 15, 255, 255, 255, "±¼¸²", true, "¿¬");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 85, 15, 255, 255, 255, "±¼¸²", true, "ÆÄ");
+
+
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 10, 15, 255, 0, 0, "±¼¸²", true, "LV5");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 35, 15, 255, 0, 0, "±¼¸²", true, "LV3");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 60, 15, 255, 0, 0, "±¼¸²", true, "LV1");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 85, 15, 255, 0, 0, "±¼¸²", true, "LV1");
+
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 10, 15, 255, 215, 0, "±¼¸²", true, "200");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 35, 15, 255, 215, 0, "±¼¸²", true, "150");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 60, 15, 255, 215, 0, "±¼¸²", true, "50");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 85, 15, 255, 215, 0, "±¼¸²", true, "50");
 
 		RECT _abilityB;
 		_abilityB = RectMake(_abilityA.left + 5, _abilityA.top + 10, 150, 20);
@@ -403,146 +551,9 @@ void Battle2::render(void)
 		}
 	}
 	#pragma endregion
-	#pragma region Å¸ÀÏ¿Â
-
-	if (_tileOn)
-	{
-		moveTileStar(_pl->getPL()._indexX, _pl->getPL()._indexY);
-		for (int i = 0; i < V_NUM; i++)
-		{
-			for (int j = 0; j < H_NUM; j++)
-			{
-				if (_tile[j][i].moveTileColli)
-				{
-					IMAGEMANAGER->findImage("ºí·çÅ¸ÀÏ")->alphaRender(getMemDC(), _tile[j][i].x, _tile[j][i].y, 100);
-				}
-			}
-		}
-		for (int i = 0; i < _cantMoveList.size(); i++)
-		{
-			IMAGEMANAGER->findImage("³ë¶ûÅ¸ÀÏ")->alphaRender(getMemDC(), _tile[_cantMoveList[i].idxX][_cantMoveList[i].idxY].x,
-				_tile[_cantMoveList[i].idxX][_cantMoveList[i].idxY].y, 100);
-		}
-
-		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-		{
-			_tileOn = false;
-			_skillOn = true;
-			_sk->setBitset(0,1);
-		}
-	}
-	#pragma endregion
-	#pragma region ½ºÅ³¿Â
-	_skillTick++;
-	if (_skillOn)
-	{
-		IMAGEMANAGER->findImage("°ËÁ¤¾ËÆÄ")->alphaRender(getMemDC(), 255);
-		if (_sk->getBitset()[0] == 1)
-		{
-			_pl->setPState(3);
-			_pl->setPSkill(0);
-		}
-		if (_sk->getBitset()[1] == 1)
-		{
-			if (_skillTick % 5 == 0)
-			{
-				_skillFrame++;
-				_pl->setPSkill(_skillFrame);
-			}
-			
-		}
-
-	
-
-
-		// Ä«¸Þ¶ó ½¦ÀÌÅ·
-		if (_sk->getBitset()[3] == 1 )
-		{
-			if (_skillTick % 2 == 0)
-			{
-				if (_skillBool == false) _skillBool = true;
-				else if (_skillBool == true) _skillBool = false;
-			}
-			if (_skillBool)
-			{
-				for (int j = 0; j < V_NUM; j++)
-				{
-					for (int i = 0; i < H_NUM; i++)
-					{
-						_tile[i][j].x -= 2;
-						_tile[i][j].y -= 2;
-					}
-				}
-
-				_x -= 2;
-				_y -= 2;
-			}
-			else
-			{
-				for (int j = 0; j < V_NUM; j++)
-				{
-					for (int i = 0; i < H_NUM; i++)
-					{
-						_tile[i][j].x += 2;
-						_tile[i][j].y += 2;
-					}
-				}
-				
-				_x += 2;
-				_y += 2;
-			}
-		}
-		else
-		{
-			_pl->setPX(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x);
-			_pl->setPY(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y);
-		}
-
-
-		if (_sk->getSkillXY().size() < 8)
-		{
-			_sk->setSkillXY(_tile[23][28].x - 5, _tile[23][28].y - 120, 12, true);
-			_sk->setSkillXY(_tile[23][39].x - 5, _tile[23][39].y - 120, 12, true);
-			_sk->setSkillXY(_tile[17][33].x - 5, _tile[17][33].y - 120, 12, true);
-			_sk->setSkillXY(_tile[29][33].x - 5, _tile[29][33].y - 120, 12, true);
-		}
-		
-	}
-	#pragma endregion
-	_sk->DownSkill(_pl);
-
-	#pragma region Àû ·»´õ
-	if (_sk->getBitset()[7] == 0)
-	{
-		_em[0]->render(_tile[23][28].x - 20, _tile[23][28].y - 50, 0);
-		_em[1]->render(_tile[23][39].x - 20, _tile[23][39].y - 50, 1);
-		_em[2]->render(_tile[17][33].x - 20, _tile[17][33].y - 50, 0);
-		_em[3]->render(_tile[29][33].x - 20, _tile[29][33].y - 50, 0);
-		_tile[19][23].unit == 2;
-		_tile[19][34].unit == 2;
-		_tile[13][28].unit == 2;
-		_tile[25][28].unit == 2;
-	}
-	else if (_sk->getBitset()[5]==1)_skillTick = 0;
-	else if (_sk->getBitset()[6] == 1)
-	{
-		
-
-		_emRender = true;
-
-		_skillOn = false;
-		_ui = false;
-		_ability = false;
-		_sk->clearSkillXY();
-		_pl->setPState(0);
-	}
-
-	#pragma endregion
-
-
+#pragma endregion
 	_pl->render();
 	_sk->UpSkill(_pl);
-#pragma endregion
 
 	// ½Ã³ª¸®¿À Å¬¸®¾î
 	if (_emRender)

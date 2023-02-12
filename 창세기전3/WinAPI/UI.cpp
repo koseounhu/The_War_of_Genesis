@@ -13,7 +13,7 @@ void UI::release(void)
 
 void UI::update(void)
 {
-	if (_ui || _ability || _skillOn || _tileOn || _state)
+	if (_ui || _ability || _skillOn || _tileOn || _state || _tigerOn)
 	{
 		_total = true;
 	}
@@ -102,13 +102,26 @@ void UI::render(Player* _pl)
 
 		IMAGEMANAGER->findImage("¾îºô¸®Æ¼Ã¢")->alphaRender(getMemDC(), _abilityA.left, _abilityA.top, 150);
 		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 10, 1, 0);
-		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 35, 0, 0);
+		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 35, 1, 0);
 		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 60, 0, 0);
+		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 85, 0, 0);
 
 
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 10, 15, 255, 255, 255, "±¼¸²", true, "ÃµÁöÆÄ¿­¹«");
-		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 35, 15, 255, 255, 255, "±¼¸²", true, "¿¬");
-		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 60, 15, 255, 255, 255, "±¼¸²", true, "ÆÄ");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 35, 15, 255, 255, 255, "±¼¸²", true, "Ç÷·®¸¶Ãµ");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 60, 15, 255, 255, 255, "±¼¸²", true, "¿¬");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 85, 15, 255, 255, 255, "±¼¸²", true, "ÆÄ");
+
+
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 10, 15, 255, 0, 0, "±¼¸²", true, "LV5");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 35, 15, 255, 0, 0, "±¼¸²", true, "LV3");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 60, 15, 255, 0, 0, "±¼¸²", true, "LV1");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 85, 15, 255, 0, 0, "±¼¸²", true, "LV1");
+
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 10, 15, 255, 215, 0, "±¼¸²", true, "200");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 35, 15, 255, 215, 0, "±¼¸²", true, "150");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 60, 15, 255, 215, 0, "±¼¸²", true, "50");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 85, 15, 255, 215, 0, "±¼¸²", true, "50");
 
 		RECT _abilityB;
 		_abilityB = RectMake(_abilityA.left + 5, _abilityA.top + 10, 150, 20);
@@ -117,7 +130,15 @@ void UI::render(Player* _pl)
 			SOUNDMANAGER->play("¹öÆ°", 1.0f);
 			_ui = _ability = false;
 			_skillOn = true;
-			
+		}
+		
+		RECT _abilityC;
+		_abilityC = RectMake(_abilityA.left + 5, _abilityA.top + 35, 150, 20);
+		if (PtInRect(&_abilityC, _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+		{
+			SOUNDMANAGER->play("¹öÆ°", 1.0f);
+			_ui = _ability = false;
+			_tigerOn = true;
 		}
 	}
 #pragma endregion

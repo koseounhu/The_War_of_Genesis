@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "UI.h"
 #include "Vermouth.h"
+#include "Tiger.h"
 
 #pragma region ¸Ê, A*
 // °¡·Î Ä­ °³¼ö
@@ -101,6 +102,7 @@ private:
 	Player* _pl;
 	Vermouth* _ve;
 	Skill* _sk;
+	Tiger* _ti;
 	bool _emRender;
 	UI* _ui;
 	
