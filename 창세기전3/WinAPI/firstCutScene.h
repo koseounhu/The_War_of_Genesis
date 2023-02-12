@@ -17,6 +17,8 @@ private:
 	bool _die;
 
 	int _tick;
+	int _tick2;
+
 	int _BGalpha;
 
 	int _diaCount;
@@ -35,7 +37,7 @@ private:
 	int _salY;
 	int _salFrame;
 
-	int _particle[5];
+	int _particle[10];
 
 public:
 	HRESULT init(void);

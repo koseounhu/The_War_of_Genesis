@@ -157,12 +157,6 @@
     <ClCompile Include="moveTile.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scenario.cpp" />
-    <ClCompile Include="C3DMatrix.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="C3DVector.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="GameNode.cpp" />
     <ClCompile Include="GImage.cpp" />
@@ -211,12 +205,6 @@
     </ClInclude>
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scenario.h" />
-    <ClInclude Include="C3DMatrix.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="C3DVector.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="CommonMacroFunction.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="GameNode.h" />

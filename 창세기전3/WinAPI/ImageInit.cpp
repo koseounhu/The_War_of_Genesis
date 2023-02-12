@@ -46,6 +46,9 @@ void MainGame::ImageInit(void)
 
 	// UI
 	IMAGEMANAGER->addImage("UI스테이터창", UI"state.bmp", 218, 384);
+	IMAGEMANAGER->addImage("MapInfo", UI"mapInfo.bmp", 230, 105);
+	IMAGEMANAGER->addFrameImage("적턴", UI"적턴.bmp", 72, 11,8,1,true,MAZEN);
+	IMAGEMANAGER->addFrameImage("살라딘턴", UI"살라딘턴.bmp", 72, 11,8,1,true,MAZEN);
 #pragma endregion
 
 #pragma region Unit
@@ -162,9 +165,10 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("목걸이뺏기이펙트", SCE"목걸이뺏기이펙트.bmp", 900, 135, 5, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("목걸이", SCE"목걸이.bmp", 200, 20, 10, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("셰라죽음", SCE"셰라죽음.bmp", 5520, 150, 23, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("셰라죽음파티클", SCE"셰라죽음파티클.bmp", 7750, 250, 31, 1, true, RGB(0,0,0));
-	IMAGEMANAGER->addFrameImage("파티클", SCE"파티클.bmp", 11625, 375, 31, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("파티클광원", SCE"파티클광원.bmp", 11625, 375, 31, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("파티클", SCE"파티클.bmp", 18600, 450, 31, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("파티클광원", SCE"파티클광원.bmp", 18600, 450, 31, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("파티클광원2", SCE"파티클광원2.bmp", 18600, 450, 31, 1, true, MAZEN);
+
 
 	// 2번 시나리오
 	IMAGEMANAGER->addImage("2_0", SCE"2_0.bmp", WINSIZE_X, WINSIZE_Y);
@@ -300,6 +304,9 @@ void MainGame::ImageInit(void)
 	SOUNDMANAGER->addSound("화염구터질때", SOUND"화염구터질때.mp3", false, false);
 	SOUNDMANAGER->addSound("적불기둥때", SOUND"적불기둥때.mp3", false, false);
 	SOUNDMANAGER->addSound("대각선불기둥", SOUND"대각선불기둥.mp3", false, false);
+
+	// 공격
+	SOUNDMANAGER->addSound("살라딘공격", SOUND"살라딘공격.mp3", false, false);
 
 #pragma endregion
 }

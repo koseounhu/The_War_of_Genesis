@@ -72,6 +72,8 @@ private:
 	bool _ability;
 	bool _tileOn;
 	bool _skillOn;
+	int _turnFrame;
+	int _tick;
 
 	// ½ºÅ³
 	int _skillTick;

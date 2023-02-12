@@ -13,6 +13,7 @@ struct VERMOUTH
 
 	bool _astar;
 
+
 	int skill;
 	int frame;
 	int tick;
@@ -23,7 +24,7 @@ class Vermouth:public GameNode
 private:
 	VERMOUTH _ve;
 	int _atked;
-
+	bool _atkSound;
 public:
 	HRESULT init(void);
 	void release(void);

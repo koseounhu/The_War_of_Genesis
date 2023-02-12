@@ -367,7 +367,7 @@ void Skill::UpSkill(Player* _pl)
 				{
 					_particle.push_back({ RND->getFromFloatTo(_enemyXY[i].x - 50,_enemyXY[i].x + 50),
 										RND->getFromFloatTo(_enemyXY[i].y,_enemyXY[i].y + 100),
-										0,0,255,false });
+										0,0,255,false, RND->getFromFloatTo(0.0f,360.0f) });
 				}
 			}
 		}
@@ -451,17 +451,19 @@ void Skill::DownSkill(Player* _pl)
 		for (int i = 0; i < 80; i++)
 		{
 			IMAGEMANAGER->findImage("스킬파티클3")->alphaFrameRender(getMemDC(), _particle[i].x, _particle[i].y, _particle[i].alpha, _particle[i].frame, 0);
-			_particle[i].y += _particle[i].speed;
-			_particle[i].speed -= 0.1;
-			_particle[i].alpha -= 5;
+			_particle[i].y -= sinf(_particle[i].angle * PI / 180.0f) * 10;
+			_particle[i].x += cosf(_particle[i].angle * PI / 180.0f) * 10;
+			_particle[i].speed -= 0.05;
+			_particle[i].alpha -= 2;
 			if (_particle[i].alpha < 0)_particle[i].alpha = 0;
 		}
 		for (int i = 80; i < 160; i++)
 		{
 			IMAGEMANAGER->findImage("스킬파티클2")->alphaFrameRender(getMemDC(), _particle[i].x, _particle[i].y, _particle[i].alpha, _particle[i].frame, 0);
-			_particle[i].y += _particle[i].speed;
-			_particle[i].speed -= 0.1;
-			_particle[i].alpha -= 3;
+			 _particle[i].x += cosf(_particle[i].angle * PI / 180.0f) * 10;
+			 _particle[i].y -= sinf(_particle[i].angle * PI / 180.0f) * 10;
+			_particle[i].speed -= 0.05;
+			_particle[i].alpha -= 2;
 			if (_particle[i].alpha < 0)_particle[i].alpha = 0;
 		}
 
@@ -492,9 +494,11 @@ void Skill::DownSkill(Player* _pl)
 		for (int i = 160; i < 240; i++)
 		{
 			IMAGEMANAGER->findImage("스킬파티클1")->alphaFrameRender(getMemDC(), _particle[i].x, _particle[i].y, _particle[i].alpha, _particle[i].frame, 0);
-			_particle[i].y += _particle[i].speed;
-			_particle[i].speed -= 0.1;
-			_particle[i].alpha -= 3;
+			_particle[i].x += cosf(_particle[i].angle * PI / 180.0f)* 10;
+			_particle[i].y -= sinf(_particle[i].angle * PI / 180.0f) * 10;
+			// _particle[i].y += _particle[i].speed;
+			_particle[i].speed -= 0.05;
+			_particle[i].alpha -= 2;
 			if (_particle[i].alpha < 0)_particle[i].alpha = 0;
 		}
 		if (_temp.back().start == false)

@@ -6,6 +6,8 @@ HRESULT firstCutScene::init(void)
 	_dia = new Dialogue;
 	_dia->init(1);
 
+	_tick2 = 0;
+
 	// 버몬트움직임
 	_verX = 280;
 	_verY = 400;
@@ -28,7 +30,7 @@ HRESULT firstCutScene::init(void)
 	_BGalpha = 0;
 
 	// 다이얼로그 카운트
-	_diaCount = 17;
+	_diaCount = 0;
 
 	// 큰이미지
 	_bigImageAlpha2 = _bigImageAlpha = 0;
@@ -997,25 +999,26 @@ void firstCutScene::render(void)
 
 		IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
 
-		if (_tick % 7 == 0)
+		_tick2++;
+		if (_tick2 % 10 == 0)
 		{
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < _countof(_particle); i++)
 			{
 				_particle[i]++;
-				if (_particle[i] > 31)_particle[i] = 0;
+				if (_particle[i] >= 31)_particle[i] = 0;
 			}
 		}
 
 		
-		IMAGEMANAGER->findImage("파티클")->alphaFrameRender(getMemDC(), 0, 425, 100, _particle[0], 0);
-		IMAGEMANAGER->findImage("파티클")->alphaFrameRender(getMemDC(), 250, 425, 100, _particle[1], 0);
-		IMAGEMANAGER->findImage("파티클")->alphaFrameRender(getMemDC(), 500, 425, 100, _particle[2], 0);
-		
-		IMAGEMANAGER->findImage("파티클광원")->alphaFrameRender(getMemDC(), 0, 425, 150, _particle[0], 0);
-		IMAGEMANAGER->findImage("파티클광원")->alphaFrameRender(getMemDC(), 250, 425, 150, _particle[1], 0);
-		IMAGEMANAGER->findImage("파티클광원")->alphaFrameRender(getMemDC(), 500, 425, 150, _particle[2], 0);
-
-
+		int temp = 0;
+		for (int i = 0; i < _countof(_particle); i++)
+		{
+			IMAGEMANAGER->findImage("파티클")->alphaFrameRender(getMemDC(), -250+temp, 450, 30, _particle[i], 0);
+			IMAGEMANAGER->findImage("파티클광원")->alphaFrameRender(getMemDC(), -250 + temp, 450, 50, _particle[i], 0);
+			IMAGEMANAGER->findImage("파티클광원2")->alphaFrameRender(getMemDC(), -250 + temp, 450, 70, _particle[i], 0);
+			temp += 100;
+			if (i> _countof(_particle)/2 && temp > 1000)temp = 0;
+		}
 
 		// 끝
 		if (_bigImageAlpha==255)

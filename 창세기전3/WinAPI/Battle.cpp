@@ -8,7 +8,6 @@ HRESULT Battle::init(void)
    
 #pragma endregion
 
-	_x = _y = 0;
 
 #pragma region 맵, A*
 	// 타일 배열 초기화
@@ -36,7 +35,7 @@ HRESULT Battle::init(void)
 		}
 	}
 #pragma endregion
-
+#pragma region UNIT
 	// 플레이어
 	_pl = new Player;
 	_pl->init();
@@ -45,18 +44,21 @@ HRESULT Battle::init(void)
 	_pl->setPView(3);
 	_pl->setPcount(0, 0);
 
-	_sk = new Skill;
-	_sk->init();
-
-	_ui = new UI;
-	_ui->init();
-
 	_ve = new Vermouth;
 	_ve->init();
 	_ve->setVEX(_tile[19][21].x);
 	_ve->setVEY(_tile[19][21].y);
 	_ve->setVEView(2);
 	_ve->setVCount(0, 0);
+
+	_sk = new Skill;
+	_sk->init();
+#pragma endregion
+
+	_x = _y = 0;
+	_ui = new UI;
+	_ui->init();
+
 
 
 	SOUNDMANAGER->play("2번전투배경", 0.3f);
@@ -337,6 +339,8 @@ void Battle::update(void)
 		}
 	}
 
+
+
 	_ve->update();
 #pragma endregion 
 
@@ -367,6 +371,7 @@ void Battle::update(void)
 		// 버몬트 턴
 		if (turn[0])
 		{
+
 			// 플레이어 근처가 아니면 a스타 발동
 			if ((_ve->getVEIndexX() != _pl->getPL()._indexX - 2 || _ve->getVEIndexX() != _pl->getPL()._indexX + 2) &&
 				_ve->getVEIndexY() != _pl->getPL()._indexY)
@@ -404,11 +409,10 @@ void Battle::update(void)
 				default:
 					break;
 				}
-
+				turn.set(0, 0);
 				
 			}
-			// 턴끝
-			turn.set(0, 0);
+
 		}
 	}
 
@@ -422,17 +426,43 @@ void Battle::render(void)
     // 배경
    IMAGEMANAGER->findImage("전투맵")->render(getMemDC(),_x,_y);
 
+   IMAGEMANAGER->findImage("MapInfo")->render(getMemDC(), 790, 5);
+   FONTMANAGER->drawText(getMemDC(), 880, 20, 15, 255, 255, 255, "굴림", false, "형제여!");
+   FONTMANAGER->drawText(getMemDC(), 950, 45, 15, 255, 255, 255, "굴림", true, "평  지");
+   FONTMANAGER->drawInt(getMemDC(), 940, 85, 15, 255, 255, 255, "굴림", false, (char*)GOLD->getGold());
+   FONTMANAGER->drawText(getMemDC(), 1000, 85, 15, 255, 255, 255, "굴림", false, "eld");
+
+
+
+   // 턴을 표시하는 UI
+   if (turn[0] || _ve->getVE()._state==2)	// 버몬트턴
+   {
+	   _veTick++;
+	   if (_veTick % 2 == 0)_veFrame++;
+	   if (_veFrame > IMAGEMANAGER->findImage("적턴")->getMaxFrameX())_veFrame = 0;
+	   IMAGEMANAGER->findImage("적턴")->frameRender(getMemDC(), _ve->getVE()._x + 17, _ve->getVE()._y - 70, _veFrame, 0);
+
+   }
+   else
+   {
+	   _veTick++;
+	   if (_veTick % 2 == 0)_veFrame++;
+	   if (_veFrame > IMAGEMANAGER->findImage("살라딘턴")->getMaxFrameX())_veFrame = 0;
+	   IMAGEMANAGER->findImage("살라딘턴")->frameRender(getMemDC(),_pl->getPL()._x+17,_pl->getPL()._y-70, _veFrame, 0);
+   }
+
+
 
    // 임시 이동타일 보이기
-   if (_closeList.size() > 0)
-   {
-	   for (int i = 0; i < _closeList.size(); i++)
-	   {
-		   DrawRectMake(getMemDC(), RectMake(_tile[_closeList[i].idxX][_closeList[i].idxY].x,
-			   _tile[_closeList[i].idxX][_closeList[i].idxY].y, 40, 32));
+   //if (_closeList.size() > 0)
+   //{
+	  // for (int i = 0; i < _closeList.size(); i++)
+	  // {
+		 //  DrawRectMake(getMemDC(), RectMake(_tile[_closeList[i].idxX][_closeList[i].idxY].x,
+			//   _tile[_closeList[i].idxX][_closeList[i].idxY].y, 40, 32));
 
-	   }
-   }
+	  // }
+   //}
 #pragma region 마우스타일, 맵타일그리기
    // 마우스타일
    if (!_ui->getSkillState()&& _ui->getTileState())

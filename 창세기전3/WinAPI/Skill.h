@@ -18,6 +18,7 @@ struct particle
 	float speed;
 	int alpha;
 	bool start;
+	float angle;
 };
 
 struct SKILLXY

@@ -25,6 +25,7 @@ private:
 	int _atk;
 	PL _pl;
 
+	bool _atkSound;
 
 public:
 	HRESULT init(void);

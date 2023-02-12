@@ -49,9 +49,6 @@
     <Filter Include="API FrameWork\Utility">
       <UniqueIdentifier>{a5f0054a-4d5a-48f8-be27-cee4397f9cfb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="API FrameWork\Utility\Math">
-      <UniqueIdentifier>{8e10622c-49b4-49a2-aefd-74299b84df81}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{b135f443-0e91-4542-9e35-6c28903b7592}</UniqueIdentifier>
     </Filter>
@@ -123,12 +120,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C3DMatrix.cpp">
-      <Filter>API FrameWork\Utility\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="C3DVector.cpp">
-      <Filter>API FrameWork\Utility\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Stdafx.cpp">
       <Filter>API FrameWork\PCH</Filter>
     </ClCompile>
@@ -238,12 +229,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C3DMatrix.h">
-      <Filter>API FrameWork\Utility\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="C3DVector.h">
-      <Filter>API FrameWork\Utility\Math</Filter>
-    </ClInclude>
     <ClInclude Include="Stdafx.h">
       <Filter>API FrameWork\PCH</Filter>
     </ClInclude>

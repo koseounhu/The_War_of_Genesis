@@ -33,7 +33,7 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("무기상점", new WeaponShop);
 
 
-	SCENEMANAGER->changScene("1번시나리오");
+	SCENEMANAGER->changScene("전투");
 
 
 	return S_OK;

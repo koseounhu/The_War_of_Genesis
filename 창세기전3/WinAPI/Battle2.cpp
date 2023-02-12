@@ -236,6 +236,22 @@ void Battle2::render(void)
 {
 	// 배경
 	IMAGEMANAGER->findImage("전투맵2")->render(getMemDC(), _x, _y);
+	
+	// 우상단 UI
+	IMAGEMANAGER->findImage("MapInfo")->render(getMemDC(), 790, 5);
+	FONTMANAGER->drawText(getMemDC(), 870, 20, 15, 255, 255, 255, "굴림", false, "술탄궁내부");
+	FONTMANAGER->drawText(getMemDC(), 950, 45, 15, 255, 255, 255, "굴림", true, "평  지");
+	FONTMANAGER->drawInt(getMemDC(), 940, 85, 15, 255, 255, 255, "굴림", false, (char*)GOLD->getGold());
+	FONTMANAGER->drawText(getMemDC(), 1000, 85, 15, 255, 255, 255, "굴림", false, "eld");
+
+
+	// 턴프레임
+	_tick++;
+	if (_tick % 2 == 0)_turnFrame++;
+	if (_turnFrame > IMAGEMANAGER->findImage("살라딘턴")->getMaxFrameX())_turnFrame = 0;
+	IMAGEMANAGER->findImage("살라딘턴")->frameRender(getMemDC(), _pl->getPL()._x + 17, _pl->getPL()._y - 70, _turnFrame, 0);
+
+
 
 	// 마우스 타일
 	if(!_ui && !_ability&& !_skillOn)

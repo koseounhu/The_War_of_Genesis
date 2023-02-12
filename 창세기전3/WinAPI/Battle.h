@@ -110,7 +110,9 @@ private:
 	// 배경 움직이기위한 위치값
 	int _x, _y;
 
-
+	// 버몬트 턴 프레임
+	int _veFrame;
+	int _veTick;
 	
 public:
 	HRESULT init(void);

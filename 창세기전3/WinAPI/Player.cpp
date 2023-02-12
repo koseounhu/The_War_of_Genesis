@@ -39,6 +39,7 @@ void Player::update(void)
         {
             _atk = 0;
             _pl._state=0;
+            _atkSound = false;
         }
     }
 
@@ -66,6 +67,11 @@ void Player::render(void)
 
         // 공격
     case 2:
+        if (!_atkSound)
+        {
+            _atkSound = true;
+            SOUNDMANAGER->play("살라딘공격", 0.5f);
+        }
         IMAGEMANAGER->findImage("살라딘_공격")->frameRender(getMemDC(), _pl._x - 50, _pl._y - 75, _atk , _pl._view);
         break;
 
