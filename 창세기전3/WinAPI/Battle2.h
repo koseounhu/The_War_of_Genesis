@@ -58,6 +58,7 @@ struct TILE2
 
 
 #pragma endregion
+
 class Battle2 : public GameNode
 {
 private:
@@ -65,7 +66,6 @@ private:
 	// 움직일 타일 설정
 	bool _groundTile;
 	
-
 
 	// ui
 	bool _ui;
@@ -110,9 +110,11 @@ private:
 	Enemy* _em[10];
 	Skill* _sk;
 	bool _emRender;
-	
+
 	// 화면끝에서 충돌시 배경 움직이기 위한 렉트
 	RECT _rc[4];
+
+	
 
 	// 배경 움직이기위한 위치값
 	int _x, _y;

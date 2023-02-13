@@ -29,7 +29,7 @@ public:
 	bool getTileState(void) { return _tileOn; }
 	bool getTigerState(void) { return _tigerOn; }
 
-	bool setTigerState(bool tiger) { _tigerOn = tiger; }
+	void setTigerState(bool tiger) { _tigerOn = tiger; }
 	void setSkillState(bool skill) { _skillOn = skill; }
 	void setUIState(bool ui) { _ui = ui; }
 	void setAbilityState(bool ability) { _ability = ability; }

@@ -2,6 +2,7 @@
 #include "MainGame.h"
 
 #define BG "Resources/Images/Background/"
+#define EM "Resources/Images/Enemy/"
 #define OBJ "Resources/Images/Object/"
 #define OPEN "Resources/Images/Openning/"
 #define SCE "Resources/Images/Scenario/"
@@ -70,6 +71,12 @@ void MainGame::ImageInit(void)
 	// Àû
 	IMAGEMANAGER->addFrameImage("Àû1", PL"Àû1.bmp", 240, 160, 3, 2, true, MAZEN);
 
+	// Àû2
+	IMAGEMANAGER->addFrameImage("Àû2_°ø°Ý", EM"E2_attack.bmp", 524, 392, 4, 4, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("Àû2_°È±â", EM"E2_run.bmp", 456, 368, 6, 4, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("Àû2_´ë±â", EM"E2_idle.bmp", 270, 280, 3, 4, true, MAZEN);
+
+
 #pragma endregion
 
 #pragma region »óÁ¡
@@ -135,12 +142,12 @@ void MainGame::ImageInit(void)
 		IMAGEMANAGER->addFrameImage("½ºÅ³ÀÌÆåÆ®5±¤¿ø", PL"ÀÌÆåÆ®5±¤¿ø.bmp", 1200, 150, 8, 1, true, MAZEN);
 
 	#pragma endregion
-	#pragma region Ç÷·®¸¶È¥
+	#pragma region Ç÷¶û¸¶È¥
 		IMAGEMANAGER->addFrameImage("È£¶ûÀÌ", SK"È£¶ûÀÌ.bmp", 6500, 250, 26, 1, true, MAZEN);
-		IMAGEMANAGER->addFrameImage("¹ø°³±âµÕ", SK"¹ø°³±âµÕ.bmp", 600, 300, 6, 1, true, MAZEN);
-		IMAGEMANAGER->addFrameImage("¹ø°³¹Ù´Ú", SK"¹ø°³¹Ù´Ú.bmp", 2250, 150, 15, 1, true, RGB(0,0,0));
-		IMAGEMANAGER->addFrameImage("ÅäÅ»¹ø°³", SK"ÅäÅ»¹ø°³.bmp", 2250, 400, 15, 1, true, RGB(0,0,0));
-		IMAGEMANAGER->addFrameImage("ÅäÅ»¹ø°³±¤¿ø", SK"ÅäÅ»¹ø°³±¤¿ø.bmp", 2250, 400, 15, 1, true, RGB(0,0,0));
+		IMAGEMANAGER->addFrameImage("ÅäÅ»¹ø°³", SK"ÅäÅ»¹ø°³.bmp", 3375, 600, 15, 1, true, RGB(0,0,0));
+		IMAGEMANAGER->addFrameImage("ÅäÅ»¹ø°³±¤¿ø", SK"ÅäÅ»¹ø°³±¤¿ø.bmp", 3375, 600, 15, 1, true, RGB(0,0,0));
+		IMAGEMANAGER->addFrameImage("»ì¶óµòµ¹Áø±â", SK"»ì¶óµòµ¹Áø±â.bmp", 450, 600, 3, 4, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("µ¹ÁøÀÌÆåÆ®", SK"µ¹ÁøÀÌÆåÆ®.bmp", 1400, 800, 7, 4, true, MAZEN);
 	#pragma endregion
 #pragma endregion
 	
@@ -210,7 +217,8 @@ void MainGame::ImageInit(void)
 	// ÀüÅõ¸Ê
 	IMAGEMANAGER->addImage("ÀüÅõ¸Ê", BAT"BattleMap.bmp", 1600, 1800);
 	IMAGEMANAGER->addImage("ÀüÅõ¸Ê2", BAT"BattleMap2.bmp", 2200, 2000);
-	IMAGEMANAGER->addImage("ÇÈÃæ¹è°æ", BAT"ÇÈÃæ¹è°æ.bmp", 1800, 1696);
+	IMAGEMANAGER->addImage("ÀüÅõ¸Ê3", BAT"BattleMap3.bmp", 1500, 1080);
+	IMAGEMANAGER->addImage("ÇÈÃæ¹è°æ", BAT"ÇÈÃæ¹è°æ.bmp", 1600, 1800);
 
 	// WorldMap
 	IMAGEMANAGER->addImage("¿ùµå¸Ê¹è°æ", WM"WorldBG.bmp", 1446, 1074, true, MAZEN);

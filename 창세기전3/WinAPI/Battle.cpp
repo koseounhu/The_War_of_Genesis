@@ -35,6 +35,7 @@ HRESULT Battle::init(void)
 		}
 	}
 #pragma endregion
+
 #pragma region UNIT
 	// 플레이어
 	_pl = new Player;
@@ -53,14 +54,21 @@ HRESULT Battle::init(void)
 
 	_sk = new Skill;
 	_sk->init();
+
+	_ti = new Tiger;
+	_ti->init();
+
+
 #pragma endregion
+
+	_cam.x = WINSIZE_X / 2;
+	_cam.y = WINSIZE_Y / 2;
+	_cam.rc = RectMakeCenter(WINSIZE_X / 2, WINSIZE_Y / 2, 10, 10);
 
 	_x = _y = 0;
 	_ui = new UI;
 	_ui->init();
 	
-	_ti = new Tiger;
-	_ti->init();
 
 
 
@@ -306,6 +314,11 @@ void Battle::update(void)
 				_ve->setVCount(0, 0);
 				_ve->setVEState(0);
 				turn.set(0, 0);
+
+				//카메라
+				turn.set(1, 1);
+				_cam.start = true;
+
 			}
 			
 		}
@@ -366,59 +379,201 @@ void Battle::update(void)
 		}
 	}
 
-	// 임시 버몬트 턴
+	// 턴넘기기 , 카메라
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
-		if (!turn[0])	turn.set(0, 1);
-		else turn.reset();
+		_cam.start = true;
+	}
 
+	// 카메라
+	if (_cam.start)
+	{
 		// 버몬트 턴
-		if (turn[0])
+		if (!turn[0] && !turn[1])
 		{
-
-			// 플레이어 근처가 아니면 a스타 발동
-			if ((_ve->getVEIndexX() != _pl->getPL()._indexX - 2 || _ve->getVEIndexX() != _pl->getPL()._indexX + 2) &&
-				_ve->getVEIndexY() != _pl->getPL()._indexY)
+			// 좌우
+			if (_cam.x < _ve->getVE()._x)
 			{
-				if (_tile[_pl->getPL()._indexX - 2][_pl->getPL()._indexY].unit == 0)
-					Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX - 2, _pl->getPL()._indexY);
-				else
-					Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX + 2, _pl->getPL()._indexY);
-
-				// 에이스타 시작
-				if (_closeList.size() > 0)	_ve->setVEastar(true);
-			}
-
-			// 플레이어 양옆쪽이면 공격
-			if ((_ve->getVEIndexX() == _pl->getPL()._indexX - 2 || _ve->getVEIndexX() == _pl->getPL()._indexX + 2) &&
-				_ve->getVEIndexY() == _pl->getPL()._indexY)
-			{
-				_pl->setPState(4);
-				_ve->setVEState(2);
-
-				int sta = _pl->getPL()._indexX - _ve->getVEIndexX();
-
-				switch (sta)
+				_x -= 3;
+				_pl->setPX(_pl->getPL()._x - 3);
+				_ve->setVEX(_ve->getVE()._x - 3);
+				for (int j = 0; j < V_NUM; j++)
 				{
-				case 2:
-					_ve->setVEView(1);
-					_pl->setPView(0);
-					break;
-
-				case -2:
-					_ve->setVEView(0);
-					_pl->setPView(1);
-					break;
-
-				default:
-					break;
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x -= 3;
+					}
 				}
-				turn.set(0, 0);
-				
+			}
+			else if (_cam.x > _ve->getVE()._x)
+			{
+				_x += 3;
+				_pl->setPX(_pl->getPL()._x + 3);
+				_ve->setVEX(_ve->getVE()._x + 3);
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x += 3;
+					}
+				}
 			}
 
+			// 상하
+			if (_cam.y < _ve->getVE()._y)
+			{
+				_y -= 3;
+				_pl->setPY(_pl->getPL()._y - 3);
+				_ve->setVEY(_ve->getVE()._y - 3);
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y -= 3;
+					}
+				}
+			}
+			else if (_cam.y > _ve->getVE()._y)
+			{
+				_y += 3;
+				_pl->setPY(_pl->getPL()._y + 3);
+				_ve->setVEY(_ve->getVE()._y + 3);
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y += 3;
+					}
+				}
+			}
+
+			// 캐릭터와 충돌
+			RECT temp;
+			RECT ve = RectMakeCenter(_ve->getVE()._x, _ve->getVE()._y, 30, 30);
+			if (IntersectRect(&temp, &_cam.rc, &ve))
+			{
+				turn.set(0, 1);
+				_cam.start = false;
+			}
+		}
+
+		// 살라딘 턴
+		if (turn[1])
+		{
+			// 좌우
+			if (_cam.x < _pl->getPL()._x)
+			{
+				_x -= 3;
+				_pl->setPX(_pl->getPL()._x - 3);
+				_ve->setVEX(_ve->getVE()._x - 3);
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x -= 3;
+					}
+				}
+			}
+			else if (_cam.x > _pl->getPL()._x)
+			{
+				_x += 3;
+				_pl->setPX(_pl->getPL()._x + 3);
+				_ve->setVEX(_ve->getVE()._x + 3);
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x += 3;
+					}
+				}
+			}
+
+			// 상하
+			if (_cam.y < _pl->getPL()._y)
+			{
+				_y -= 3;
+				_pl->setPY(_pl->getPL()._y - 3);
+				_ve->setVEY(_ve->getVE()._y - 3);
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y -= 3;
+					}
+				}
+			}
+			else if (_cam.y > _pl->getPL()._y)
+			{
+				_y += 3;
+				_pl->setPY(_pl->getPL()._y + 3);
+				_ve->setVEY(_ve->getVE()._y + 3);
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y += 3;
+					}
+				}
+			}
+
+			// 캐릭터와 충돌
+			RECT temp;
+			RECT pl = RectMakeCenter(_pl->getPL()._x, _pl->getPL()._y, 30, 30);
+			if (IntersectRect(&temp, &_cam.rc, &pl))
+			{
+				turn.set(1, 0);
+				_cam.start = false;
+			}
 		}
 	}
+
+	// 버몬트 턴
+	if (turn[0])
+	{
+		// 플레이어 근처가 아니면 a스타 발동
+		if ((_ve->getVEIndexX() != _pl->getPL()._indexX - 2 || _ve->getVEIndexX() != _pl->getPL()._indexX + 2) &&
+			_ve->getVEIndexY() != _pl->getPL()._indexY)
+		{
+			if (_tile[_pl->getPL()._indexX - 2][_pl->getPL()._indexY].unit == 0)
+				Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX - 2, _pl->getPL()._indexY);
+			else
+				Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX + 2, _pl->getPL()._indexY);
+
+			// 에이스타 시작
+			if (_closeList.size() > 0)	_ve->setVEastar(true);
+		}
+
+		// 플레이어 양옆쪽이면 공격
+		if ((_ve->getVEIndexX() == _pl->getPL()._indexX - 2 || _ve->getVEIndexX() == _pl->getPL()._indexX + 2) &&
+			_ve->getVEIndexY() == _pl->getPL()._indexY)
+		{
+			_pl->setPState(4);
+			_ve->setVEState(2);
+
+			int sta = _pl->getPL()._indexX - _ve->getVEIndexX();
+
+			switch (sta)
+			{
+			case 2:
+				_ve->setVEView(1);
+				_pl->setPView(0);
+				break;
+
+			case -2:
+				_ve->setVEView(0);
+				_pl->setPView(1);
+				break;
+
+			default:
+				break;
+			}
+		}
+
+		turn.set(0, 0); //1번만 발동되야하므로 바로 끔
+	}
+
+
+
 
 	if(_ui->getTigerState()) _ti->update(_pl,_ve);
 	_ui->update();
@@ -428,17 +583,16 @@ void Battle::render(void)
 {
     // 배경
    IMAGEMANAGER->findImage("전투맵")->render(getMemDC(),_x,_y);
-
    IMAGEMANAGER->findImage("MapInfo")->render(getMemDC(), 790, 5);
    FONTMANAGER->drawText(getMemDC(), 880, 20, 15, 255, 255, 255, "굴림", false, "형제여!");
    FONTMANAGER->drawText(getMemDC(), 950, 45, 15, 255, 255, 255, "굴림", true, "평  지");
    FONTMANAGER->drawInt(getMemDC(), 940, 85, 15, 255, 255, 255, "굴림", false, (char*)GOLD->getGold());
    FONTMANAGER->drawText(getMemDC(), 1000, 85, 15, 255, 255, 255, "굴림", false, "eld");
 
-
+   DrawRectMake(getMemDC(), _cam.rc);
 
    // 턴을 표시하는 UI
-   if (turn[0] || _ve->getVE()._state==2)	// 버몬트턴
+   if (_ve->getVE()._state>=1)	// 버몬트턴
    {
 	   _veTick++;
 	   if (_veTick % 2 == 0)_veFrame++;
@@ -456,7 +610,7 @@ void Battle::render(void)
 
 
 
-   // 임시 이동타일 보이기
+   //// 임시 이동타일 보이기
    //if (_closeList.size() > 0)
    //{
 	  // for (int i = 0; i < _closeList.size(); i++)
@@ -703,8 +857,9 @@ void Battle::render(void)
    _ve->render();
    _pl->render();
    _ui->render(_pl);
-   if (_ui->getTigerState()) _ti->render(_pl,_ve);
+	if (_ui->getTigerState()) _ti->render(_pl,_ve);
 	if (_ui->getSkillState())	_sk->DownSkill(_pl);
+	if (_ti->getStep()[4]) _ui->setTigerState(false);
 
 #pragma endregion
 

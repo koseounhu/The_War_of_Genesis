@@ -239,7 +239,7 @@ void WorldMap::render(void)
         {
             _ui = false;
             _move = false;
-            SCENEMANAGER->changScene("로딩","전투2");
+            SCENEMANAGER->changScene("로딩","전투3");
         }
     }
     else if (_move2)

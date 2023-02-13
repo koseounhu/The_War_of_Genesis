@@ -108,7 +108,7 @@ void UI::render(Player* _pl)
 
 
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 10, 15, 255, 255, 255, "±¼¸²", true, "ÃµÁöÆÄ¿­¹«");
-		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 35, 15, 255, 255, 255, "±¼¸²", true, "Ç÷·®¸¶Ãµ");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 35, 15, 255, 255, 255, "±¼¸²", true, "Ç÷¶û¸¶È¥");
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 60, 15, 255, 255, 255, "±¼¸²", true, "¿¬");
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 85, 15, 255, 255, 255, "±¼¸²", true, "ÆÄ");
 

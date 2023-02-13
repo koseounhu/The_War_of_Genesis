@@ -1,13 +1,11 @@
 #pragma once
 #include "GameNode.h"
+#include "Enemy2.h"
 #include "Player.h"
-#include "Skill.h"
-#include "Enemy.h"
 #include "UI.h"
-#include "Vermouth.h"
-#include "Tiger.h"
 
 #pragma region 맵, A*
+
 // 가로 칸 개수
 #define H_NUM 50
 // 세로 칸 개수
@@ -21,7 +19,7 @@
 #define ASTAR_MAX_COST 9999999.9f
 
 // A* 열린 목록
-struct OpenList
+struct OpenList3
 {
 	int idxX;
 	int idxY;
@@ -31,22 +29,21 @@ struct OpenList
 };
 
 // A* 닫힌 목록
-struct CloseList
+struct CloseList3
 {
 	int idxX;
 	int idxY;
 	float fromStartCost;
 };
 
-struct moveTile2
+struct moveTile3
 {
 	int idxX;
 	int idxY;
 	int moveCost;
 };
-
 // 타일 그리기
-struct TILE
+struct TILE3
 {
 	int x;
 	int y;
@@ -58,44 +55,44 @@ struct TILE
 	bool moveTileColli;
 };
 
+
 #pragma endregion
 
-struct CAMERA
+struct BG
 {
-	RECT rc;
-
 	int x;
 	int y;
-
-	bool center;
-	bool start;
 };
 
-class Battle : public GameNode
+class Battle3 : public GameNode
 {
 private:
-	// 스킬
-	int _skillTick;
-	int _skillFrame;
-	bool _skillBool;
+
+	//배경
+	BG _bg;
+	
+	// UI
+	UI* _ui;
+
+	// UNIT
+	Player* _pl;
+	Enemy2* _em;
 
 
-	// 시작시 카메라 무빙
-	bool _gameStart;
+#pragma region Astar
 
 	// 타일을 만들기위한 구조체
-	TILE _tile[H_NUM][V_NUM];
-	
+	TILE3 _tile[H_NUM][V_NUM];
 
 	// 열린 목록
-	vector<OpenList> _openList;
+	vector<OpenList3> _openList;
 
 	// 닫힌 목록
-	vector<CloseList> _closeList;
+	vector<CloseList3> _closeList;
 
 	// 움직일 타일
-	vector<moveTile2> _canMoveList;
-	vector<moveTile2> _cantMoveList;
+	vector<moveTile3> _canMoveList;
+	vector<moveTile3> _cantMoveList;
 
 	// AStar 종료 체크
 	bool _aStarBreak;
@@ -103,39 +100,19 @@ private:
 	// AStar 함수
 	void Astar(int startIdxX, int startIdxY, int endIdxX, int endIdxY);
 
-	// 바닥타일
-	void moveTileStar(int startIdxX, int startIdxY);
+#pragma endregion
 
-	// 플레이어
-	Player* _pl;
-	Vermouth* _ve;
-	Skill* _sk;
-	Tiger* _ti;
-	bool _emRender;
-	UI* _ui;
-
-	// 카메라
-	CAMERA _cam;
-
-	// 턴
-	bitset<4> turn;
-	
-	// 배경 움직이기위한 위치값
-	int _x, _y;
-
-	// 버몬트 턴 프레임
-	int _veFrame;
-	int _veTick;
-	
 public:
 	HRESULT init(void);
 	void release(void);
 	void update(void);
 	void render(void);
 
+	void moveTileStar(int startIdxX, int startIdxY);
 
 
-	Battle() {}
-	~Battle() {}
+
+	Battle3() {}
+	~Battle3() {}
 };
 

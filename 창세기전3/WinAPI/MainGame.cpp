@@ -4,6 +4,7 @@
 #include "Scenario.h"
 #include "Battle.h"
 #include "Battle2.h"
+#include "Battle3.h"
 #include "firstCutScene.h"
 #include "WorldMap.h"
 #include "SecondScene.h"
@@ -26,6 +27,7 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("시나리오", new Scenario);
 	SCENEMANAGER->addScene("전투", new Battle);
 	SCENEMANAGER->addScene("전투2", new Battle2);
+	SCENEMANAGER->addScene("전투3", new Battle3);
 	SCENEMANAGER->addScene("1번시나리오", new firstCutScene);
 	SCENEMANAGER->addScene("2번시나리오", new SecondScene);
 	SCENEMANAGER->addScene("로딩", new Loading);
@@ -33,7 +35,7 @@ HRESULT MainGame::init(void)
 	SCENEMANAGER->addScene("무기상점", new WeaponShop);
 
 
-	SCENEMANAGER->changScene("전투");
+	SCENEMANAGER->changScene("전투3");
 
 
 	return S_OK;

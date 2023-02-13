@@ -1,5 +1,6 @@
 #include "Stdafx.h"
 #include "MainGame.h"
+#include "resource.h"
 
 // =================
 // # 전역 변수 #
@@ -44,7 +45,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
     wndClass.cbWndExtra = 0; //윈도우 여분 메모리
     wndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH); //백그라운드. GetStockObject() 동적할당 가능하게 확장한 함수.
     wndClass.hCursor = LoadCursor(NULL, IDC_ARROW); //마우스커서 아이콘
-    wndClass.hIcon = LoadIcon(NULL, IDC_APPSTARTING); //아이콘
+   //wndClass.hIcon = LoadIcon(NULL, IDC_APPSTARTING); //아이콘
+    wndClass.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));//아이콘
     wndClass.hInstance = hInstance; //원도우를 소유한 프로그램의 식별자 정보
     wndClass.lpfnWndProc = (WNDPROC)WndProc; //윈도우 프로시져. 예외발생을 처리하기 위해 (WNDPROC)를 사용.
     wndClass.lpszClassName = WIN_NAME; //쿨래스 이름(윈도우 클래스 식별자 정보)

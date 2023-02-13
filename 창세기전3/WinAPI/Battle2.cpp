@@ -21,8 +21,8 @@ HRESULT Battle2::init(void)
 		}
 	}
 #pragma endregion
+#pragma region À¯´Ö
 
-	// ÇÃ·¹ÀÌ¾î
 	_pl = new Player;
 	_pl->init();
 	_pl->setPX(_tile[23][33].x);
@@ -32,6 +32,7 @@ HRESULT Battle2::init(void)
 	_sk = new Skill;
 	_sk->init();
 
+
 	for (int i = 0; i < 10; i++)
 	{
 		_em[i] = new Enemy;
@@ -39,6 +40,10 @@ HRESULT Battle2::init(void)
 	}
 
 	_skillFrame= _skillTick = 0;
+
+#pragma endregion
+
+
 
 	SOUNDMANAGER->play("1¹øÀüÅõ¹è°æ", 0.3f);
     return S_OK;
@@ -229,7 +234,6 @@ void Battle2::update(void)
 	{
 		_em[i]->update();
 	}
-		
 }
 
 void Battle2::render(void)
@@ -244,14 +248,11 @@ void Battle2::render(void)
 	FONTMANAGER->drawInt(getMemDC(), 940, 85, 15, 255, 255, 255, "±¼¸²", false, (char*)GOLD->getGold());
 	FONTMANAGER->drawText(getMemDC(), 1000, 85, 15, 255, 255, 255, "±¼¸²", false, "eld");
 
-
 	// ÅÏÇÁ·¹ÀÓ
 	_tick++;
 	if (_tick % 2 == 0)_turnFrame++;
 	if (_turnFrame > IMAGEMANAGER->findImage("»ì¶óµòÅÏ")->getMaxFrameX())_turnFrame = 0;
 	IMAGEMANAGER->findImage("»ì¶óµòÅÏ")->frameRender(getMemDC(), _pl->getPL()._x + 17, _pl->getPL()._y - 70, _turnFrame, 0);
-
-
 
 	// ¸¶¿ì½º Å¸ÀÏ
 	if(!_ui && !_ability&& !_skillOn)
@@ -267,8 +268,6 @@ void Battle2::render(void)
 			}
 		}
 	}
-
-
 
 	// °¢ ±¸È¹¸¶´Ù ¼± ±×¸®±â
 	if (KEYMANAGER->isToggleKey(VK_F10))
@@ -372,9 +371,7 @@ void Battle2::render(void)
 				_skillFrame++;
 				_pl->setPSkill(_skillFrame);
 			}
-
 		}
-
 
 
 
@@ -432,7 +429,6 @@ void Battle2::render(void)
 
 	}
 #pragma endregion
-
 #pragma region À¯´Ö ·»´õ
 	_sk->DownSkill(_pl);
 	if (_sk->getBitset()[7] == 0)
@@ -449,10 +445,7 @@ void Battle2::render(void)
 	else if (_sk->getBitset()[5] == 1)_skillTick = 0;
 	else if (_sk->getBitset()[6] == 1)
 	{
-
-
 		_emRender = true;
-
 		_skillOn = false;
 		_ui = false;
 		_ability = false;
@@ -527,7 +520,7 @@ void Battle2::render(void)
 
 
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 10, 15, 255, 255, 255, "±¼¸²", true, "ÃµÁöÆÄ¿­¹«");
-		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 35, 15, 255, 255, 255, "±¼¸²", true, "Ç÷·®¸¶Ãµ");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 35, 15, 255, 255, 255, "±¼¸²", true, "Ç÷¶û¸¶È¥");
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 60, 15, 255, 255, 255, "±¼¸²", true, "¿¬");
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 85, 15, 255, 255, 255, "±¼¸²", true, "ÆÄ");
 

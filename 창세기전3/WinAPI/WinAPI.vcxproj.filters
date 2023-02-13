@@ -121,6 +121,12 @@
     <Filter Include="Unit\Tiger">
       <UniqueIdentifier>{28bb2bac-c7d2-483c-bad4-8481afa08903}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit\Enemy2">
+      <UniqueIdentifier>{a23e0d58-4c97-4b5a-ba0d-50610cac8e87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Battle3">
+      <UniqueIdentifier>{5038e48d-73c5-4518-b135-2843c69288b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Stdafx.cpp">
@@ -232,6 +238,15 @@
     </ClCompile>
     <ClCompile Include="Tiger.cpp">
       <Filter>Unit\Tiger</Filter>
+    </ClCompile>
+    <ClCompile Include="Battle3.cpp">
+      <Filter>Scene\Battle3</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy2.cpp">
+      <Filter>Unit\Enemy2</Filter>
+    </ClCompile>
+    <ClCompile Include="moveTileStar.cpp">
+      <Filter>Scene\Battle3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -347,6 +362,15 @@
     <ClInclude Include="Tiger.h">
       <Filter>Unit\Tiger</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>API FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Battle3.h">
+      <Filter>Scene\Battle3</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy2.h">
+      <Filter>Unit\Enemy2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dialog.json">
@@ -355,5 +379,15 @@
     <None Include="Item.json">
       <Filter>Item</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Images\Icon.ico">
+      <Filter>API FrameWork</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WinAPI.rc">
+      <Filter>API FrameWork</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
