@@ -25,7 +25,7 @@ HRESULT Battle::init(void)
 		for (int i = 0; i < H_NUM; i++)
 		{
 			COLORREF color = GetPixel(IMAGEMANAGER->findImage("픽충배경")->getMemDC(),
-				_tile[i][j].x+100, _tile[i][j].y-40);
+				_tile[i][j].x, _tile[i][j].y);
 
 			int r = GetRValue(color);
 			int g = GetGValue(color);
@@ -862,6 +862,7 @@ void Battle::render(void)
 	if (_ti->getStep()[4]) _ui->setTigerState(false);
 
 #pragma endregion
+
 
 
    // 시나리오 클리어

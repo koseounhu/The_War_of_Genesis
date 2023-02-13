@@ -67,12 +67,15 @@ struct BG
 class Battle3 : public GameNode
 {
 private:
+	// 전체틱
+	int _tick;
 
 	//배경
 	BG _bg;
 	
 	// UI
 	UI* _ui;
+	int _mouseTileFrame;
 
 	// UNIT
 	Player* _pl;
@@ -99,6 +102,9 @@ private:
 
 	// AStar 함수
 	void Astar(int startIdxX, int startIdxY, int endIdxX, int endIdxY);
+	
+	// 바닥타일
+	void moveTileStar(int startIdxX, int startIdxY);
 
 #pragma endregion
 
@@ -108,7 +114,6 @@ public:
 	void update(void);
 	void render(void);
 
-	void moveTileStar(int startIdxX, int startIdxY);
 
 
 

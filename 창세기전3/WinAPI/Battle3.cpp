@@ -6,6 +6,7 @@ HRESULT Battle3::init(void)
 {
 	// 배경
 	_bg.x = _bg.y = 0;
+	_mouseTileFrame = 0;
 
 	// UI
 	_ui = new UI;
@@ -21,21 +22,6 @@ HRESULT Battle3::init(void)
 		}
 	}
 
-	// 배경 픽셀 이미지에 따라 타일 맵 충돌 여부 초기화
-	for (int j = 0; j < V_NUM; j++)
-	{
-		for (int i = 0; i < H_NUM; i++)
-		{
-			COLORREF color = GetPixel(IMAGEMANAGER->findImage("픽충배경")->getMemDC(),
-				_tile[i][j].x + 100, _tile[i][j].y - 40);
-
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-
-			if (r == 255 && g == 0 && b == 255) _tile[i][j].unit = 2;
-		}
-	}
 #pragma endregion
 
 #pragma region UNIT
@@ -45,7 +31,6 @@ HRESULT Battle3::init(void)
 	_pl->setPX(_tile[5][5].x);
 	_pl->setPY(_tile[5][5].y);
 	_pl->setPView(3);
-	_pl->setPcount(0, 0);
 
 
 
@@ -67,6 +52,14 @@ void Battle3::release(void)
 
 void Battle3::update(void)
 {
+	// 전체 틱
+	_tick++;
+
+	// 마우스타일 프레임
+	if (_tick % 10 == 0) _mouseTileFrame++;
+	if (_mouseTileFrame > IMAGEMANAGER->findImage("마우스타일")->getMaxFrameX())_mouseTileFrame = 0;
+
+
 	_pl->update();
 	_em->update();
 	_ui->update();
@@ -121,48 +114,43 @@ void Battle3::update(void)
 	}
 
 	// 플레이어 인덱스변화
-	if (_pl->getPL()._astar)
+	for (int j = 0; j < V_NUM; j++)
 	{
-		for (int j = 0; j < V_NUM; j++)
+		for (int i = 0; i < H_NUM; i++)
 		{
-			for (int i = 0; i < H_NUM; i++)
+			if (_pl->getPL()._x == _tile[i][j].x &&
+				_pl->getPL()._y == _tile[i][j].y)
 			{
-				if (_pl->getPL()._x == _tile[i][j].x &&
-					_pl->getPL()._y == _tile[i][j].y)
-				{
-					_pl->setPIndex(i, j);
-					_tile[i][j].unit = 1;
-					break;
-				}
+				_pl->setPIndex(i, j);
+				_tile[i][j].unit = 1;
+				break;
 			}
 		}
 	}
+	
 #pragma endregion
 
-	// Astar 움직임
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	// 플레이어 UI 띄우기
+	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 	{
 		SOUNDMANAGER->play("버튼", 1.0f);
-		_pl->setPAstar(true);
-
-		// 플레이어이동
-		for (int j = 0; j < V_NUM; j++)
+		if (!_ui->getTotalUI())
 		{
-			for (int i = 0; i < H_NUM; i++)
+			// 플레이어 렉트
+			RECT _temp;
+			_temp = RectMake(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x,
+				_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y,
+				WIDTH, HEIGHT);
+			if (PtInRect(&_temp, _ptMouse))
 			{
-				// 클릭에 따른 A* 활성화
-				if (_ptMouse.x > _tile[i][j].x && _ptMouse.x < _tile[i + 1][j].x &&
-					_ptMouse.y > _tile[i][j].y && _ptMouse.y < _tile[i][j + 1].y)
-				{
-					if (!_tile[i][j].mapColli)
-					{
-						Astar(_pl->getPL()._indexX, _pl->getPL()._indexY, i, j);
-						_pl->setPAstar(true);
-					}
-				}
+				_ui->setUIState(true);
 			}
 		}
 	}
+
+
+
+
 
 
 }
@@ -171,12 +159,39 @@ void Battle3::render(void)
 {
 	// 배경
 	IMAGEMANAGER->findImage("전투맵3")->render(getMemDC(),_bg.x,_bg.y);
+	IMAGEMANAGER->findImage("MapInfo")->render(getMemDC(), 790, 5);
+	FONTMANAGER->drawText(getMemDC(), 880, 20, 15, 255, 255, 255, "굴림", false, "형제여!");
+	FONTMANAGER->drawText(getMemDC(), 950, 45, 15, 255, 255, 255, "굴림", true, "평  지");
+	FONTMANAGER->drawInt(getMemDC(), 940, 85, 15, 255, 255, 255, "굴림", false, (char*)GOLD->getGold());
+	FONTMANAGER->drawText(getMemDC(), 1000, 85, 15, 255, 255, 255, "굴림", false, "eld");
+	
+	//임시 플레이어 렉트
+	DrawRectMake(getMemDC(), RectMake(_pl->getPL()._x, _pl->getPL()._y, 10, 10));
+	DrawRectMake(getMemDC(), RectMake(_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].x,
+		_tile[_pl->getPL()._indexX][_pl->getPL()._indexY].y, 10, 10));
+
 
 	// UNIT
 	_pl->render();
 	_em->render();
 
-	// 획그리기
+#pragma region 마우스타일, 맵타일그리기
+	// 마우스타일
+	for (int j = 0; j < H_NUM; j++)
+	{
+		for (int i = 0; i < V_NUM; i++)
+		{
+			if (_tile[j][i].x < _ptMouse.x && _tile[j][i].y < _ptMouse.y &&
+				_tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y)
+			{
+				IMAGEMANAGER->findImage("마우스타일")->alphaFrameRender(getMemDC(),
+					_tile[j][i].x, _tile[j][i].y, 150, _mouseTileFrame, 0);
+			}
+
+		}
+	}
+	
+	// 각 구획마다 선 그리기
 	if (KEYMANAGER->isToggleKey(VK_F10))
 	{
 		for (int j = 0; j < V_NUM; j++)
@@ -195,12 +210,60 @@ void Battle3::render(void)
 				// 우하 -> 좌하
 				LineMake(getMemDC(), _tile[i][j].x + WIDTH, _tile[i][j].y + HEIGHT,
 					_tile[i][j].x, _tile[i][j].y + HEIGHT);
-
-
-
 			}
 		}
 	}
+#pragma endregion
+
+#pragma region 타일온
+
+	if (_ui->getTileState())
+	{
+		moveTileStar(_pl->getPL()._indexX, _pl->getPL()._indexY);
+		for (int i = 0; i < V_NUM; i++)
+		{
+			for (int j = 0; j < H_NUM; j++)
+			{
+				if (_tile[j][i].moveTileColli)
+				{
+					IMAGEMANAGER->findImage("블루타일")->alphaRender(getMemDC(), _tile[j][i].x, _tile[j][i].y, 100);
+				}
+			}
+		}
+		for (int i = 0; i < _cantMoveList.size(); i++)
+		{
+			IMAGEMANAGER->findImage("노랑타일")->alphaRender(getMemDC(), _tile[_cantMoveList[i].idxX][_cantMoveList[i].idxY].x,
+				_tile[_cantMoveList[i].idxX][_cantMoveList[i].idxY].y, 100);
+		}
+
+		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+		{
+			SOUNDMANAGER->play("버튼", 1.0f);
+
+			// 플레이어이동
+			if (_ui->getTileState())
+			{
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						// 클릭에 따른 A* 활성화
+						if (_ptMouse.x > _tile[i][j].x && _ptMouse.x < _tile[i + 1][j].x &&
+							_ptMouse.y > _tile[i][j].y && _ptMouse.y < _tile[i][j + 1].y)
+						{
+							if (!_tile[i][j].mapColli)
+							{
+								Astar(_pl->getPL()._indexX, _pl->getPL()._indexY, i, j);
+								_pl->setPAstar(true);
+							}
+						}
+					}
+				}
+			}
+			_ui->setTileState(false);
+		}
+	}
+#pragma endregion
 
 	_ui->render(_pl);
 }
