@@ -217,7 +217,7 @@ void MainGame::ImageInit(void)
 	// ¿¸≈ı∏ 
 	IMAGEMANAGER->addImage("¿¸≈ı∏ ", BAT"BattleMap.bmp", 1600, 1800);
 	IMAGEMANAGER->addImage("¿¸≈ı∏ 2", BAT"BattleMap2.bmp", 2200, 2000);
-	IMAGEMANAGER->addImage("¿¸≈ı∏ 3", BAT"BattleMap3.bmp", 1500, 1080);
+	IMAGEMANAGER->addImage("¿¸≈ı∏ 3", BAT"BattleMap3.bmp", 2250, 1620);
 	IMAGEMANAGER->addImage("«»√ÊπË∞Ê", BAT"«»√ÊπË∞Ê.bmp", 1600, 1800);
 
 	// WorldMap

@@ -45,7 +45,7 @@ public:
 
 	bool isPlaySound(string keyName);
 	bool isPauseSound(string keyName);
-
+	  
 	void stopAllSound(void);
 
 

@@ -9,7 +9,7 @@
 // 가로 칸 개수
 #define H_NUM 50
 // 세로 칸 개수
-#define V_NUM 60
+#define V_NUM 40
 // 한 칸의 가로 길이
 #define WIDTH 40
 // 한 칸의 세로 길이
@@ -72,6 +72,7 @@ private:
 
 	//배경
 	BG _bg;
+	bool _gameStart;
 	
 	// UI
 	UI* _ui;
@@ -79,7 +80,10 @@ private:
 
 	// UNIT
 	Player* _pl;
-	Enemy2* _em;
+	Enemy2* _em[10];
+
+	// TURN
+	bitset<20> _turn;
 
 
 #pragma region Astar

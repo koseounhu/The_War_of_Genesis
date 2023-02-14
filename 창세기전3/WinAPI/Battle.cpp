@@ -1,6 +1,7 @@
 #include "Stdafx.h"
 #include "Battle.h"
 
+#define CAMSPEED 9.0f
 
 HRESULT Battle::init(void)
 {
@@ -310,7 +311,7 @@ void Battle::update(void)
 					_tile[_closeList[i].idxX][_closeList[i].idxY].unit = 0;
 				}
 				_ve->setVEastar(false);
-				_ve->setVEIdx(_closeList.back().idxX, _closeList.back().idxY);
+				_ve->setVEIdx(_closeList[6].idxX, _closeList[6].idxY);
 				_ve->setVCount(0, 0);
 				_ve->setVEState(0);
 				turn.set(0, 0);
@@ -394,27 +395,27 @@ void Battle::update(void)
 			// 좌우
 			if (_cam.x < _ve->getVE()._x)
 			{
-				_x -= 3;
-				_pl->setPX(_pl->getPL()._x - 3);
-				_ve->setVEX(_ve->getVE()._x - 3);
+				_x -= CAMSPEED;
+				_pl->setPX(_pl->getPL()._x - CAMSPEED);
+				_ve->setVEX(_ve->getVE()._x - CAMSPEED);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].x -= 3;
+						_tile[i][j].x -= CAMSPEED;
 					}
 				}
 			}
 			else if (_cam.x > _ve->getVE()._x)
 			{
-				_x += 3;
-				_pl->setPX(_pl->getPL()._x + 3);
-				_ve->setVEX(_ve->getVE()._x + 3);
+				_x += CAMSPEED;
+				_pl->setPX(_pl->getPL()._x + CAMSPEED);
+				_ve->setVEX(_ve->getVE()._x + CAMSPEED);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].x += 3;
+						_tile[i][j].x += CAMSPEED;
 					}
 				}
 			}
@@ -422,27 +423,27 @@ void Battle::update(void)
 			// 상하
 			if (_cam.y < _ve->getVE()._y)
 			{
-				_y -= 3;
-				_pl->setPY(_pl->getPL()._y - 3);
-				_ve->setVEY(_ve->getVE()._y - 3);
+				_y -= CAMSPEED;
+				_pl->setPY(_pl->getPL()._y - CAMSPEED);
+				_ve->setVEY(_ve->getVE()._y - CAMSPEED);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].y -= 3;
+						_tile[i][j].y -= CAMSPEED;
 					}
 				}
 			}
 			else if (_cam.y > _ve->getVE()._y)
 			{
-				_y += 3;
-				_pl->setPY(_pl->getPL()._y + 3);
-				_ve->setVEY(_ve->getVE()._y + 3);
+				_y += CAMSPEED;
+				_pl->setPY(_pl->getPL()._y + CAMSPEED);
+				_ve->setVEY(_ve->getVE()._y + CAMSPEED);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].y += 3;
+						_tile[i][j].y += CAMSPEED;
 					}
 				}
 			}
@@ -463,27 +464,27 @@ void Battle::update(void)
 			// 좌우
 			if (_cam.x < _pl->getPL()._x)
 			{
-				_x -= 3;
-				_pl->setPX(_pl->getPL()._x - 3);
-				_ve->setVEX(_ve->getVE()._x - 3);
+				_x -= CAMSPEED;
+				_pl->setPX(_pl->getPL()._x - CAMSPEED);
+				_ve->setVEX(_ve->getVE()._x - CAMSPEED);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].x -= 3;
+						_tile[i][j].x -= CAMSPEED;
 					}
 				}
 			}
 			else if (_cam.x > _pl->getPL()._x)
 			{
-				_x += 3;
-				_pl->setPX(_pl->getPL()._x + 3);
-				_ve->setVEX(_ve->getVE()._x + 3);
+				_x += CAMSPEED;
+				_pl->setPX(_pl->getPL()._x + CAMSPEED);
+				_ve->setVEX(_ve->getVE()._x + CAMSPEED);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].x += 3;
+						_tile[i][j].x += CAMSPEED;
 					}
 				}
 			}
@@ -491,27 +492,27 @@ void Battle::update(void)
 			// 상하
 			if (_cam.y < _pl->getPL()._y)
 			{
-				_y -= 3;
-				_pl->setPY(_pl->getPL()._y - 3);
-				_ve->setVEY(_ve->getVE()._y - 3);
+				_y -= CAMSPEED;
+				_pl->setPY(_pl->getPL()._y - CAMSPEED);
+				_ve->setVEY(_ve->getVE()._y - CAMSPEED);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].y -= 3;
+						_tile[i][j].y -= CAMSPEED;
 					}
 				}
 			}
 			else if (_cam.y > _pl->getPL()._y)
 			{
-				_y += 3;
-				_pl->setPY(_pl->getPL()._y + 3);
-				_ve->setVEY(_ve->getVE()._y + 3);
+				_y += CAMSPEED;
+				_pl->setPY(_pl->getPL()._y + CAMSPEED);
+				_ve->setVEY(_ve->getVE()._y + CAMSPEED);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].y += 3;
+						_tile[i][j].y += CAMSPEED;
 					}
 				}
 			}
@@ -531,8 +532,7 @@ void Battle::update(void)
 	if (turn[0])
 	{
 		// 플레이어 근처가 아니면 a스타 발동
-		if ((_ve->getVEIndexX() != _pl->getPL()._indexX - 2 || _ve->getVEIndexX() != _pl->getPL()._indexX + 2) &&
-			_ve->getVEIndexY() != _pl->getPL()._indexY)
+		if ((_ve->getVEIndexX() != _pl->getPL()._indexX - 2 || _ve->getVEIndexX() != _pl->getPL()._indexX + 2))
 		{
 			if (_tile[_pl->getPL()._indexX - 2][_pl->getPL()._indexY].unit == 0)
 				Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX - 2, _pl->getPL()._indexY);
@@ -571,9 +571,6 @@ void Battle::update(void)
 
 		turn.set(0, 0); //1번만 발동되야하므로 바로 끔
 	}
-
-
-
 
 	if(_ui->getTigerState()) _ti->update(_pl,_ve);
 	_ui->update();
