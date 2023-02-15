@@ -72,9 +72,10 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("적1", PL"적1.bmp", 240, 160, 3, 2, true, MAZEN);
 
 	// 적2
-	IMAGEMANAGER->addFrameImage("적2_공격", EM"E2_attack.bmp", 524, 392, 4, 4, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("적2_공격", EM"E2_attack.bmp", 1572, 392, 12, 4, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("적2_걷기", EM"E2_run.bmp", 456, 368, 6, 4, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("적2_대기", EM"E2_idle.bmp", 270, 280, 3, 4, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("적2_피격", EM"E2_atked.bmp", 1080, 300, 12, 4, true, MAZEN);
 
 
 #pragma endregion
@@ -219,6 +220,8 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addImage("전투맵2", BAT"BattleMap2.bmp", 2200, 2000);
 	IMAGEMANAGER->addImage("전투맵3", BAT"BattleMap3.bmp", 2250, 1620);
 	IMAGEMANAGER->addImage("픽충배경", BAT"픽충배경.bmp", 1600, 1800);
+	IMAGEMANAGER->addImage("배틀3기둥", BAT"Pillar.bmp", 120, 288,true, RGB(0,0,0));
+	IMAGEMANAGER->addImage("배틀3픽충배경", BAT"배틀3픽충배경.bmp", 2250, 1620);
 
 	// WorldMap
 	IMAGEMANAGER->addImage("월드맵배경", WM"WorldBG.bmp", 1446, 1074, true, MAZEN);
@@ -259,6 +262,10 @@ void MainGame::ImageInit(void)
 
 	// 2번 전투 배경
 	SOUNDMANAGER->addSound("2번전투배경", SOUND"2번전투배경.mp3", false, false);
+
+	// 3번 전투 배경
+	SOUNDMANAGER->addSound("3번전투배경", SOUND"3번전투배경.mp3", false, false);
+	SOUNDMANAGER->addSound("적2공격", SOUND"적2공격.mp3", false, false);
 
 
 

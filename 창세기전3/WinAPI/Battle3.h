@@ -58,10 +58,33 @@ struct TILE3
 
 #pragma endregion
 
+struct RenOrder
+{
+	int numY;
+	int numX;
+};
+
+struct OBJ
+{
+	int idxY;
+	int idxX;
+};
+
 struct BG
 {
 	int x;
 	int y;
+};
+
+struct CAM
+{
+	RECT rc;
+
+	int x;
+	int y;
+
+	bool center;
+	bool start;
 };
 
 class Battle3 : public GameNode
@@ -85,6 +108,14 @@ private:
 	// TURN
 	bitset<20> _turn;
 
+	// CAM
+	CAM _cam;
+
+	// Object
+	vector<OBJ> _obj;
+
+	// 렌더링 순서
+	vector<pair<int,int>> _renOrder;
 
 #pragma region Astar
 
@@ -101,13 +132,15 @@ private:
 	vector<moveTile3> _canMoveList;
 	vector<moveTile3> _cantMoveList;
 
+
+
 	// AStar 종료 체크
 	bool _aStarBreak;
 
 	// AStar 함수
 	void Astar(int startIdxX, int startIdxY, int endIdxX, int endIdxY);
 	
-	// 바닥타일
+	// 이동가능타일
 	void moveTileStar(int startIdxX, int startIdxY);
 
 #pragma endregion
@@ -118,7 +151,7 @@ public:
 	void update(void);
 	void render(void);
 
-
+	void renerOrder(void);
 
 
 	Battle3() {}

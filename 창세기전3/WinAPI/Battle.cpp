@@ -617,6 +617,7 @@ void Battle::render(void)
 
 	  // }
    //}
+
 #pragma region 마우스타일, 맵타일그리기
    // 마우스타일
    if (!_ui->getSkillState()&& _ui->getTileState())
@@ -635,6 +636,7 @@ void Battle::render(void)
 		   }
 	   }
    }
+
    // 각 구획마다 선 그리기
    if (KEYMANAGER->isToggleKey(VK_F10))
    {

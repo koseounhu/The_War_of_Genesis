@@ -35,6 +35,9 @@ public:
 
 	PL getPL(void) { return _pl; }
 
+	int getAtked(void) {return _atked;}
+
+
 	void setPX(int x) { _pl._x = x; }
 	void setPY(int y) { _pl._y = y; }
 	void setPState(int num) { _pl._state = num; }
@@ -45,6 +48,7 @@ public:
 	void setPcount(int numX, int numY) {_pl._xCount = numX;
 										_pl._yCount = numY;}
 	void setPSkill(int skillframe) { _pl.skill = skillframe; }
+	
 
 	Player() {}
 	~Player() {}

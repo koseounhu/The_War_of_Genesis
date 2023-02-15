@@ -103,7 +103,7 @@ private:
 	// AStar 함수
 	void Astar(int startIdxX, int startIdxY, int endIdxX, int endIdxY);
 
-	// 바닥타일
+	// 이동가능타일
 	void moveTileStar(int startIdxX, int startIdxY);
 
 	// 플레이어

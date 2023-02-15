@@ -23,15 +23,23 @@ void Player::update(void)
         _frame++;
         if (_frame > IMAGEMANAGER->findImage("»ì¶óµò_´ë±â")->getMaxFrameX())_frame = 0;
     }
+
+    // ÇÇ°İ
     if (_tick % 5 == 0&& _pl._state ==4)
     {
         _atked++;
-        if (_frame > IMAGEMANAGER->findImage("»ì¶óµò_ÇÇ°İÁÂ")->getMaxFrameX())_atked = 0;
+        if (_frame > IMAGEMANAGER->findImage("»ì¶óµò_ÇÇ°İÁÂ")->getMaxFrameX())
+        {
+            _atked = 0;
+             _pl._state = 0;
+        }
     }
     else if (_pl._state !=4)
     {
         _atked = 0;
     }
+
+    // °ø°İ
     if (_tick % 15 == 0 && _pl._state == 2)
     {
         _atk++;
@@ -92,7 +100,7 @@ void Player::render(void)
             IMAGEMANAGER->findImage("»ì¶óµò_ÇÇ°İÁÂ")->frameRender(getMemDC(), _pl._x - 30, _pl._y - 50, _atked, _pl._view);
         }
 
-        if (_pl._state == 4 && _atked >= 12) _pl._state = 0;
+     
         break;
 
     default:

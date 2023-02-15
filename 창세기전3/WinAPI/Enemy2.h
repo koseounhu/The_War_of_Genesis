@@ -18,6 +18,7 @@ struct ENEMY2
 	int atkFrame;
 	int walkFrame;
 	int idleFrame;
+	int atkedFrame;
 
 	int view;
 	int state;

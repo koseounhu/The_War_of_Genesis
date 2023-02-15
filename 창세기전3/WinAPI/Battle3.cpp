@@ -2,12 +2,14 @@
 #include "Battle3.h"
 
 #define CAMSPEED 5.0f
+#define TURNCAM 10.0f
+#define MOVESPEED 2.0f
 
 HRESULT Battle3::init(void)
 {
 	// 배경
-	_bg.x = -1220;
-	_bg.y = -480;
+	_bg.x = 0;
+	_bg.y = 0;
 	_mouseTileFrame = 0;
 
 	// UI
@@ -17,15 +19,48 @@ HRESULT Battle3::init(void)
 	// 턴
 	_turn.reset();
 
+	//카메라
+	_cam.x = WINSIZE_X / 2;
+	_cam.y = WINSIZE_Y / 2;
+	_cam.rc = RectMakeCenter(_cam.x, _cam.y, 10, 10);
+
+
+
 #pragma region 맵, A*
 	// 타일 배열 초기화
 	for (int j = 0; j < V_NUM; j++)
 	{
 		for (int i = 0; i < H_NUM; i++)
 		{
-			_tile[i][j] = { i * WIDTH-1220, j * HEIGHT-370, i, j, false, false, 0 };
+			_tile[i][j] = { i * WIDTH, j * HEIGHT, i, j, false, false, 0 };
 		}
 	}
+
+	// 배경 픽셀 이미지에 따라 타일 맵 충돌 여부 초기화
+	for (int j = 0; j < V_NUM; j++)
+	{
+		for (int i = 0; i < H_NUM; i++)
+		{
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage("배틀3픽충배경")->getMemDC(),
+				_tile[i][j].x, _tile[i][j].y);
+
+			int r = GetRValue(color);
+			int g = GetGValue(color);
+			int b = GetBValue(color);
+
+			if (r == 255 && g == 0 && b == 255)
+			{
+				_tile[i][j].unit = 2;
+			}
+		}
+	}
+
+	// Object
+	_obj.push_back({ 23,  19});
+	_obj.push_back({ 35,  19});
+	_obj.push_back({ 23,  40});
+	_obj.push_back({ 35,  40});
+
 
 #pragma endregion
 #pragma region UNIT
@@ -41,7 +76,7 @@ HRESULT Battle3::init(void)
 	{
 		_em[i] = new Enemy2;
 		_em[i]->init();
-		_em[i]->setIdx(40+i, 15+i);
+		_em[i]->setIdx(40, 15+i*2);
 		_em[i]->setX(_tile[_em[i]->getEm().indexX][_em[i]->getEm().indexY].x);
 		_em[i]->setY(_tile[_em[i]->getEm().indexX][_em[i]->getEm().indexY].y);
 		_em[i]->setState(0);
@@ -52,6 +87,7 @@ HRESULT Battle3::init(void)
 
 #pragma endregion
 
+	SOUNDMANAGER->play("3번전투배경", 0.3f);
 	return S_OK;
 }
 
@@ -69,6 +105,8 @@ void Battle3::release(void)
 
 void Battle3::update(void)
 {
+	// 사운드
+	if (!SOUNDMANAGER->isPlaySound("3번전투배경")) SOUNDMANAGER->play("3번전투배경", 0.3f);
 	// 전체 틱
 	_tick++;
 
@@ -95,6 +133,7 @@ void Battle3::update(void)
 				_tile[i][j].x -= CAMSPEED;
 			}
 		}
+		
 	}
 	if (_ptMouse.x < 50 && _bg.x < 0)
 	{
@@ -111,6 +150,7 @@ void Battle3::update(void)
 				_tile[i][j].x += CAMSPEED;
 			}
 		}
+		
 	}
 	if (_ptMouse.y > WINSIZE_Y - 50 && _bg.y > -650)
 	{
@@ -127,6 +167,7 @@ void Battle3::update(void)
 				_tile[i][j].y -= CAMSPEED;
 			}
 		}
+		
 	}
 	if (_ptMouse.y < 50 && _bg.y < -100)
 	{
@@ -143,12 +184,49 @@ void Battle3::update(void)
 				_tile[i][j].y += CAMSPEED;
 			}
 		}
+		
 	}
 
 	// 시작시 움직임
 	if (!_gameStart)
 	{
-		if (_bg.x < 0)
+		if (_bg.x > -1220 && _bg.y >= 0)
+		{
+			_bg.x -= CAMSPEED;
+			_pl->setPX(_pl->getPL()._x - CAMSPEED);
+			for (int i = 0; i < _countof(_em); i++)
+			{
+				_em[i]->setX(_em[i]->getEm().x - CAMSPEED);
+			}
+			for (int j = 0; j < V_NUM; j++)
+			{
+				for (int i = 0; i < H_NUM; i++)
+				{
+					_tile[i][j].x -= CAMSPEED;
+				}
+			}
+			
+		}
+
+		else if (_bg.y >-370)
+		{
+			_bg.y -= CAMSPEED;
+			_pl->setPY(_pl->getPL()._y - CAMSPEED);
+			for (int i = 0; i < _countof(_em); i++)
+			{
+				_em[i]->setY(_em[i]->getEm().y - CAMSPEED);
+			}
+			for (int j = 0; j < V_NUM; j++)
+			{
+				for (int i = 0; i < H_NUM; i++)
+				{
+					_tile[i][j].y -= CAMSPEED;
+				}
+			}
+
+			
+		}
+		else if (_bg.x < 0 && _bg.y < 0)
 		{
 			_bg.x += CAMSPEED;
 			_pl->setPX(_pl->getPL()._x + CAMSPEED);
@@ -163,7 +241,10 @@ void Battle3::update(void)
 					_tile[i][j].x += CAMSPEED;
 				}
 			}
+
+			
 		}
+
 		else _gameStart = true;
 	}
 #pragma endregion
@@ -179,25 +260,25 @@ void Battle3::update(void)
 			{
 				_pl->setPState(1);
 				_pl->setPView(1);
-				_pl->setPX(_pl->getPL()._x + 2);
+				_pl->setPX(_pl->getPL()._x + MOVESPEED);
 			}
 			else if (_pl->getPL()._indexX > _closeList[_pl->getPL()._xCount].idxX)
 			{
 				_pl->setPState(1);
 				_pl->setPView(0);
-				_pl->setPX(_pl->getPL()._x - 2);
+				_pl->setPX(_pl->getPL()._x - MOVESPEED);
 			}
 			else if (_pl->getPL()._indexY < _closeList[_pl->getPL()._yCount].idxY)
 			{
 				_pl->setPState(1);
 				_pl->setPView(2);
-				_pl->setPY(_pl->getPL()._y + 2);
+				_pl->setPY(_pl->getPL()._y + MOVESPEED);
 			}
 			else if (_pl->getPL()._indexY > _closeList[_pl->getPL()._yCount].idxY)
 			{
 				_pl->setPState(1);
 				_pl->setPView(3);
-				_pl->setPY(_pl->getPL()._y - 2);
+				_pl->setPY(_pl->getPL()._y - MOVESPEED);
 			}
 
 			if (_pl->getPL()._indexX == _closeList[_pl->getPL()._xCount].idxX &&
@@ -236,6 +317,7 @@ void Battle3::update(void)
 			}
 		}
 	}
+
 #pragma endregion 플레이어
 
 #pragma region 적
@@ -250,26 +332,26 @@ void Battle3::update(void)
 				{
 					_em[i]->setState(1);
 					_em[i]->setView(1);
-					_em[i]->setX(_em[i]->getEm().x + 1);
+					_em[i]->setX(_em[i]->getEm().x + MOVESPEED);
 				}
 				else if (_em[i]->getEm().indexX > _closeList[_em[i]->getEm().xCount].idxX)
 				{
 					_em[i]->setState(1);
 					_em[i]->setView(0);
-					_em[i]->setX(_em[i]->getEm().x - 1);
+					_em[i]->setX(_em[i]->getEm().x - MOVESPEED);
 				}
 				else if (_em[i]->getEm().indexY < _closeList[_em[i]->getEm().yCount].idxY)
 				{
 					_em[i]->setState(1);
 					_em[i]->setView(3);
-					_em[i]->setY(_em[i]->getEm().y + 1);
+					_em[i]->setY(_em[i]->getEm().y + MOVESPEED);
 
 				}
 				else if (_em[i]->getEm().indexY > _closeList[_em[i]->getEm().yCount].idxY)
 				{
 					_em[i]->setState(1);
 					_em[i]->setView(2);
-					_em[i]->setY(_em[i]->getEm().y - 1);
+					_em[i]->setY(_em[i]->getEm().y - MOVESPEED);
 				}
 
 				if (_em[i]->getEm().indexX == _closeList[_em[i]->getEm().xCount].idxX &&
@@ -342,72 +424,289 @@ void Battle3::update(void)
 
 #pragma endregion
 
+#pragma region 카메라
+	if (_cam.start)
+	{
+		
+		if (!_cam.center && !_turn[0])
+		{		// 좌우
+			if (_cam.x < _em[0]->getEm().x)
+			{
+				_bg.x -= CAMSPEED;
+				_pl->setPX(_pl->getPL()._x - CAMSPEED);
+				for (int i = 0; i < _countof(_em); i++)
+				{
+					_em[i]->setX(_em[i]->getEm().x - CAMSPEED);
+				}
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x -= CAMSPEED;
+					}
+				}
+			}
+			else if (_cam.x > _em[0]->getEm().x)
+			{
+				_bg.x += CAMSPEED;
+				_pl->setPX(_pl->getPL()._x + CAMSPEED);
+				for (int i = 0; i < _countof(_em); i++)
+				{
+					_em[i]->setX(_em[i]->getEm().x + CAMSPEED);
+				}
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x += CAMSPEED;
+					}
+				}
+			}
+
+			// 상하
+			if (_cam.y < _em[0]->getEm().y)
+			{
+				_bg.y -= CAMSPEED;
+				_pl->setPY(_pl->getPL()._y - CAMSPEED);
+				for (int i = 0; i < _countof(_em); i++)
+				{
+					_em[i]->setY(_em[i]->getEm().y - CAMSPEED);
+				}
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y -= CAMSPEED;
+					}
+				}
+			}
+			else if (_cam.y > _em[0]->getEm().y)
+			{
+				_bg.y += CAMSPEED;
+				_pl->setPY(_pl->getPL()._y + CAMSPEED);
+				for (int i = 0; i < _countof(_em); i++)
+				{
+					_em[i]->setY(_em[i]->getEm().y + CAMSPEED);
+				}
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y += CAMSPEED;
+					}
+				}
+			}
+
+			// 캐릭터와 충돌
+			RECT temp;
+			RECT ve = RectMakeCenter(_em[0]->getEm().x, _em[0]->getEm().y, 30, 30);
+			if (IntersectRect(&temp, &_cam.rc, &ve))
+			{
+				_cam.center = true;
+				_turn.set(0, 1);
+			}
+		}
+
+		if (_turn[10])
+		{
+			// 좌우
+			if (_cam.x < _pl->getPL()._x)
+			{
+				_bg.x -= CAMSPEED;
+				_pl->setPX(_pl->getPL()._x - CAMSPEED);
+				for (int i = 0; i < _countof(_em); i++)
+				{
+					_em[i]->setX(_em[i]->getEm().x - CAMSPEED);
+				}
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x -= CAMSPEED;
+					}
+				}
+			}
+			else if (_cam.x > _pl->getPL()._x)
+			{
+				_bg.x += CAMSPEED;
+				_pl->setPX(_pl->getPL()._x + CAMSPEED);
+				for (int i = 0; i < _countof(_em); i++)
+				{
+					_em[i]->setX(_em[i]->getEm().x + CAMSPEED);
+				}
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].x += CAMSPEED;
+					}
+				}
+			}
+
+			// 상하
+			if (_cam.y < _pl->getPL()._y)
+			{
+				_bg.y -= CAMSPEED;
+				_pl->setPY(_pl->getPL()._y - CAMSPEED);
+				for (int i = 0; i < _countof(_em); i++)
+				{
+					_em[i]->setY(_em[i]->getEm().y - CAMSPEED);
+				}
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y -= CAMSPEED;
+					}
+				}
+			}
+			else if (_cam.y > _pl->getPL()._y)
+			{
+				_bg.y += CAMSPEED;
+				_pl->setPY(_pl->getPL()._y + CAMSPEED);
+				for (int i = 0; i < _countof(_em); i++)
+				{
+					_em[i]->setY(_em[i]->getEm().y + CAMSPEED);
+				}
+				for (int j = 0; j < V_NUM; j++)
+				{
+					for (int i = 0; i < H_NUM; i++)
+					{
+						_tile[i][j].y += CAMSPEED;
+					}
+				}
+			}
+
+			// 캐릭터와 충돌
+			RECT temp;
+			RECT pl = RectMakeCenter(_pl->getPL()._x, _pl->getPL()._y, 30, 30);
+			if (IntersectRect(&temp, &_cam.rc, &pl))
+			{
+				_cam.start = false;
+				_cam.center = false;
+				_turn.reset();
+			}
+		}
+
+
+		
+	}
+
+
+#pragma endregion 카메라
 #pragma region 턴
 
 	// 턴 넘기기( 플레이어 -> 적 )
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
-		_turn.set(0, 1);
+		if (!_cam.start)_cam.start = true;
+		else if (_cam.start)_cam.start = false;
 	}
 	
 	for (int i = 0; i < _countof(_em); i++)
 	{
+		// 공격중
 		if (_em[i]->getEm().state == 2)
 		{
-			_turn.set(i, 0);
-			_turn.set(i + 1, 1);
+			if (_em[i]->getEm().atkFrame>=11)
+			{
+				_pl->setPState(0);
+				_turn.set(i, 0);
+				_turn.set(i + 1, 1);
+			}
 			break;
 		}
+
+		// 대기중
 		if (_turn[i] && !_em[i]->getEm().astar)
 		{
-			// 플레이어 좌우가 비었다면
-			if (_tile[_pl->getPL()._indexX - 2][_pl->getPL()._indexY].unit == 0 ||
-				_tile[_pl->getPL()._indexX + 2][_pl->getPL()._indexY].unit == 0)
+			// 공격가능 위치에 갔으면 공격
+			if (((_em[i]->getEm().indexX == _pl->getPL()._indexX - 2 || _em[i]->getEm().indexX == _pl->getPL()._indexX + 2) && _em[i]->getEm().indexY == _pl->getPL()._indexY) ||
+				(_em[i]->getEm().indexX == _pl->getPL()._indexX && (_em[i]->getEm().indexY == _pl->getPL()._indexY - 2 || _em[i]->getEm().indexY == _pl->getPL()._indexY + 2)))
+			{
+				if (_em[i]->getEm().indexY == _pl->getPL()._indexY)
+				{
+					_pl->setPState(4);
+					_em[i]->setState(2);
+					int sta = _pl->getPL()._indexX - _em[i]->getEm().indexX;
+					switch (sta)
+					{
+					case 2:
+						_em[i]->setView(1);
+						_pl->setPView(0);
+						break;
+
+					case -2:
+						_em[i]->setView(0);
+						_pl->setPView(1);
+						break;
+
+					default:
+						break;
+					}
+					break;
+				}
+				if (_em[i]->getEm().indexX == _pl->getPL()._indexX)
+				{
+					_pl->setPState(4);
+					_em[i]->setState(2);
+					int sta = _pl->getPL()._indexY - _em[i]->getEm().indexY;
+					switch (sta)
+					{
+					case 2:
+						_em[i]->setView(3);
+						_pl->setPView(2);
+						break;
+
+					case -2:
+						_em[i]->setView(2);
+						_pl->setPView(3);
+						break;
+
+					default:
+						break;
+					}
+					break;
+				}
+			}
+			
+			// 플레이어 주변이 비었으면
+			else if (_tile[_pl->getPL()._indexX - 2][_pl->getPL()._indexY].unit == 0 ||
+				_tile[_pl->getPL()._indexX + 2][_pl->getPL()._indexY].unit == 0||
+				_tile[_pl->getPL()._indexX ][_pl->getPL()._indexY-2].unit == 0 ||
+				_tile[_pl->getPL()._indexX ][_pl->getPL()._indexY+2].unit == 0)
 			{
 				// 플레이어 근처가 아니면 a스타 발동
-				if ((_em[i]->getEm().indexX != _pl->getPL()._indexX - 2 || _em[i]->getEm().indexX != _pl->getPL()._indexX + 2))
+				if ((_em[i]->getEm().indexX != _pl->getPL()._indexX - 2 || _em[i]->getEm().indexX != _pl->getPL()._indexX + 2) &&
+					(_em[i]->getEm().indexY != _pl->getPL()._indexY - 2 || _em[i]->getEm().indexY != _pl->getPL()._indexY + 2))
 				{
 					if (_tile[_pl->getPL()._indexX - 2][_pl->getPL()._indexY].unit == 0)
 						Astar(_em[i]->getEm().indexX, _em[i]->getEm().indexY, _pl->getPL()._indexX - 2, _pl->getPL()._indexY);
-					else
+						
+					if (_tile[_pl->getPL()._indexX + 2][_pl->getPL()._indexY].unit == 0)
 						Astar(_em[i]->getEm().indexX, _em[i]->getEm().indexY, _pl->getPL()._indexX + 2, _pl->getPL()._indexY);
+
+					if (_tile[_pl->getPL()._indexX][_pl->getPL()._indexY-2].unit == 0)
+						Astar(_em[i]->getEm().indexX, _em[i]->getEm().indexY, _pl->getPL()._indexX, _pl->getPL()._indexY-2);
+
+					if (_tile[_pl->getPL()._indexX][_pl->getPL()._indexY+2].unit == 0)
+						Astar(_em[i]->getEm().indexX, _em[i]->getEm().indexY, _pl->getPL()._indexX, _pl->getPL()._indexY+2);
 
 					// 에이스타 시작
 					if (_closeList.size() > 0)	_em[i]->setAstar(true);
 				}
 			}
-			// 플레이어 양옆쪽이면 공격
-			else if ((_em[i]->getEm().indexX == _pl->getPL()._indexX - 2 || _em[i]->getEm().indexX == _pl->getPL()._indexX + 2) &&
-				_em[i]->getEm().indexY == _pl->getPL()._indexY)
-			{
-				_pl->setPState(4);
-				_em[i]->setState(2);
-				int sta = _pl->getPL()._indexX - _em[i]->getEm().indexX;
-				switch (sta)
-				{
-				case 2:
-					_em[i]->setView(1);
-					_pl->setPView(0);
-					break;
 
-				case -2:
-					_em[i]->setView(0);
-					_pl->setPView(1);
-					break;
-
-				default:
-					break;
-				}
-				_turn.set(i, 0);
-				break;
-			}
+			// 아무것도 해당안됨
 			else
 			{
 				_turn.set(i, 0);
 				_turn.set(i+1, 1);
 			}
+
 			break;// 발동시키고 탈출
 		}// 턴
+
 	}// for문
 
 	
@@ -448,6 +747,7 @@ void Battle3::render(void)
 {
 	// 배경
 	IMAGEMANAGER->findImage("전투맵3")->render(getMemDC(),_bg.x,_bg.y);
+
 #pragma region 타일온
 
 	if (_ui->getTileState())
@@ -497,23 +797,6 @@ void Battle3::render(void)
 		}
 	}
 #pragma endregion
-	// 임시 이동타일 보이기
-	if (_closeList.size() > 0)
-	{
-		for (int i = 0; i < _closeList.size(); i++)
-		{
-			DrawRectMake(getMemDC(), RectMake(_tile[_closeList[i].idxX][_closeList[i].idxY].x,
-				_tile[_closeList[i].idxX][_closeList[i].idxY].y, 40, 32));
-		}
-	}
-
-	// UNIT
-	_pl->render();
-	for (int i = 0; i < _countof(_em); i++)
-	{
-		_em[i]->render();
-	}
-
 #pragma region 마우스타일, 맵타일그리기
 	// 마우스타일
 	for (int j = 0; j < H_NUM; j++)
@@ -529,7 +812,7 @@ void Battle3::render(void)
 
 		}
 	}
-	
+
 	// 각 구획마다 선 그리기
 	if (KEYMANAGER->isToggleKey(VK_F10))
 	{
@@ -554,19 +837,145 @@ void Battle3::render(void)
 	}
 #pragma endregion
 
+	// 임시 이동타일 보이기
+	if (_closeList.size() > 0)
+	{
+		for (int i = 0; i < _closeList.size(); i++)
+		{
+			DrawRectMake(getMemDC(), RectMake(_tile[_closeList[i].idxX][_closeList[i].idxY].x,
+				_tile[_closeList[i].idxX][_closeList[i].idxY].y, 40, 32));
+		}
+	}
+
+	//  플레이어 일반공격
+	if (_ui->getAtkTile())
+	{
+		IMAGEMANAGER->findImage("오랑타일")->alphaRender(getMemDC(), _pl->getPL()._x - 80, _pl->getPL()._y, 100);
+		IMAGEMANAGER->findImage("오랑타일")->alphaRender(getMemDC(), _pl->getPL()._x + 80, _pl->getPL()._y, 100);
+		IMAGEMANAGER->findImage("오랑타일")->alphaRender(getMemDC(), _pl->getPL()._x, _pl->getPL()._y - 64, 100);
+		IMAGEMANAGER->findImage("오랑타일")->alphaRender(getMemDC(), _pl->getPL()._x, _pl->getPL()._y + 64, 100);
+		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+		{
+			SOUNDMANAGER->play("버튼", 1.0f);
+			_pl->setPState(2);
+
+			for (int i = 0; i < _countof(_em); i++)
+			{
+				if (((_em[i]->getEm().indexX == _pl->getPL()._indexX - 2 || _em[i]->getEm().indexX == _pl->getPL()._indexX + 2)&& _em[i]->getEm().indexY == _pl->getPL()._indexY)||
+					(_em[i]->getEm().indexX == _pl->getPL()._indexX && (_em[i]->getEm().indexY == _pl->getPL()._indexY - 2 || _em[i]->getEm().indexY == _pl->getPL()._indexY + 2)))
+				{
+					int view = _pl->getPL()._indexX - _em[i]->getEm().indexX;
+					int updown = _pl->getPL()._indexY - _em[i]->getEm().indexY;
+					_pl->setPState(2);
+					_em[i]->setState(3);
+
+					switch (view)
+					{
+						
+
+					case 2:
+						_pl->setPView(0);		// 좌
+						_em[i]->setView(1);
+						break;
+
+						
+					case -2:
+						_pl->setPView(1);		// 우
+						_em[i]->setView(0);
+						break;
+					
+					case 0:
+						// 상
+						if (updown == 2) 
+						{
+							_pl->setPView(3);	// 상
+							_em[i]->setView(3);
+						}
+						// 하
+						else if (updown == -2)
+						{
+							_pl->setPView(2);	// 하
+							_em[i]->setView(2);
+						}
+
+						break;
+
+					default:
+						break;
+					}
+				}
+			}
+
+			_ui->setAtkTile(false);
+		}
 
 
+	}
+
+
+	// 순서에 따른 렌더링
+	renerOrder();
 
 
 	IMAGEMANAGER->findImage("MapInfo")->render(getMemDC(), 790, 5);
-	FONTMANAGER->drawText(getMemDC(), 880, 20, 15, 255, 255, 255, "굴림", false, "술탄궁내부");
+	FONTMANAGER->drawText(getMemDC(), 880, 20, 15, 255, 255, 255, "굴림", false, "술탄궁 내부");
 	FONTMANAGER->drawText(getMemDC(), 950, 45, 15, 255, 255, 255, "굴림", true, "평  지");
 	FONTMANAGER->drawInt(getMemDC(), 940, 85, 15, 255, 255, 255, "굴림", false, (char*)GOLD->getGold());
 	FONTMANAGER->drawText(getMemDC(), 1000, 85, 15, 255, 255, 255, "굴림", false, "eld");
 	_ui->render(_pl);
 }
 
+void Battle3::renerOrder(void)
+{
+	// 초기화
+	_renOrder.clear();
 
+	// 플레이어 인덱스 추가
+	_renOrder.push_back(make_pair( _pl->getPL()._indexY, _pl->getPL()._indexX ));
+	
+	// 기둥 추가
+	for (int i = 0; i <_obj.size(); i++)
+	{
+		_renOrder.push_back(make_pair(_obj[i].idxY, _obj[i].idxX));
+	}
+
+	// 적 인덱스 추가
+	for (int i = 0; i < _countof(_em); i++)
+	{
+		_renOrder.push_back(make_pair(_em[i]->getEm().indexY,_em[i]->getEm().indexX ));
+	}
+
+	// 정렬 
+	sort(_renOrder.begin(), _renOrder.end());
+
+	// 렌더
+	for (int i = 0; i < _renOrder.size(); i++)
+	{
+		
+		if (_renOrder[i].first == _pl->getPL()._indexY && _renOrder[i].second == _pl->getPL()._indexX)
+		{
+			_pl->render();
+		}
+
+		for (int j = 0; j < 10; j++)
+		{
+			if (_renOrder[i].first == _em[j]->getEm().indexY && _renOrder[i].second == _em[j]->getEm().indexX)
+			{
+				_em[j]->render();
+			}
+		}
+
+		for (int j = 0; j < _obj.size(); j++)
+		{
+			if (_renOrder[i].first == _obj[j].idxY && _renOrder[i].second == _obj[j].idxX)
+			{
+				IMAGEMANAGER->findImage("배틀3기둥")->alphaRender(getMemDC(), _tile[_obj[j].idxX][_obj[j].idxY].x-40, _tile[_obj[j].idxX][_obj[j].idxY].y - 220,105);
+			}
+		}
+	}
+
+
+}
 void Battle3::Astar(int startIdxX, int startIdxY, int endIdxX, int endIdxY)
 {
 	// 이동 시 거리 값 초기화
