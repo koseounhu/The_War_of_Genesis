@@ -1,7 +1,8 @@
 #include "Stdafx.h"
 #include "Battle.h"
 
-#define CAMSPEED 9.0f
+#define CAMSPEED 7.0f
+#define MOVESPEED 2.0f
 
 HRESULT Battle::init(void)
 {
@@ -94,27 +95,27 @@ void Battle::update(void)
 	{
 		if (_x > -250)
 		{
-			_x -= 3;
-			_pl->setPX(_pl->getPL()._x - 3);
-			_ve->setVEX(_ve->getVE()._x - 3);
+			_x -= CAMSPEED;
+			_pl->setPX(_pl->getPL()._x - CAMSPEED);
+			_ve->setVEX(_ve->getVE()._x - CAMSPEED);
 			for (int j = 0; j < V_NUM; j++)
 			{
 				for (int i = 0; i < H_NUM; i++)
 				{
-					_tile[i][j].x -= 3;
+					_tile[i][j].x -= CAMSPEED;
 				}
 			}
 		}
 		else if (_x < -250 && _y > -900)
 		{
-			_y -= 3;
-			_pl->setPY(_pl->getPL()._y - 3);
-			_ve->setVEY(_ve->getVE()._y - 3);
+			_y -= CAMSPEED;
+			_pl->setPY(_pl->getPL()._y - CAMSPEED);
+			_ve->setVEY(_ve->getVE()._y - CAMSPEED);
 			for (int j = 0; j < V_NUM; j++)
 			{
 				for (int i = 0; i < H_NUM; i++)
 				{
-					_tile[i][j].y -= 3;
+					_tile[i][j].y -= CAMSPEED;
 				}
 			}
 		}
@@ -132,14 +133,14 @@ void Battle::update(void)
 		{
 			if (_x > -570)
 			{
-				_x -= 2;
-				_pl->setPX(_pl->getPL()._x - 2);
-				_ve->setVEX(_ve->getVE()._x - 2);
+				_x -= CAMSPEED;
+				_pl->setPX(_pl->getPL()._x - CAMSPEED);
+				_ve->setVEX(_ve->getVE()._x - CAMSPEED);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].x -= 2;
+						_tile[i][j].x -= CAMSPEED;
 					}
 				}
 			}
@@ -149,14 +150,14 @@ void Battle::update(void)
 		{
 			if (_y < 0)
 			{
-				_y += 2;
-				_pl->setPY(_pl->getPL()._y + 2);
-				_ve->setVEY(_ve->getVE()._y + 2);
+				_y += CAMSPEED;
+				_pl->setPY(_pl->getPL()._y + CAMSPEED);
+				_ve->setVEY(_ve->getVE()._y + CAMSPEED);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].y += 2;
+						_tile[i][j].y += CAMSPEED;
 					}
 				}
 			}
@@ -165,14 +166,14 @@ void Battle::update(void)
 		{
 			if (_x < 0)
 			{
-				_x += 2;
-				_pl->setPX(_pl->getPL()._x + 2);
-				_ve->setVEX(_ve->getVE()._x + 2);
+				_x += CAMSPEED;
+				_pl->setPX(_pl->getPL()._x + CAMSPEED);
+				_ve->setVEX(_ve->getVE()._x + CAMSPEED);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].x += 2;
+						_tile[i][j].x += CAMSPEED;
 					}
 				}
 			}
@@ -181,14 +182,14 @@ void Battle::update(void)
 		{
 			if (_y > -1030)
 			{
-				_y -= 2;
-				_pl->setPY(_pl->getPL()._y - 2);
-				_ve->setVEY(_ve->getVE()._y - 2);
+				_y -= CAMSPEED;
+				_pl->setPY(_pl->getPL()._y - CAMSPEED);
+				_ve->setVEY(_ve->getVE()._y - CAMSPEED);
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].y -= 2;
+						_tile[i][j].y -= CAMSPEED;
 					}
 				}
 			}
@@ -205,25 +206,25 @@ void Battle::update(void)
 		{
 			_pl->setPState(1);
 			_pl->setPView(1);
-			_pl->setPX(_pl->getPL()._x + 1);
+			_pl->setPX(_pl->getPL()._x + MOVESPEED);
 		}
 		else if (_pl->getPL()._indexX > _closeList[_pl->getPL()._xCount].idxX)
 		{
 			_pl->setPState(1);
 			_pl->setPView(0);
-			_pl->setPX(_pl->getPL()._x - 1);
+			_pl->setPX(_pl->getPL()._x - MOVESPEED);
 		}
 		else if (_pl->getPL()._indexY < _closeList[_pl->getPL()._yCount].idxY)
 		{
 			_pl->setPState(1);
 			_pl->setPView(2);
-			_pl->setPY(_pl->getPL()._y + 1);
+			_pl->setPY(_pl->getPL()._y + MOVESPEED);
 		}
 		else if (_pl->getPL()._indexY > _closeList[_pl->getPL()._yCount].idxY)
 		{
 			_pl->setPState(1);
 			_pl->setPView(3);
-			_pl->setPY(_pl->getPL()._y - 1);
+			_pl->setPY(_pl->getPL()._y - MOVESPEED);
 		}
 
 		if (_pl->getPL()._indexX == _closeList[_pl->getPL()._xCount].idxX &&
@@ -272,25 +273,25 @@ void Battle::update(void)
 		{
 			_ve->setVEState(1);
 			_ve->setVEView(1);
-			_ve->setVEX(_ve->getVE()._x + 1);
+			_ve->setVEX(_ve->getVE()._x + MOVESPEED);
 		}
 		else if (_ve->getVE()._indexX > _closeList[_ve->getVE()._xCount].idxX)
 		{
 			_ve->setVEState(1);
 			_ve->setVEView(0);
-			_ve->setVEX(_ve->getVE()._x - 1);
+			_ve->setVEX(_ve->getVE()._x - MOVESPEED);
 		}
 		else if (_ve->getVE()._indexY < _closeList[_ve->getVE()._yCount].idxY)
 		{
 			_ve->setVEState(1);
 			_ve->setVEView(2);
-			_ve->setVEY(_ve->getVE()._y + 1);
+			_ve->setVEY(_ve->getVE()._y + MOVESPEED);
 		}
 		else if (_ve->getVE()._indexY > _closeList[_ve->getVE()._yCount].idxY)
 		{
 			_ve->setVEState(1);
 			_ve->setVEView(3);
-			_ve->setVEY(_ve->getVE()._y - 1);
+			_ve->setVEY(_ve->getVE()._y - MOVESPEED);
 		}
 
 		if (_ve->getVE()._indexX == _closeList[_ve->getVE()._xCount].idxX &&
@@ -573,7 +574,12 @@ void Battle::update(void)
 		turn.set(0, 0); //1번만 발동되야하므로 바로 끔
 	}
 
-	if(_ui->getTigerState()) _ti->update(_pl,_ve);
+	if (_ui->getTigerState())
+	{
+		_ti->update(_pl, _ve);
+		if(_ti->getStep()[2])
+		_ve->setVEState(3);
+	}
 	_ui->update();
 }
 

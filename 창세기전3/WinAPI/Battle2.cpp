@@ -1,6 +1,8 @@
 #include "Stdafx.h"
 #include "Battle2.h"
 
+#define CAMSPEED 5.0f
+
 
 HRESULT Battle2::init(void)
 {
@@ -65,26 +67,26 @@ void Battle2::update(void)
 	{
 		if (_x > -450)
 		{
-			_x -= 3;
-			_pl->setPX(_pl->getPL()._x - 3);
+			_x -= CAMSPEED;
+			_pl->setPX(_pl->getPL()._x - CAMSPEED);
 			for (int j = 0; j < V_NUM; j++)
 			{
 				for (int i = 0; i < H_NUM; i++)
 				{
-					_tile[i][j].x -= 3;
+					_tile[i][j].x -= CAMSPEED;
 				}
 			}
 		}
 		else if (_x <= -450 && _y > -700)
 		{
-			_y -= 3;
-			_pl->setPY(_pl->getPL()._y - 3);
+			_y -= CAMSPEED;
+			_pl->setPY(_pl->getPL()._y - CAMSPEED);
 
 			for (int j = 0; j < V_NUM; j++)
 			{
 				for (int i = 0; i < H_NUM; i++)
 				{
-					_tile[i][j].y -= 3;
+					_tile[i][j].y -= CAMSPEED;
 				}
 			}
 		}
@@ -100,14 +102,14 @@ void Battle2::update(void)
 		{
 			if (_x > -800)
 			{
-				_x -= 2;
-				_pl->setPX(_pl->getPL()._x - 2);
+				_x -= CAMSPEED;
+				_pl->setPX(_pl->getPL()._x - CAMSPEED);
 
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].x -= 2;
+						_tile[i][j].x -= CAMSPEED;
 					}
 				}
 			}
@@ -117,14 +119,14 @@ void Battle2::update(void)
 		{
 			if (_y < 0)
 			{
-				_y += 2;
-				_pl->setPY(_pl->getPL()._y + 2);
+				_y += CAMSPEED;
+				_pl->setPY(_pl->getPL()._y + CAMSPEED);
 
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].y += 2;
+						_tile[i][j].y += CAMSPEED;
 					}
 				}
 			}
@@ -133,14 +135,14 @@ void Battle2::update(void)
 		{
 			if (_x < 0)
 			{
-				_x += 2;
-				_pl->setPX(_pl->getPL()._x + 2);
+				_x += CAMSPEED;
+				_pl->setPX(_pl->getPL()._x + CAMSPEED);
 
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].x += 2;
+						_tile[i][j].x += CAMSPEED;
 					}
 				}
 			}
@@ -149,14 +151,14 @@ void Battle2::update(void)
 		{
 			if (_y > -1200)
 			{
-				_y -= 2;
-				_pl->setPY(_pl->getPL()._y - 2);
+				_y -= CAMSPEED;
+				_pl->setPY(_pl->getPL()._y - CAMSPEED);
 
 				for (int j = 0; j < V_NUM; j++)
 				{
 					for (int i = 0; i < H_NUM; i++)
 					{
-						_tile[i][j].y -= 2;
+						_tile[i][j].y -= CAMSPEED;
 					}
 				}
 			}

@@ -30,7 +30,7 @@ HRESULT firstCutScene::init(void)
 	_BGalpha = 0;
 
 	// 다이얼로그 카운트
-	_diaCount = 17;
+	_diaCount = 0;
 
 	// 큰이미지
 	_bigImageAlpha2 = _bigImageAlpha = 0;
