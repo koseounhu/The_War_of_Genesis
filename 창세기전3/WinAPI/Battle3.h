@@ -3,6 +3,7 @@
 #include "Enemy2.h"
 #include "Player.h"
 #include "UI.h"
+#include "Dragon.h"
 
 #pragma region ∏ , A*
 
@@ -83,7 +84,7 @@ struct CAM
 	int x;
 	int y;
 
-	bool center;
+	bitset<11> center;
 	bool start;
 };
 
@@ -104,9 +105,11 @@ private:
 	// UNIT
 	Player* _pl;
 	Enemy2* _em[10];
+	Dragon* _da;
 
 	// TURN
 	bitset<20> _turn;
+	int _turnFrame;
 
 	// CAM
 	CAM _cam;
@@ -116,6 +119,13 @@ private:
 
 	// ∑ª¥ı∏µ º¯º≠
 	vector<pair<int,int>> _renOrder;
+
+	// ∏∂∑Ê±§æ∆≈∫ ∫§≈Õø° ¿˚ªÁ¿Ã¡Ó∏∏≈≠ √÷√ 1»∏ ≥÷±‚¿ß«— ∆«¡§
+	bool _dragon;
+	// ∏∂∑Ê±§æ∆≈∫ ƒ´∏ﬁ∂Û Ω¶¿Ã≈∑
+	bool _shaking;
+
+	int _end;
 
 #pragma region Astar
 

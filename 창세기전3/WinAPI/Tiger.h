@@ -56,6 +56,7 @@ private:
 
 	int _tick;
 
+	bool _atkSound;
 
 
 public:

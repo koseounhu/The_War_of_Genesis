@@ -105,23 +105,27 @@ void UI::render(Player* _pl)
 		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 35, 1, 0);
 		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 60, 0, 0);
 		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 85, 0, 0);
+		IMAGEMANAGER->findImage("¾îºô¸®Æ¼¹öÆ°")->frameRender(getMemDC(), _abilityA.left + 10, _abilityA.top + 110, 0, 0);
 
 
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 10, 15, 255, 255, 255, "±¼¸²", true, "ÃµÁöÆÄ¿­¹«");
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 35, 15, 255, 255, 255, "±¼¸²", true, "Ç÷¶û¸¶È¥");
-		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 60, 15, 255, 255, 255, "±¼¸²", true, "¿¬");
-		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 85, 15, 255, 255, 255, "±¼¸²", true, "ÆÄ");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 60, 15, 255, 255, 255, "±¼¸²", true, "¸¶·æ±¤¾ÆÅº");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 85, 15, 255, 255, 255, "±¼¸²", true, "¿¬");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 30, _abilityA.top + 110, 15, 255, 255, 255, "±¼¸²", true, "ÆÄ");
 
 
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 10, 15, 255, 0, 0, "±¼¸²", true, "LV5");
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 35, 15, 255, 0, 0, "±¼¸²", true, "LV3");
-		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 60, 15, 255, 0, 0, "±¼¸²", true, "LV1");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 60, 15, 255, 0, 0, "±¼¸²", true, "LV3");
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 85, 15, 255, 0, 0, "±¼¸²", true, "LV1");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 130, _abilityA.top + 110, 15, 255, 0, 0, "±¼¸²", true, "LV1");
 
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 10, 15, 255, 215, 0, "±¼¸²", true, "200");
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 35, 15, 255, 215, 0, "±¼¸²", true, "150");
-		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 60, 15, 255, 215, 0, "±¼¸²", true, "50");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 60, 15, 255, 215, 0, "±¼¸²", true, "100");
 		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 85, 15, 255, 215, 0, "±¼¸²", true, "50");
+		FONTMANAGER->drawText(getMemDC(), _abilityA.left + 170, _abilityA.top + 110, 15, 255, 215, 0, "±¼¸²", true, "50");
 
 		RECT _abilityB;
 		_abilityB = RectMake(_abilityA.left + 5, _abilityA.top + 10, 150, 20);
@@ -139,6 +143,15 @@ void UI::render(Player* _pl)
 			SOUNDMANAGER->play("¹öÆ°", 1.0f);
 			_ui = _ability = false;
 			_tigerOn = true;
+		}
+
+		RECT _abilityD;
+		_abilityD = RectMake(_abilityA.left + 5, _abilityA.top + 60, 150, 20);
+		if (PtInRect(&_abilityD, _ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+		{
+			SOUNDMANAGER->play("¹öÆ°", 1.0f);
+			_ui = _ability = false;
+			_dragon = true;
 		}
 	}
 #pragma endregion

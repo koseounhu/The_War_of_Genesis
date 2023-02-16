@@ -28,7 +28,7 @@ void Player::update(void)
     if (_tick % 5 == 0&& _pl._state ==4)
     {
         _atked++;
-        if (_frame > IMAGEMANAGER->findImage("»ì¶óµò_ÇÇ°ÝÁÂ")->getMaxFrameX())
+        if (_atked > IMAGEMANAGER->findImage("»ì¶óµò_ÇÇ°ÝÁÂ")->getMaxFrameX())
         {
             _atked = 0;
              _pl._state = 0;

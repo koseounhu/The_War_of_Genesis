@@ -30,6 +30,8 @@ class Enemy2 : public GameNode
 {
 private:
 	int _tick;
+	int _alpha;
+	bool _die;
 
 	ENEMY2 _em;
 
@@ -42,7 +44,7 @@ public:
 	void render(void);
 
 	ENEMY2 getEm(void) { return _em; }
-
+	bool getDie(void) { return _die; }
 
 	void setX(int x) { _em.x = x; }
 	void setY(int y) { _em.y = y; }

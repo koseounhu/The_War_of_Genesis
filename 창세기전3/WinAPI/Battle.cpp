@@ -523,6 +523,7 @@ void Battle::update(void)
 			if (IntersectRect(&temp, &_cam.rc, &pl))
 			{
 				turn.set(1, 0);
+				turn.set(0, 0);
 				_cam.start = false;
 			}
 		}
@@ -532,7 +533,7 @@ void Battle::update(void)
 	if (turn[0])
 	{
 		// 플레이어 근처가 아니면 a스타 발동
-		if ((_ve->getVEIndexX() != _pl->getPL()._indexX - 2 || _ve->getVEIndexX() != _pl->getPL()._indexX + 2))
+		if (_ve->getVEIndexX() != _pl->getPL()._indexX - 2 && _ve->getVEIndexX() != _pl->getPL()._indexX + 2)
 		{
 			if (_tile[_pl->getPL()._indexX - 2][_pl->getPL()._indexY].unit == 0)
 				Astar(_ve->getVE()._indexX, _ve->getVE()._indexY, _pl->getPL()._indexX - 2, _pl->getPL()._indexY);
@@ -604,19 +605,6 @@ void Battle::render(void)
 	   if (_veFrame > IMAGEMANAGER->findImage("살라딘턴")->getMaxFrameX())_veFrame = 0;
 	   IMAGEMANAGER->findImage("살라딘턴")->frameRender(getMemDC(),_pl->getPL()._x+17,_pl->getPL()._y-70, _veFrame, 0);
    }
-
-
-
-   //// 임시 이동타일 보이기
-   //if (_closeList.size() > 0)
-   //{
-	  // for (int i = 0; i < _closeList.size(); i++)
-	  // {
-		 //  DrawRectMake(getMemDC(), RectMake(_tile[_closeList[i].idxX][_closeList[i].idxY].x,
-			//   _tile[_closeList[i].idxX][_closeList[i].idxY].y, 40, 32));
-
-	  // }
-   //}
 
 #pragma region 마우스타일, 맵타일그리기
    // 마우스타일

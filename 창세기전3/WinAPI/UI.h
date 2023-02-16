@@ -8,6 +8,7 @@ class UI : public GameNode
 private:
 	bool _skillOn;
 	bool _tigerOn;
+	bool _dragon;
 	bool _ui;
 	bool _ability;
 	bool _tileOn;
@@ -28,7 +29,10 @@ public:
 	bool getAbilityState(void) { return _ability; }
 	bool getTileState(void) { return _tileOn; }
 	bool getTigerState(void) { return _tigerOn; }
+	bool getDragonState(void) { return _dragon; }
 
+
+	void setDragonState(bool dragon) { _dragon = dragon; }
 	void setTigerState(bool tiger) { _tigerOn = tiger; }
 	void setSkillState(bool skill) { _skillOn = skill; }
 	void setUIState(bool ui) { _ui = ui; }

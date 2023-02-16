@@ -30,7 +30,7 @@ HRESULT firstCutScene::init(void)
 	_BGalpha = 0;
 
 	// 다이얼로그 카운트
-	_diaCount = 0;
+	_diaCount = 17;
 
 	// 큰이미지
 	_bigImageAlpha2 = _bigImageAlpha = 0;
@@ -667,6 +667,8 @@ void firstCutScene::render(void)
 				IMAGEMANAGER->findImage("빨강알파")->alphaRender(getMemDC(), _bigImageAlpha2);
 				_bigImageAlpha2+=5;
 				if (_bigImageAlpha2 >= 255)_bigImageAlpha2 = 255;
+				if (_bigImageAlpha2 == 250)
+					SOUNDMANAGER->play("목걸이뺏기", 1.0f);
 			}		
 		}
 		
@@ -819,6 +821,8 @@ void firstCutScene::render(void)
 					_bigImageAlpha = 0;
 					_BGalpha = 0;
 					IMAGEMANAGER->findImage("검정알파")->render(getMemDC());
+					_pt.clear();
+
 				}
 			}
 		}
@@ -1000,7 +1004,7 @@ void firstCutScene::render(void)
 		IMAGEMANAGER->findImage("하얀알파")->alphaRender(getMemDC(), _bigImageAlpha);
 
 		_tick2++;
-		if (_tick2 % 10 == 0)
+		if (_tick2 % 5 == 0)
 		{
 			for (int i = 0; i < _countof(_particle); i++)
 			{
@@ -1009,15 +1013,30 @@ void firstCutScene::render(void)
 			}
 		}
 
-		
-		int temp = 0;
-		for (int i = 0; i < _countof(_particle); i++)
+		if (_tick2 % 2 == 0)
 		{
-			IMAGEMANAGER->findImage("파티클")->alphaFrameRender(getMemDC(), -250+temp, 450, 30, _particle[i], 0);
-			IMAGEMANAGER->findImage("파티클광원")->alphaFrameRender(getMemDC(), -250 + temp, 450, 50, _particle[i], 0);
-			IMAGEMANAGER->findImage("파티클광원2")->alphaFrameRender(getMemDC(), -250 + temp, 450, 70, _particle[i], 0);
-			temp += 100;
-			if (i> _countof(_particle)/2 && temp > 1000)temp = 0;
+			_pt.push_back({ RND->getFromFloatTo(-250.0f,1000.0f),RND->getFromFloatTo(900, 1200), 0, RND->getFromFloatTo(1.0f,3.0f),RND->getFromFloatTo(35,75) ,80});
+		}
+
+		for (vector<PARTICLE>::iterator iter = _pt.begin(); iter < _pt.end();)
+		{
+			if (_tick2 % 10 == 0)	iter->index++;
+			if (iter->index > IMAGEMANAGER->findImage("파티클")->getMaxFrameX()) iter->index = 0;
+
+			iter->x += cosf(iter->degree * PI / 180) * iter->speed;
+			iter->y -= sinf(iter->degree * PI / 180) * iter->speed;
+
+			IMAGEMANAGER->findImage("파티클")->alphaFrameRender(getMemDC(), iter->x, iter->y, iter->alpha, iter->index, 0);
+
+			if (iter->x > WINSIZE_X + 50 || iter->y < WINSIZE_Y / 2 + 200)
+			{
+				iter->alpha--;
+				if (iter->alpha <= 0)iter->alpha = 0;
+			}
+
+			if(iter->alpha == 0) iter = _pt.erase(iter);
+			else iter++;
+
 		}
 
 		// 끝

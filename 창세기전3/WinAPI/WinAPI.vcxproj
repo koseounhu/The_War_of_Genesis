@@ -145,6 +145,7 @@
     <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Battle2.cpp" />
     <ClCompile Include="Battle3.cpp" />
+    <ClCompile Include="Dragon.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Enemy2.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="Battle2.h" />
     <ClInclude Include="Battle3.h" />
     <ClInclude Include="Dialogue.h" />
+    <ClInclude Include="Dragon.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Enemy2.h" />
     <ClInclude Include="firstCutScene.h">

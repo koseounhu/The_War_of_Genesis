@@ -2,13 +2,26 @@
 #include "GameNode.h"
 #include "Dialogue.h"
 
+struct PARTICLE
+{
+	float x;
+	float y;
 
+	int index;
+
+	float speed;
+	float degree;
+
+	int alpha;
+};
 
 class firstCutScene : public GameNode
 {
 private:
 	Dialogue* _dia;
 	bitset<40> _diaSound;
+
+	vector<PARTICLE> _pt;
 	
 	bool _sal;
 	bool _sara;

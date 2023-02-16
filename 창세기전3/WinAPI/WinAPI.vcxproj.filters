@@ -118,14 +118,20 @@
     <Filter Include="API FrameWork\Gold">
       <UniqueIdentifier>{f36242e6-8937-4f04-9046-92dfac928817}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Unit\Tiger">
-      <UniqueIdentifier>{28bb2bac-c7d2-483c-bad4-8481afa08903}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Unit\Enemy2">
       <UniqueIdentifier>{a23e0d58-4c97-4b5a-ba0d-50610cac8e87}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scene\Battle3">
       <UniqueIdentifier>{5038e48d-73c5-4518-b135-2843c69288b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Unit\Skill\Tiger">
+      <UniqueIdentifier>{28bb2bac-c7d2-483c-bad4-8481afa08903}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Unit\Skill\천지파열무">
+      <UniqueIdentifier>{7501d107-7cff-45c2-b1b6-ad83ff7ee034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Unit\Skill\마룡광아탄">
+      <UniqueIdentifier>{19d98845-9891-4962-baa4-5c4911eeae4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -206,9 +212,6 @@
     <ClCompile Include="Move.cpp">
       <Filter>Scene\Battle2</Filter>
     </ClCompile>
-    <ClCompile Include="Skill.cpp">
-      <Filter>Unit\Skill</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Unit\Enemy</Filter>
     </ClCompile>
@@ -237,7 +240,7 @@
       <Filter>Item</Filter>
     </ClCompile>
     <ClCompile Include="Tiger.cpp">
-      <Filter>Unit\Tiger</Filter>
+      <Filter>Unit\Skill\Tiger</Filter>
     </ClCompile>
     <ClCompile Include="Battle3.cpp">
       <Filter>Scene\Battle3</Filter>
@@ -247,6 +250,12 @@
     </ClCompile>
     <ClCompile Include="moveTileStar.cpp">
       <Filter>Scene\Battle3</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill.cpp">
+      <Filter>Unit\Skill\천지파열무</Filter>
+    </ClCompile>
+    <ClCompile Include="Dragon.cpp">
+      <Filter>Unit\Skill\마룡광아탄</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -329,9 +338,6 @@
     <ClInclude Include="Dialogue.h">
       <Filter>Dialogue</Filter>
     </ClInclude>
-    <ClInclude Include="Skill.h">
-      <Filter>Unit\Skill</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Unit\Enemy</Filter>
     </ClInclude>
@@ -360,7 +366,7 @@
       <Filter>API FrameWork\Gold</Filter>
     </ClInclude>
     <ClInclude Include="Tiger.h">
-      <Filter>Unit\Tiger</Filter>
+      <Filter>Unit\Skill\Tiger</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>API FrameWork</Filter>
@@ -370,6 +376,12 @@
     </ClInclude>
     <ClInclude Include="Enemy2.h">
       <Filter>Unit\Enemy2</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill.h">
+      <Filter>Unit\Skill\천지파열무</Filter>
+    </ClInclude>
+    <ClInclude Include="Dragon.h">
+      <Filter>Unit\Skill\마룡광아탄</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

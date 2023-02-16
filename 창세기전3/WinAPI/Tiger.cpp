@@ -66,6 +66,8 @@ void Tiger::update(Player* _pl, Vermouth* _ve)
 	// 호랑이
 	if (_step[1])
 	{
+		if (!SOUNDMANAGER->isPlaySound("호랑이")) SOUNDMANAGER->play("호랑이", 1.0f);
+
 		if (_tick % 10 == 0) _ti.frame++;
 		if (_ti.alpha > 3)_ti.alpha -= 2;
 		if (_ti.frame > IMAGEMANAGER->findImage("호랑이")->getMaxFrameX())
@@ -107,6 +109,12 @@ void Tiger::update(Player* _pl, Vermouth* _ve)
 	// 돌진
 	if (_step[3])
 	{
+		if (!_atkSound)
+		{
+			SOUNDMANAGER->play("호랑이어택", 1.0f);
+			_atkSound = true;
+		}
+
 #pragma region 돌진 좌측
 		// 쉐도우 세팅
 		for (int i = 0; i < 8; i++)
@@ -208,8 +216,10 @@ void Tiger::update(Player* _pl, Vermouth* _ve)
 #pragma endregion
 
 		// 돌진기 끝
-		if (_dash[0].frame > 100)
+		if (SOUNDMANAGER->getPosition("호랑이") >=2500 )
 		{
+			_atkSound = false;
+
 			_step.set(3, 0);
 			_step.set(4, 1);
 			for (int i = 0; i < _countof(_dash); i++)
@@ -239,13 +249,7 @@ void Tiger::render(Player* _pl, Vermouth* _ve)
 	{
 		IMAGEMANAGER->findImage("호랑이")->alphaFrameRender(getMemDC(), _ti.x, _ti.y, _ti.alpha, _ti.frame, 0);
 	}
-	
-	// 번개
-	if (_step[2])
-	{
-		IMAGEMANAGER->findImage("토탈번개")->alphaFrameRender(getMemDC(), _ve->getVE()._x - 85, _ve->getVE()._y - 315, 40, _light.frame, 0);
-		IMAGEMANAGER->findImage("토탈번개광원")->alphaFrameRender(getMemDC(), _ve->getVE()._x - 85, _ve->getVE()._y - 365, _light.alpha, _light.frame, 0);
-	}
+
 
 	// 돌진
 	if (_step[3])
@@ -263,7 +267,7 @@ void Tiger::render(Player* _pl, Vermouth* _ve)
 
 			if (_shadow[i].start)
 			{
-				_shadow[i].alpha-=5;
+				_shadow[i].alpha -= 5;
 				if (_shadow[i].alpha <= 0) _shadow[i].alpha = 0;
 			}
 		}
@@ -310,18 +314,18 @@ void Tiger::render(Player* _pl, Vermouth* _ve)
 			}
 		}
 
-	// 좌측
+		// 좌측
 		for (int i = 0; i < 8; i++)
 		{
 			IMAGEMANAGER->findImage("살라딘돌진기")->alphaFrameRender(getMemDC(), _shadow[i].x, _shadow[i].y, _shadow[i].alpha, 0, 0);
 		}
-		IMAGEMANAGER->findImage("살라딘돌진기")->alphaFrameRender(getMemDC(), _shadow[8].x, _shadow[8].y-60, _shadow[8].alpha, 0, 0);
-		IMAGEMANAGER->findImage("살라딘돌진기")->alphaFrameRender(getMemDC(), _shadow[9].x, _shadow[9].y+60, _shadow[9].alpha, 0, 0);
+		IMAGEMANAGER->findImage("살라딘돌진기")->alphaFrameRender(getMemDC(), _shadow[8].x, _shadow[8].y - 60, _shadow[8].alpha, 0, 0);
+		IMAGEMANAGER->findImage("살라딘돌진기")->alphaFrameRender(getMemDC(), _shadow[9].x, _shadow[9].y + 60, _shadow[9].alpha, 0, 0);
 
 		IMAGEMANAGER->findImage("살라딘돌진기")->alphaFrameRender(getMemDC(), _dash[0].x, _dash[0].y, _dash[0].alpha, _dash[0].frame, 0);
-		IMAGEMANAGER->findImage("돌진이펙트")->alphaFrameRender(getMemDC(), _dash[0].x-70, _dash[0].y-50, _dash[0].alpha, _dash[0].effectFrame, 0);
+		IMAGEMANAGER->findImage("돌진이펙트")->alphaFrameRender(getMemDC(), _dash[0].x - 70, _dash[0].y - 50, _dash[0].alpha, _dash[0].effectFrame, 0);
 
-	// 우측
+		// 우측
 		for (int i = 10; i < 18; i++)
 		{
 			IMAGEMANAGER->findImage("살라딘돌진기")->alphaFrameRender(getMemDC(), _shadow[i].x, _shadow[i].y, _shadow[i].alpha, 0, 1);
@@ -332,6 +336,16 @@ void Tiger::render(Player* _pl, Vermouth* _ve)
 		IMAGEMANAGER->findImage("살라딘돌진기")->alphaFrameRender(getMemDC(), _dash[1].x, _dash[1].y, _dash[1].alpha, _dash[1].frame, 1);
 		IMAGEMANAGER->findImage("돌진이펙트")->alphaFrameRender(getMemDC(), _dash[1].x, _dash[1].y - 50, _dash[1].alpha, _dash[1].effectFrame, 1);
 	}
+	
+	// 업데이트되는 순서와 렌더링 순서 일부로 다르게함
+	// 번개
+	if (_step[2])
+	{
+		IMAGEMANAGER->findImage("토탈번개")->alphaFrameRender(getMemDC(), _ve->getVE()._x - 85, _ve->getVE()._y - 315, 40, _light.frame, 0);
+		IMAGEMANAGER->findImage("토탈번개광원")->alphaFrameRender(getMemDC(), _ve->getVE()._x - 85, _ve->getVE()._y - 365, _light.alpha, _light.frame, 0);
+	}
+
+
 
 	if (_step[4])
 	{

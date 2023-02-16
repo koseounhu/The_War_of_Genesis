@@ -12,6 +12,7 @@ HRESULT Enemy2::init(void)
     _tick = 0;
 
 
+    _alpha = 255;
 
     return S_OK;
 }
@@ -56,20 +57,33 @@ void Enemy2::update(void)
             _em.atkedFrame = 0;
             _em.state = 0;
         }
+        break;
+
+    case 4: // 스킬 피격
+        if (_tick % 5 == 0) _em.atkedFrame++;
+        if (_em.atkedFrame > IMAGEMANAGER->findImage("적2_피격")->getMaxFrameX())
+        {
+            _alpha -= 2;
+            if (_alpha <= 0)
+            {
+                _alpha = 0;
+                _die = true;
+            }
+        }
 
 
         break;
-
     default:
         break;
     }
-
 
 }
 
 void Enemy2::render(void)
 {
+    if(_alpha>200)
     IMAGEMANAGER->findImage("그림자")->alphaRender(getMemDC(), _em.x-5, _em.y+10, 100);
+
     switch (_em.state)
     {
     case 0: // 대기
@@ -86,8 +100,12 @@ void Enemy2::render(void)
 
     case 3: //피격
         IMAGEMANAGER->findImage("적2_피격")->frameRender(getMemDC(), _em.x - 25, _em.y - 43, _em.atkedFrame, _em.view);
-
         break;
+
+    case 4: // 스킬피격
+        IMAGEMANAGER->findImage("적2_피격")->alphaFrameRender(getMemDC(), _em.x - 25, _em.y - 43, _alpha, _em.atkedFrame, _em.view);
+        break;
+
     default:
         break;
     }

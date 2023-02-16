@@ -13,6 +13,7 @@
 #define ST "Resources/Images/Store/"
 #define SK "Resources/Images/Skill/"
 #define SOUND "Resources/Sounds/"
+#define DRAGON "Resources/Sounds/마룡광아탄/"
 #define MAZEN RGB(255, 0, 255)
 #define RGBRED RGB(255, 0, 0)
 #define RGBBL RGB(4, 0, 4)
@@ -150,6 +151,15 @@ void MainGame::ImageInit(void)
 		IMAGEMANAGER->addFrameImage("살라딘돌진기", SK"살라딘돌진기.bmp", 450, 600, 3, 4, true, MAZEN);
 		IMAGEMANAGER->addFrameImage("돌진이펙트", SK"돌진이펙트.bmp", 1400, 800, 7, 4, true, MAZEN);
 	#pragma endregion
+	#pragma region 마룡광아탄
+		IMAGEMANAGER->addFrameImage("번개폭발", SK"번개폭발.bmp", 8224, 251, 32, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("번개폭발광원", SK"번개폭발광원.bmp", 8224, 251, 32, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("번개창", SK"번개창.bmp", 625, 256, 5, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("번개창광원", SK"번개창광원.bmp", 625, 256, 5, 1, true, MAZEN);
+		IMAGEMANAGER->addFrameImage("드래곤", SK"dragon.bmp", 4000, 300, 20, 1, true, MAZEN);
+
+
+	#pragma endregion
 #pragma endregion
 	
 #pragma region 오프닝
@@ -182,10 +192,7 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("목걸이뺏기이펙트", SCE"목걸이뺏기이펙트.bmp", 900, 135, 5, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("목걸이", SCE"목걸이.bmp", 200, 20, 10, 1, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("셰라죽음", SCE"셰라죽음.bmp", 5520, 150, 23, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("파티클", SCE"파티클.bmp", 18600, 450, 31, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("파티클광원", SCE"파티클광원.bmp", 18600, 450, 31, 1, true, MAZEN);
-	IMAGEMANAGER->addFrameImage("파티클광원2", SCE"파티클광원2.bmp", 18600, 450, 31, 1, true, MAZEN);
-
+	IMAGEMANAGER->addFrameImage("파티클", SCE"파티클.bmp", 80, 20, 4, 1, true, MAZEN);
 
 	// 2번 시나리오
 	IMAGEMANAGER->addImage("2_0", SCE"2_0.bmp", WINSIZE_X, WINSIZE_Y);
@@ -320,7 +327,7 @@ void MainGame::ImageInit(void)
 	SOUNDMANAGER->addSound("2번시나리오배경", SOUND"2번시나리오배경.mp3", false, false);
 	SOUNDMANAGER->addSound("목걸이뺏기", SOUND"목걸이뺏기.mp3", false, false);
 	
-	// 스킬
+	// 천지파열무
 	SOUNDMANAGER->addSound("스킬구", SOUND"스킬구.mp3", false, false);
 	SOUNDMANAGER->addSound("클리어소리", SOUND"클리어소리.mp3", false, false);
 	SOUNDMANAGER->addSound("마지막터질때", SOUND"마지막터질때.mp3", false, false);
@@ -331,6 +338,18 @@ void MainGame::ImageInit(void)
 
 	// 공격
 	SOUNDMANAGER->addSound("살라딘공격", SOUND"살라딘공격.mp3", false, false);
+
+	// 마룡광아탄
+	SOUNDMANAGER->addSound("마룡시작", DRAGON"마룡시작.mp3", false, false);
+	SOUNDMANAGER->addSound("마룡드래곤", DRAGON"마룡드래곤.mp3", false, false);
+	SOUNDMANAGER->addSound("마룡낙뢰", DRAGON"마룡낙뢰.mp3", false, false);
+	SOUNDMANAGER->addSound("마룡폭발", DRAGON"마룡폭발.mp3", false, false);
+
+	// 혈랑마혼
+	SOUNDMANAGER->addSound("호랑이", SOUND"호랑이.mp3", false, false);
+	SOUNDMANAGER->addSound("호랑이어택", SOUND"호랑이어택.mp3", false, false);
+
+
 
 #pragma endregion
 }
