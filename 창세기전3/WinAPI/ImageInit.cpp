@@ -44,14 +44,20 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("스킬UI", OBJ"PersonalBox.bmp", 416, 60,4,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("마우스타일", OBJ"MoveCursor.bmp", 240, 32,6,1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("어빌리티버튼", OBJ"abilityButton.bmp", 34, 17,2,1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("마우스", OBJ"mouse.bmp", 228, 24, 12, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("일반마우스", OBJ"mouse.bmp", 228, 24, 12, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("그림자", OBJ"Shadow.bmp", 50, 25, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("공격마우스", OBJ"공격마우스.bmp", 217, 32, 7, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("갈수없는타일", OBJ"갈수없는타일.bmp", 80, 32, 2, 1, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("enemyInfo", OBJ"enemyInfo.bmp", 900, 98, 15, 2, true, MAZEN);
+
 
 	// UI
 	IMAGEMANAGER->addImage("UI스테이터창", UI"state.bmp", 218, 384);
 	IMAGEMANAGER->addImage("MapInfo", UI"mapInfo.bmp", 230, 105);
 	IMAGEMANAGER->addFrameImage("적턴", UI"적턴.bmp", 72, 11,8,1,true,MAZEN);
 	IMAGEMANAGER->addFrameImage("살라딘턴", UI"살라딘턴.bmp", 72, 11,8,1,true,MAZEN);
+
+
 #pragma endregion
 
 #pragma region Unit
@@ -78,6 +84,11 @@ void MainGame::ImageInit(void)
 	IMAGEMANAGER->addFrameImage("적2_대기", EM"E2_idle.bmp", 270, 280, 3, 4, true, MAZEN);
 	IMAGEMANAGER->addFrameImage("적2_피격", EM"E2_atked.bmp", 1080, 300, 12, 4, true, MAZEN);
 
+	// 원거리적
+	IMAGEMANAGER->addFrameImage("원거리적_대기", EM"원거리대기.bmp", 210, 300, 3, 4, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("원거리적_걷기", EM"원거리걷기.bmp", 420, 300, 6, 4, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("원거리적_공격", EM"원거리공격.bmp", 280, 300, 4, 4, true, MAZEN);
+	IMAGEMANAGER->addFrameImage("원거리적_피격", EM"원거리피격.bmp", 840, 300, 12, 4, true, MAZEN);
 
 #pragma endregion
 

@@ -4,9 +4,7 @@
 class MainGame : public GameNode
 {
 private:
-	// ¸¶¿ì½º
-	RECT _Mrc;
-	int _frame;
+
 
 public:
 	HRESULT init(void);

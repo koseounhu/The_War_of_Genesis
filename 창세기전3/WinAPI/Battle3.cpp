@@ -1,7 +1,7 @@
 #include "Stdafx.h"
 #include "Battle3.h"
 
-#define CAMSPEED 5.0f
+#define CAMSPEED 7.0f
 #define TURNCAM 10.0f
 #define MOVESPEED 2.0f
 
@@ -79,7 +79,8 @@ HRESULT Battle3::init(void)
 	for (int i = 0; i < _countof(_em); i++)
 	{
 		_em[i] = new Enemy2;
-		_em[i]->init();
+		if(i<5)	_em[i]->init(0);
+		else _em[i]->init(1);
 	}
 #pragma region 적 최초 좌표 설정
 	_em[0]->setIdx(26, 28);
@@ -136,7 +137,7 @@ void Battle3::update(void)
 	_tick++;
 
 	// 마우스타일 프레임
-	if (_tick % 10 == 0) _mouseTileFrame++;
+	if (_tick % 7 == 0) _mouseTileFrame++;
 	if (_mouseTileFrame > IMAGEMANAGER->findImage("마우스타일")->getMaxFrameX())_mouseTileFrame = 0;
 
 #pragma region 화면제어
@@ -537,8 +538,6 @@ void Battle3::update(void)
 
 		if (_cam.center[10])
 		{
-			cout << 1 << endl;
-
 			// 좌우
 			if (_cam.x < _pl->getPL()._x)
 			{
@@ -628,6 +627,7 @@ void Battle3::update(void)
 	// 턴 넘기기( 플레이어 -> 적 )
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
+		_turn.set(19, 1);
 		if (!_cam.start)
 		{
 			_cam.start = true;
@@ -635,6 +635,7 @@ void Battle3::update(void)
 		}
 
 		else if (_cam.start)_cam.start = false;
+
 	}
 
 
@@ -645,8 +646,8 @@ void Battle3::update(void)
 		if (_turnFrame > IMAGEMANAGER->findImage("살라딘턴")->getMaxFrameX()) _turnFrame = 0;
 	}
 
-	
-	for (int i = 0; i < _countof(_em); i++)
+	// 근거리
+	for (int i = 0; i < _countof(_em)/2; i++)
 	{
 		// 공격중
 		if (_em[i]->getEm().state == 2)
@@ -754,6 +755,118 @@ void Battle3::update(void)
 			break;// 발동시키고 탈출
 		}// 턴
 		
+
+	}// for문
+
+	// 원거리
+	for (int i = _countof(_em) / 2; i < _countof(_em); i++)
+	{
+		// 공격중
+		if (_em[i]->getEm().state == 2)
+		{
+			if (_em[i]->getEm().atkFrame >= 11)
+			{
+				_pl->setPState(0);
+				_turn.set(i, 0);
+				_turn.set(i + 1, 1);
+				_cam.center.set(i, 0);
+				_cam.center.set(i + 1, 1);
+			}
+			break;
+		}
+
+		// 대기중
+		if (_turn[i] && !_em[i]->getEm().astar)
+		{
+			// 공격가능 위치에 갔으면 공격
+			if ((_em[i]->getEm().indexX == _pl->getPL()._indexX - 2 || _em[i]->getEm().indexX == _pl->getPL()._indexX + 2) && 
+				(_em[i]->getEm().indexY == _pl->getPL()._indexY - 2 || _em[i]->getEm().indexY == _pl->getPL()._indexY + 2))
+			{
+				if (_em[i]->getEm().indexY == _pl->getPL()._indexY)
+				{
+					_pl->setPState(4);
+					_em[i]->setState(2);
+					int sta = _pl->getPL()._indexX - _em[i]->getEm().indexX;
+					switch (sta)
+					{
+					case 2:
+						_em[i]->setView(1);
+						_pl->setPView(0);
+						break;
+
+					case -2:
+						_em[i]->setView(0);
+						_pl->setPView(1);
+						break;
+
+					default:
+						break;
+					}
+					break;
+				}
+				if (_em[i]->getEm().indexX == _pl->getPL()._indexX)
+				{
+					_pl->setPState(4);
+					_em[i]->setState(2);
+					int sta = _pl->getPL()._indexY - _em[i]->getEm().indexY;
+					switch (sta)
+					{
+					case 2:
+						_em[i]->setView(3);
+						_pl->setPView(3);
+						break;
+
+					case -2:
+						_em[i]->setView(2);
+						_pl->setPView(2);
+						break;
+
+					default:
+						break;
+					}
+					break;
+				}
+			}
+
+			// 플레이어 주변이 비었으면
+			else if (_tile[_pl->getPL()._indexX - 2][_pl->getPL()._indexY-2].unit == 0 ||
+				_tile[_pl->getPL()._indexX + 2][_pl->getPL()._indexY+2].unit == 0 ||
+				_tile[_pl->getPL()._indexX+2][_pl->getPL()._indexY - 2].unit == 0 ||
+				_tile[_pl->getPL()._indexX-2][_pl->getPL()._indexY + 2].unit == 0)
+			{
+				// 플레이어 근처가 아니면 a스타 발동
+				if ((_em[i]->getEm().indexX != _pl->getPL()._indexX - 2 || _em[i]->getEm().indexX != _pl->getPL()._indexX + 2) &&
+					(_em[i]->getEm().indexY != _pl->getPL()._indexY - 2 || _em[i]->getEm().indexY != _pl->getPL()._indexY + 2))
+				{
+					if (_tile[_pl->getPL()._indexX - 2][_pl->getPL()._indexY-2].unit == 0)
+						Astar(_em[i]->getEm().indexX, _em[i]->getEm().indexY, _pl->getPL()._indexX - 2, _pl->getPL()._indexY-2);
+
+					if (_tile[_pl->getPL()._indexX + 2][_pl->getPL()._indexY+2].unit == 0)
+						Astar(_em[i]->getEm().indexX, _em[i]->getEm().indexY, _pl->getPL()._indexX + 2, _pl->getPL()._indexY+2);
+
+					if (_tile[_pl->getPL()._indexX+2][_pl->getPL()._indexY - 2].unit == 0)
+						Astar(_em[i]->getEm().indexX, _em[i]->getEm().indexY, _pl->getPL()._indexX+2, _pl->getPL()._indexY - 2);
+
+					if (_tile[_pl->getPL()._indexX-2][_pl->getPL()._indexY + 2].unit == 0)
+						Astar(_em[i]->getEm().indexX, _em[i]->getEm().indexY, _pl->getPL()._indexX-2, _pl->getPL()._indexY + 2);
+
+					// 에이스타 시작
+					if (_closeList.size() > 0)	_em[i]->setAstar(true);
+				}
+			}
+
+			// 아무것도 해당안됨
+			else
+			{
+				_turn.set(i, 0);
+				_turn.set(i + 1, 1);
+				_cam.center.set(i, 0);
+				_cam.center.set(i + 1, 1);
+			}
+
+			break;// 발동시키고 탈출
+		}// 턴
+
 
 	}// for문
 #pragma endregion
@@ -951,20 +1064,41 @@ void Battle3::render(void)
 	}
 #pragma endregion
 #pragma region 마우스타일, 맵타일그리기
-	// 마우스타일
-	for (int j = 0; j < H_NUM; j++)
-	{
-		for (int i = 0; i < V_NUM; i++)
-		{
-			if (_tile[j][i].x < _ptMouse.x && _tile[j][i].y < _ptMouse.y &&
-				_tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y)
-			{
-				IMAGEMANAGER->findImage("마우스타일")->alphaFrameRender(getMemDC(),
-					_tile[j][i].x, _tile[j][i].y, 150, _mouseTileFrame, 0);
-			}
 
+#pragma region 마우스
+
+	// 마우스타일
+	if (!_turn[19]) // 살라딘 턴표시 UI
+	{
+		for (int j = 0; j < H_NUM; j++)
+		{
+			for (int i = 0; i < V_NUM; i++)
+			{
+				if (_tile[j][i].x < _ptMouse.x && _tile[j][i].y < _ptMouse.y &&
+					_tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y && _tile[j][i].unit==2)
+				{
+					IMAGEMANAGER->findImage("갈수없는타일")->alphaFrameRender(getMemDC(),
+						_tile[j][i].x, _tile[j][i].y, 150, _mouseTileFrame, 0);
+				}
+
+				else
+				{
+					if (_tile[j][i].x < _ptMouse.x && _tile[j][i].y < _ptMouse.y &&
+						_tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y)
+					{
+						IMAGEMANAGER->findImage("마우스타일")->alphaFrameRender(getMemDC(),
+							_tile[j][i].x, _tile[j][i].y, 150, _mouseTileFrame, 0);
+					}
+				}
+					
+			}
 		}
 	}
+
+
+
+
+#pragma endregion
 
 	// 각 구획마다 선 그리기
 	if (KEYMANAGER->isToggleKey(VK_F10))
@@ -1008,6 +1142,7 @@ void Battle3::render(void)
 		IMAGEMANAGER->findImage("오랑타일")->alphaRender(getMemDC(), _pl->getPL()._x + 80, _pl->getPL()._y, 100);
 		IMAGEMANAGER->findImage("오랑타일")->alphaRender(getMemDC(), _pl->getPL()._x, _pl->getPL()._y - 64, 100);
 		IMAGEMANAGER->findImage("오랑타일")->alphaRender(getMemDC(), _pl->getPL()._x, _pl->getPL()._y + 64, 100);
+
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
 			SOUNDMANAGER->play("버튼", 1.0f);
@@ -1134,8 +1269,26 @@ void Battle3::render(void)
 		if (_turn[i])
 			IMAGEMANAGER->findImage("적턴")->frameRender(getMemDC(), _em[i]->getEm().x + 12, _em[i]->getEm().y - 60, _turnFrame, 0);
 	}
-	if (_turn.any()==0)
+	if (!_turn[19])
 		IMAGEMANAGER->findImage("살라딘턴")->frameRender(getMemDC(), _pl->getPL()._x + 17, _pl->getPL()._y - 70, _turnFrame, 0);
+
+
+	// 우상단 UI
+	// 마우스 좌표
+	for (int i = 0; i < H_NUM; i++)
+	{
+		for (int j = 0; j < V_NUM; j++)
+		{
+			if ((_ptMouse.x > _tile[i][j].x && _ptMouse.x < _tile[i + 1][j].x) &&
+				(_ptMouse.y > _tile[i][j].y && _ptMouse.y < _tile[i][j + 1].y))
+			{
+				cout << i << "," << j << endl;
+				_mapX = i;
+				_mapY = j;
+				// DrawRectMake(getMemDC(), RectMake(_tile[i][j].x, _tile[i][j].y, 40, 32));
+			}
+		}
+	}
 
 
 	IMAGEMANAGER->findImage("MapInfo")->render(getMemDC(), 790, 5);
@@ -1143,7 +1296,70 @@ void Battle3::render(void)
 	FONTMANAGER->drawText(getMemDC(), 950, 45, 15, 255, 255, 255, "굴림", true, "평  지");
 	FONTMANAGER->drawInt(getMemDC(), 940, 85, 15, 255, 255, 255, "굴림", false, (char*)GOLD->getGold());
 	FONTMANAGER->drawText(getMemDC(), 1000, 85, 15, 255, 255, 255, "굴림", false, "eld");
+	FONTMANAGER->drawInt(getMemDC(), 815, 90, 15, 255, 255, 255, "굴림", false, (char*)_mapX);
+	FONTMANAGER->drawInt(getMemDC(), 885, 70, 15, 255, 255, 255, "굴림", false, (char*)_mapY);
+	FONTMANAGER->drawInt(getMemDC(), 850, 40, 15, 255, 255, 255, "굴림", false, 0);
+
+
+	// UI
 	_ui->render(_pl);
+
+
+	if (_ui->getAtkTile())
+	{
+		if (_tick % 5 == 0) _emInfoFrame++;
+		if (_emInfoFrame > IMAGEMANAGER->findImage("enemyInfo")->getMaxFrameX())_emInfoFrame = 0;
+		bool touch=false;
+		int emHp = 1000;
+		int emMp = 700;
+		int emNum;
+		for (int i = 0; i < V_NUM; i++)
+		{
+			for (int j = 0; j < H_NUM; j++)
+			{
+				for (int k = 0; k < _countof(_em); k++)
+				{
+					RECT temp;
+					RECT temp2 = RectMake(_tile[_em[k]->getEm().indexX][_em[k]->getEm().indexY].x, _tile[_em[k]->getEm().indexX][_em[k]->getEm().indexY].y, 40, 32);
+					if (IntersectRect(&temp, &temp2, &_Mrc))
+					{
+						emNum = k;
+						touch = true;
+						IMAGEMANAGER->findImage("enemyInfo")->frameRender(getMemDC(), _em[k]->getEm().x, _em[k]->getEm().y-50, _emInfoFrame, 0);
+					
+					}
+
+				}
+			}
+		}
+		if (touch && _emInfoFrame > 7 && _emInfoFrame < 15)
+		{
+			FONTMANAGER->drawInt(getMemDC(), _em[emNum]->getEm().x + 35, _em[emNum]->getEm().y - 50, 8, 255, 255, 255, "굴림", false, (char*)emHp);
+			FONTMANAGER->drawInt(getMemDC(), _em[emNum]->getEm().x + 35, _em[emNum]->getEm().y - 40, 8, 255, 255, 255, "굴림", false, (char*)emMp);
+		}
+				
+	}
+
+	_tick2++;
+
+	// 마우스
+	if (!_ui->getAtkTile())
+	{
+		ShowCursor(false);
+		_Mrc = RectMake(_ptMouse.x, _ptMouse.y, 16, 24);
+		if(_tick2 % 10 ==0)	_frame++;
+		IMAGEMANAGER->findImage("일반마우스")->frameRender(getMemDC(), _ptMouse.x, _ptMouse.y, _frame, 0);
+		if (_frame > IMAGEMANAGER->findImage("일반마우스")->getMaxFrameX())_frame = 0;
+	}
+	else
+	{
+		//커서
+		ShowCursor(false);
+		_Mrc = RectMake(_ptMouse.x, _ptMouse.y, 16, 24);
+		if (_tick2 % 10 == 0) _frame++;
+		IMAGEMANAGER->findImage("공격마우스")->frameRender(getMemDC(), _ptMouse.x, _ptMouse.y, _frame, 0);
+		if (_frame > IMAGEMANAGER->findImage("공격마우스")->getMaxFrameX())_frame = 0;
+	}
 
 
 	// 스킬 시작
@@ -1152,9 +1368,11 @@ void Battle3::render(void)
 		_da->render();
 	}
 
+	// 스테이지 끝
 	if (_em[0]->getDie())
 	{
 		_end++;
+		SOUNDMANAGER->play("클리어소리", 1.0f);
 		IMAGEMANAGER->findImage("시나리오클리어")->alphaRender(getMemDC(), 0, 300, 50);
 		IMAGEMANAGER->findImage("클리어광원")->alphaRender(getMemDC(), 0, 300, 150);
 		IMAGEMANAGER->findImage("클리어텍스트")->alphaRender(getMemDC(), 305, 325, 100);

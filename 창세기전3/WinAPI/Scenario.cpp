@@ -39,6 +39,14 @@ void Scenario::render(void)
       }
      
   }
+#pragma region 마우스
+  ShowCursor(false);
+  _Mrc = RectMake(_ptMouse.x, _ptMouse.y, 16, 24);
+  _frame++;
+  IMAGEMANAGER->findImage("일반마우스")->frameRender(getMemDC(), _ptMouse.x, _ptMouse.y, _frame, 0);
+  if (_frame > 12)_frame = 0;
+#pragma endregion
+
   if (_next)
   {
       _tick++;

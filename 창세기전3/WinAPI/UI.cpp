@@ -24,6 +24,9 @@ void UI::update(void)
 
 void UI::render(Player* _pl)
 {
+
+
+
 #pragma region UI
 	// ½ºÅ³ UI Ã¢
 	if (_ui && !_skillOn)

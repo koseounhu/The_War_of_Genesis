@@ -16,6 +16,9 @@ private:
 	bool _total;
 	bool _atk;
 
+
+
+
 public:
 	HRESULT init(void);
 	void release(void);

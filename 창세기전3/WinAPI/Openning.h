@@ -7,6 +7,9 @@ private:
 	// 선택창
 	RECT _rc[5];
 
+	// 마우스
+	RECT _Mrc;
+	int _frame;
 
 	// 배경
 	int _BGalpha;

@@ -34,11 +34,13 @@ private:
 	bool _die;
 
 	ENEMY2 _em;
+	//===============
 
+	int _emSelect;
 
 
 public:	
-	HRESULT init(void);
+	HRESULT init(int num);
 	void release(void);
 	void update(void);
 	void render(void);

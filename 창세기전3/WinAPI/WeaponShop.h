@@ -58,6 +58,11 @@ private:
 	
 	int _buyPay;
 
+	// ¸¶¿ì½º
+	RECT _Mrc;
+	int _frame;
+
+
 public :
 	HRESULT init(void);
 	void release(void);

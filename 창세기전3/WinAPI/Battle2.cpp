@@ -41,6 +41,9 @@ HRESULT Battle2::init(void)
 		_em[i]->init();
 	}
 
+
+
+
 	_skillFrame= _skillTick = 0;
 
 #pragma endregion
@@ -236,6 +239,23 @@ void Battle2::update(void)
 	{
 		_em[i]->update();
 	}
+
+	// 임시 마우스 좌표
+ for (int i = 0; i < H_NUM; i++)
+ {
+ 	for (int j = 0; j < V_NUM; j++)
+ 	{
+ 		if ((_ptMouse.x > _tile[i][j].x && _ptMouse.x < _tile[i + 1][j].x) &&
+ 			(_ptMouse.y > _tile[i][j].y && _ptMouse.y < _tile[i][j+1].y))
+ 		{
+ 			cout << i << "," << j << endl;
+ 			// DrawRectMake(getMemDC(), RectMake(_tile[i][j].x, _tile[i][j].y, 40, 32));
+ 		}
+ 	}
+ }
+
+
+
 }
 
 void Battle2::render(void)
@@ -244,11 +264,29 @@ void Battle2::render(void)
 	IMAGEMANAGER->findImage("전투맵2")->render(getMemDC(), _x, _y);
 	
 	// 우상단 UI
+	// 마우스 좌표
+	for (int i = 0; i < H_NUM; i++)
+	{
+		for (int j = 0; j < V_NUM; j++)
+		{
+			if ((_ptMouse.x > _tile[i][j].x && _ptMouse.x < _tile[i + 1][j].x) &&
+				(_ptMouse.y > _tile[i][j].y && _ptMouse.y < _tile[i][j + 1].y))
+			{
+				_mapX = i;
+				_mapY = j;
+			}
+		}
+	}
+
+
 	IMAGEMANAGER->findImage("MapInfo")->render(getMemDC(), 790, 5);
-	FONTMANAGER->drawText(getMemDC(), 870, 20, 15, 255, 255, 255, "굴림", false, "술탄궁내부");
+	FONTMANAGER->drawText(getMemDC(), 880, 20, 15, 255, 255, 255, "굴림", false, "술탄궁 내부");
 	FONTMANAGER->drawText(getMemDC(), 950, 45, 15, 255, 255, 255, "굴림", true, "평  지");
 	FONTMANAGER->drawInt(getMemDC(), 940, 85, 15, 255, 255, 255, "굴림", false, (char*)GOLD->getGold());
 	FONTMANAGER->drawText(getMemDC(), 1000, 85, 15, 255, 255, 255, "굴림", false, "eld");
+	FONTMANAGER->drawInt(getMemDC(), 815, 90, 15, 255, 255, 255, "굴림", false, (char*)_mapX);
+	FONTMANAGER->drawInt(getMemDC(), 885, 70, 15, 255, 255, 255, "굴림", false, (char*)_mapY);
+	FONTMANAGER->drawInt(getMemDC(), 850, 40, 15, 255, 255, 255, "굴림", false, 0);
 
 	// 턴프레임
 	_tick++;
@@ -258,18 +296,32 @@ void Battle2::render(void)
 
 	// 마우스 타일
 	if(!_ui && !_ability&& !_skillOn)
-	for (int j = 0; j < H_NUM; j++)
-	{
-		for (int i = 0; i < V_NUM; i++)
+		for (int j = 0; j < H_NUM; j++)
 		{
-			if (_tile[j][i].x < _ptMouse.x && _tile[j][i].y < _ptMouse.y &&
-				_tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y)
+			for (int i = 0; i < V_NUM; i++)
 			{
-				IMAGEMANAGER->findImage("마우스타일")->alphaFrameRender(getMemDC(),
-					_tile[j][i].x, _tile[j][i].y, 150, 0, 0);
+				if (_tile[j][i].x < _ptMouse.x && _tile[j][i].y < _ptMouse.y &&
+					_tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y && _tile[j][i].unit == 2)
+				{
+					IMAGEMANAGER->findImage("갈수없는타일")->alphaFrameRender(getMemDC(),
+						_tile[j][i].x, _tile[j][i].y, 150, _mouseTileFrame, 0);
+				}
+
+				else
+				{
+					if (_tile[j][i].x < _ptMouse.x && _tile[j][i].y < _ptMouse.y &&
+						_tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y)
+					{
+						IMAGEMANAGER->findImage("마우스타일")->alphaFrameRender(getMemDC(),
+							_tile[j][i].x, _tile[j][i].y, 150, _mouseTileFrame, 0);
+					}
+				}
+
 			}
 		}
-	}
+
+
+
 
 	// 각 구획마다 선 그리기
 	if (KEYMANAGER->isToggleKey(VK_F10))
@@ -423,10 +475,10 @@ void Battle2::render(void)
 
 		if (_sk->getSkillXY().size() < 8)
 		{
-			_sk->setSkillXY(_tile[23][28].x - 5, _tile[23][28].y - 120, 12, true);
+			_sk->setSkillXY(_tile[23][27].x - 5, _tile[23][27].y - 120, 12, true);
 			_sk->setSkillXY(_tile[23][39].x - 5, _tile[23][39].y - 120, 12, true);
-			_sk->setSkillXY(_tile[17][33].x - 5, _tile[17][33].y - 120, 12, true);
-			_sk->setSkillXY(_tile[29][33].x - 5, _tile[29][33].y - 120, 12, true);
+			_sk->setSkillXY(_tile[16][33].x - 5, _tile[16][33].y - 120, 12, true);
+			_sk->setSkillXY(_tile[30][33].x - 5, _tile[30][33].y - 120, 12, true);
 		}
 
 	}
@@ -435,14 +487,18 @@ void Battle2::render(void)
 	_sk->DownSkill(_pl);
 	if (_sk->getBitset()[7] == 0)
 	{
-		_em[0]->render(_tile[23][28].x - 20, _tile[23][28].y - 50, 0);
-		_em[1]->render(_tile[23][39].x - 20, _tile[23][39].y - 50, 1);
-		_em[2]->render(_tile[17][33].x - 20, _tile[17][33].y - 50, 0);
-		_em[3]->render(_tile[29][33].x - 20, _tile[29][33].y - 50, 0);
-		_tile[19][23].unit == 2;
-		_tile[19][34].unit == 2;
-		_tile[13][28].unit == 2;
-		_tile[25][28].unit == 2;
+		_em[0]->render(_tile[23][27].x - 20, _tile[23][27].y - 50, 0);
+		_tile[20][29].unit == 2;
+
+		_em[1]->render(_tile[23][39].x - 20, _tile[23][39].y - 50, 0);
+		_tile[20][35].unit == 2;
+
+		_em[2]->render(_tile[16][33].x - 20, _tile[16][33].y - 50, 0);
+		_tile[30][33].unit == 2;
+
+		_em[3]->render(_tile[30][33].x - 20, _tile[30][33].y - 50, 0);
+		_tile[24][28].unit == 2;
+
 	}
 	else if (_sk->getBitset()[5] == 1)_skillTick = 0;
 	else if (_sk->getBitset()[6] == 1)
@@ -546,9 +602,21 @@ void Battle2::render(void)
 		}
 	}
 	#pragma endregion
+
+#pragma region 마우스
+	ShowCursor(false);
+	_Mrc = RectMake(_ptMouse.x, _ptMouse.y, 16, 24);
+	if (_tick % 5 == 0)_frame++;
+	IMAGEMANAGER->findImage("일반마우스")->frameRender(getMemDC(), _ptMouse.x, _ptMouse.y, _frame, 0);
+	if (_frame > 12)_frame = 0;
+#pragma endregion
+
+
 #pragma endregion
 	_pl->render();
 	_sk->UpSkill(_pl);
+
+
 
 	// 시나리오 클리어
 	if (_emRender)
@@ -560,6 +628,7 @@ void Battle2::render(void)
 		IMAGEMANAGER->findImage("클리어텍스트광원")->alphaRender(getMemDC(), 300, 320, 255);
 		if (_skillTick > 250)
 			SCENEMANAGER->changScene("로딩","월드맵");
+
 	}
 
 

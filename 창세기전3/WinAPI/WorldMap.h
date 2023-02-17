@@ -25,6 +25,12 @@ private:
 	bool _ui;
 	bool _move;
 	bool _move2;
+
+	// ¸¶¿ì½º
+	RECT _Mrc;
+	int _frame;
+
+
 public:
 	HRESULT init(void);
 	void release(void);

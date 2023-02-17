@@ -93,6 +93,7 @@ class Battle3 : public GameNode
 private:
 	// 전체틱
 	int _tick;
+	int _tick2;
 
 	//배경
 	BG _bg;
@@ -101,11 +102,13 @@ private:
 	// UI
 	UI* _ui;
 	int _mouseTileFrame;
-
+	int _mapX;
+	int	_mapY;
 	// UNIT
 	Player* _pl;
 	Enemy2* _em[10];
 	Dragon* _da;
+	int _emInfoFrame;
 
 	// TURN
 	bitset<20> _turn;
@@ -126,6 +129,11 @@ private:
 	bool _shaking;
 
 	int _end;
+
+	// 마우스
+	RECT _Mrc;
+	int _frame;
+
 
 #pragma region Astar
 

@@ -74,6 +74,14 @@ private:
 	bool _skillOn;
 	int _turnFrame;
 	int _tick;
+	int _mapX;
+	int _mapY;
+	int _mouseTileFrame;
+
+	// 마우스
+	RECT _Mrc;
+	int _frame;
+
 
 	// 스킬
 	int _skillTick;

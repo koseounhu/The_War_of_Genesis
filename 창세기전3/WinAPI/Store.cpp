@@ -84,4 +84,13 @@ void Store::render(void)
 	IMAGEMANAGER->findImage("상점작은버튼")->frameRender(getMemDC(), _exitX, _exitY,0,0);
 	FONTMANAGER->drawText(getMemDC(), _exitX + 18, _exitY + 3, 17, 255, 255, 255, "굴림", true, "E X I T");
 
+#pragma region 마우스
+	ShowCursor(false);
+	_Mrc = RectMake(_ptMouse.x, _ptMouse.y, 16, 24);
+	_frame++;
+	IMAGEMANAGER->findImage("일반마우스")->frameRender(getMemDC(), _ptMouse.x, _ptMouse.y, _frame, 0);
+	if (_frame > 12)_frame = 0;
+#pragma endregion
+
+
 }

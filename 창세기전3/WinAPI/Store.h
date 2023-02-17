@@ -20,6 +20,9 @@ private:
 	int _exitY;
 	RECT _exitRC;
 
+	// ¸¶¿ì½º
+	RECT _Mrc;
+	int _frame;
 
 public:
 	HRESULT init(void);

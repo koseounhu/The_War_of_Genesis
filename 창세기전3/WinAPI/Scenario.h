@@ -18,6 +18,10 @@ private:
 	// 다음 시나리오
 	bool _next;
 
+	// 마우스
+	RECT _Mrc;
+	int _frame;
+
 
 public:
 	HRESULT init(void);

@@ -352,7 +352,7 @@ void Battle::update(void)
 				_ve->getVE()._y == _tile[i][j].y)
 			{
 				_ve->setVEIdx(i, j);
-				_tile[i][j].unit = 1;
+				_tile[i][j].unit = 2;
 				break;
 			}
 		}
@@ -587,11 +587,34 @@ void Battle::render(void)
 {
     // 배경
    IMAGEMANAGER->findImage("전투맵")->render(getMemDC(),_x,_y);
+
+
+   // 우상단 UI
+   // 마우스 좌표
+   for (int i = 0; i < H_NUM; i++)
+   {
+	   for (int j = 0; j < V_NUM; j++)
+	   {
+		   if ((_ptMouse.x > _tile[i][j].x && _ptMouse.x < _tile[i + 1][j].x) &&
+			   (_ptMouse.y > _tile[i][j].y && _ptMouse.y < _tile[i][j + 1].y))
+		   {
+			   _mapX = i;
+			   _mapY = j;
+		   }
+	   }
+   }
+
+
    IMAGEMANAGER->findImage("MapInfo")->render(getMemDC(), 790, 5);
-   FONTMANAGER->drawText(getMemDC(), 880, 20, 15, 255, 255, 255, "굴림", false, "형제여!");
+   FONTMANAGER->drawText(getMemDC(), 880, 20, 15, 255, 255, 255, "굴림", false, "술탄궁 내부");
    FONTMANAGER->drawText(getMemDC(), 950, 45, 15, 255, 255, 255, "굴림", true, "평  지");
    FONTMANAGER->drawInt(getMemDC(), 940, 85, 15, 255, 255, 255, "굴림", false, (char*)GOLD->getGold());
    FONTMANAGER->drawText(getMemDC(), 1000, 85, 15, 255, 255, 255, "굴림", false, "eld");
+   FONTMANAGER->drawInt(getMemDC(), 815, 90, 15, 255, 255, 255, "굴림", false, (char*)_mapX);
+   FONTMANAGER->drawInt(getMemDC(), 885, 70, 15, 255, 255, 255, "굴림", false, (char*)_mapY);
+   FONTMANAGER->drawInt(getMemDC(), 850, 40, 15, 255, 255, 255, "굴림", false, 0);
+
+
 
    DrawRectMake(getMemDC(), _cam.rc);
 
@@ -614,22 +637,36 @@ void Battle::render(void)
 
 #pragma region 마우스타일, 맵타일그리기
    // 마우스타일
-   if (!_ui->getSkillState()&& _ui->getTileState())
+   if (!turn[0])
    {
 	   for (int j = 0; j < H_NUM; j++)
 	   {
 		   for (int i = 0; i < V_NUM; i++)
 		   {
 			   if (_tile[j][i].x < _ptMouse.x && _tile[j][i].y < _ptMouse.y &&
-				   _tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y)
+				   _tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y && _tile[j][i].unit == 2 && !_ui->getAtkTile())
 			   {
-				   IMAGEMANAGER->findImage("마우스타일")->alphaFrameRender(getMemDC(),
-					   _tile[j][i].x, _tile[j][i].y, 150, 0, 0);
+				   IMAGEMANAGER->findImage("갈수없는타일")->alphaFrameRender(getMemDC(),
+					   _tile[j][i].x, _tile[j][i].y, 150, _mouseTileFrame, 0);
+			   }
+
+			   else
+			   {
+				   if (_tile[j][i].x < _ptMouse.x && _tile[j][i].y < _ptMouse.y &&
+					   _tile[j + 1][i].x > _ptMouse.x && _tile[j][i + 1].y > _ptMouse.y)
+				   {
+					   IMAGEMANAGER->findImage("마우스타일")->alphaFrameRender(getMemDC(),
+						   _tile[j][i].x, _tile[j][i].y, 150, _mouseTileFrame, 0);
+				   }
 			   }
 
 		   }
 	   }
    }
+
+
+
+
 
    // 각 구획마다 선 그리기
    if (KEYMANAGER->isToggleKey(VK_F10))
@@ -856,7 +893,24 @@ void Battle::render(void)
 
 #pragma endregion
 
-
+	// 마우스
+	if (!_ui->getAtkTile())
+	{
+		ShowCursor(false);
+		_Mrc = RectMake(_ptMouse.x, _ptMouse.y, 16, 24);
+		_frame++;
+		IMAGEMANAGER->findImage("일반마우스")->frameRender(getMemDC(), _ptMouse.x, _ptMouse.y, _frame, 0);
+		if (_frame > 12)_frame = 0;
+	}
+	else
+	{
+		//커서
+		ShowCursor(false);
+		_Mrc = RectMake(_ptMouse.x, _ptMouse.y, 16, 24);
+		_frame++;
+		IMAGEMANAGER->findImage("공격마우스")->frameRender(getMemDC(), _ptMouse.x, _ptMouse.y, _frame, 0);
+		if (_frame > 12)_frame = 0;
+	}
 
    // 시나리오 클리어
    if (_emRender)

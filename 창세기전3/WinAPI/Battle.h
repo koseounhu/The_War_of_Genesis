@@ -113,6 +113,7 @@ private:
 	Tiger* _ti;
 	bool _emRender;
 	UI* _ui;
+	int _mouseTileFrame;
 
 	// Ä«¸Þ¶ó
 	CAMERA _cam;
@@ -127,6 +128,14 @@ private:
 	int _veFrame;
 	int _veTick;
 	
+	// ¸¶¿ì½º
+	RECT _Mrc;
+	int _frame;
+	int _tick;
+
+	//¸Ê ÁÂÇ¥
+	int _mapX;
+	int _mapY;
 public:
 	HRESULT init(void);
 	void release(void);

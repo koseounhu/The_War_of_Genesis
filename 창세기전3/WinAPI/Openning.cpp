@@ -84,6 +84,7 @@ void Openning::update(void)
 void Openning::render(void)
 {
     IMAGEMANAGER->findImage("오프닝배경")->alphaRender(getMemDC(), _BGalpha);
+    ShowCursor(false);
 
     if (_textImage[1] == 1)
     {
@@ -142,6 +143,13 @@ void Openning::render(void)
 
         IMAGEMANAGER->findImage("오프닝로고")->render(getMemDC(), 80,200);
         IMAGEMANAGER->findImage("오프닝선택창1")->render(getMemDC(), 280, 500);
+#pragma region 마우스
+
+        _Mrc = RectMake(_ptMouse.x, _ptMouse.y, 16, 24);
+        _frame++;
+        IMAGEMANAGER->findImage("일반마우스")->frameRender(getMemDC(), _ptMouse.x, _ptMouse.y, _frame, 0);
+        if (_frame > 12)_frame = 0;
+#pragma endregion
 
 
         // 선택창 마우스 충돌 시 변화

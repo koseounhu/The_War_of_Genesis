@@ -174,5 +174,8 @@ void Battle3::moveTileStar(int startIdxX, int startIdxY)
                 _tile[_canMoveList[i].idxX][_canMoveList[i].idxY + 2].moveTileColli = true;
             }
         }
+
     }
+
+
 }
